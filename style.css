@@ -60,14 +60,16 @@ margin-top:20px;
 }
 
 .btn{
-display:inline-block;
+display:block;
+width:220px;
+margin:25px auto;
 background:#2563eb;
 padding:15px 30px;
-margin-top:25px;
 color:white;
 text-decoration:none;
 border-radius:8px;
 font-weight:bold;
+text-align:center;
 transition:0.3s;
 }
 
