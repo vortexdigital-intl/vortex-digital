@@ -80,17 +80,15 @@ width:90%;
 max-width:1200px;
 margin:auto;
 padding:50px 0;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:20px;
 }
 
 .card{
 background:#0d1729;
 padding:25px;
+margin:15px auto;
 border-radius:12px;
 border:1px solid rgba(255,255,255,0.05);
-transition:0.3s;
+max-width:1000px;
 }
 
 .card:hover{
