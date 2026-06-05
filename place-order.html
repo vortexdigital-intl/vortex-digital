@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,53 +21,58 @@
 <a href="portfolio.html">Portfolio</a>
 <a href="careers.html">Careers</a>
 <a href="place-order.html">Place Order</a>
+<a href="contact.html">Contact</a>
 </nav>
 </header>
 
 <section class="hero">
 <h1>Place Your Order</h1>
-<p>Tell us about your project and we'll get started.</p>
+<p>Submit your project requirements and our team will contact you shortly.</p>
 </section>
 
 <div class="container">
 
 <div class="card">
 
-<h2>Order Form</h2>
+<h2>Project Order Form</h2>
 
 <form action="https://formsubmit.co/vortex.digital111@gmail.com" method="POST">
 
 <input type="hidden" name="_subject" value="New Client Order - Vortex Digital">
 
 <p>Full Name</p>
-<input type="text" name="Full Name" required style="width:100%;padding:12px;margin-bottom:15px;">
+<input type="text" name="Full Name" required>
 
 <p>Email Address</p>
-<input type="email" name="Email" required style="width:100%;padding:12px;margin-bottom:15px;">
+<input type="email" name="Email Address" required>
+
+<p>Company Name (Optional)</p>
+<input type="text" name="Company Name">
 
 <p>Service Required</p>
-<select name="Service" required style="width:100%;padding:12px;margin-bottom:15px;">
+<select name="Service Required" required>
 <option value="">Select Service</option>
-<option>Twitch Graphics</option>
-<option>Twitch Panels</option>
-<option>Stream Alerts</option>
-<option>Emotes & Badges</option>
-<option>VTuber Services</option>
-<option>Logo Design</option>
-<option>Branding Solutions</option>
+<option>Graphic Design</option>
 <option>Digital Marketing</option>
 <option>Lead Generation</option>
 <option>Appointment Setting</option>
+<option>Branding Solutions</option>
+<option>Business Development</option>
+<option>Twitch Graphics</option>
+<option>VTuber Services</option>
 </select>
 
 <p>Budget (USD)</p>
-<input type="text" name="Budget" required style="width:100%;padding:12px;margin-bottom:15px;">
+<input type="text" name="Budget" required>
 
 <p>Project Deadline</p>
-<input type="text" name="Deadline" required style="width:100%;padding:12px;margin-bottom:15px;">
+<input type="date" name="Deadline" required>
 
-<p>Project Details</p>
-<textarea name="Project Details" rows="6" required style="width:100%;padding:12px;margin-bottom:15px;"></textarea>
+<p>Reference Links (Optional)</p>
+<input type="text" name="Reference Links">
+
+<p>Project Requirements</p>
+<textarea name="Project Requirements" rows="6" required></textarea>
 
 <button type="submit" class="btn">Submit Order</button>
 
