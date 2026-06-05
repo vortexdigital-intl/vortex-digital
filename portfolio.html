@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio - Vortex Digital</title>
+<title>Place Order - Vortex Digital</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -19,51 +20,71 @@
 <a href="pricing.html">Pricing</a>
 <a href="portfolio.html">Portfolio</a>
 <a href="careers.html">Careers</a>
+<a href="place-order.html">Place Order</a>
 <a href="contact.html">Contact</a>
 </nav>
 </header>
 
 <section class="hero">
-<h1>Our Portfolio</h1>
-<p>Creative Work. Professional Results.</p>
+<h1>Place Your Order</h1>
+<p>Submit your project requirements and our team will contact you shortly.</p>
 </section>
 
 <div class="container">
 
 <div class="card">
-<h2>Logo Design</h2>
-<p>Professional logos for brands, streamers and businesses.</p>
-</div>
 
-<div class="card">
-<h2>Twitch Graphics</h2>
-<p>Overlays, banners, webcam frames, offline screens and more.</p>
-</div>
+<h2>Project Order Form</h2>
 
-<div class="card">
-<h2>Emotes & Badges</h2>
-<p>Custom static and animated emotes with subscriber badges.</p>
-</div>
+<form action="https://formsubmit.co/vortex.digital111@gmail.com" method="POST">
 
-<div class="card">
-<h2>VTuber Projects</h2>
-<p>PNG avatars, Live2D models, rigging and complete VTuber packages.</p>
-</div>
+<input type="hidden" name="_subject" value="New Client Order - Vortex Digital">
 
-<div class="card">
-<h2>Branding Projects</h2>
-<p>Professional visual identity and brand design solutions.</p>
-</div>
+<p>Full Name</p>
+<input type="text" name="Full Name" required>
 
-<div class="card">
-<h2>Marketing Designs</h2>
-<p>Social media posts, ads, banners and promotional content.</p>
+<p>Email Address</p>
+<input type="email" name="Email Address" required>
+
+<p>Company Name (Optional)</p>
+<input type="text" name="Company Name">
+
+<p>Service Required</p>
+<select name="Service Required" required>
+<option value="">Select Service</option>
+<option>Graphic Design</option>
+<option>Digital Marketing</option>
+<option>Lead Generation</option>
+<option>Appointment Setting</option>
+<option>Branding Solutions</option>
+<option>Business Development</option>
+<option>Twitch Graphics</option>
+<option>VTuber Services</option>
+</select>
+
+<p>Budget (USD)</p>
+<input type="text" name="Budget" required>
+
+<p>Project Deadline</p>
+<input type="date" name="Deadline" required>
+
+<p>Reference Links (Optional)</p>
+<input type="text" name="Reference Links">
+
+<p>Project Requirements</p>
+<textarea name="Project Requirements" rows="6" required></textarea>
+
+<button type="submit" class="btn">Submit Order</button>
+
+</form>
+
 </div>
 
 </div>
 
 <footer>
 <p>© 2026 Vortex Digital - Driven By Innovation</p>
+<p>Email: vortex.digital111@gmail.com</p>
 </footer>
 
 </body>
