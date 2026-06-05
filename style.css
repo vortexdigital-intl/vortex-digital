@@ -7,13 +7,13 @@ font-family:Arial,sans-serif;
 
 body{
 background:#050b18;
-color:#ffffff;
+color:white;
 line-height:1.6;
 }
 
 header{
 background:#081426;
-padding:15px 40px;
+padding:20px 50px;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -27,19 +27,15 @@ gap:10px;
 }
 
 .logo img{
-width:55px;
-height:55px;
+width:60px;
+height:60px;
 border-radius:50%;
-}
-
-.logo h2{
-font-size:24px;
 }
 
 nav a{
 color:white;
 text-decoration:none;
-margin-left:18px;
+margin-left:20px;
 font-weight:bold;
 transition:0.3s;
 }
@@ -47,28 +43,27 @@ transition:0.3s;
 nav a:hover
 
 .hero{
-padding:70px 20px;
+padding:100px 20px;
 text-align:center;
-background:linear-gradient(180deg,#081426,#050b18);
 }
 
 .hero h1{
-font-size:52px;
+font-size:60px;
 color:#3b82f6;
-margin-bottom:15px;
 }
 
 .hero p{
 max-width:800px;
 margin:auto;
-font-size:18px;
+font-size:20px;
+margin-top:20px;
 }
 
 .btn{
 display:inline-block;
 background:#2563eb;
-padding:14px 28px;
-margin-top:20px;
+padding:15px 30px;
+margin-top:25px;
 color:white;
 text-decoration:none;
 border-radius:8px;
@@ -80,22 +75,22 @@ transition:0.3s;
 
 .container{
 width:90%;
-max-width:1100px;
+max-width:1200px;
 margin:auto;
-padding:30px 0;
+padding:50px 0;
 }
 
 .card{
 background:#0d1729;
-padding:20px;
-margin:12px 0;
+padding:25px;
+margin:15px;
 border-radius:12px;
-border:1px solid rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.05);
 }
 
 .card h2{
 color:#3b82f6;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .card h3{
@@ -106,7 +101,7 @@ footer{
 background:#081426;
 padding:20px;
 text-align:center;
-margin-top:40px;
+margin-top:50px;
 border-top:1px solid rgba(255,255,255,0.08);
 }
 
@@ -124,33 +119,28 @@ margin-bottom:15px;
 
 header{
 flex-direction:column;
-padding:20px;
 }
 
 nav{
-margin-top:12px;
+margin-top:15px;
 text-align:center;
 }
 
 nav a{
 display:inline-block;
-margin:6px;
-}
-
-.hero{
-padding:50px 20px;
+margin:8px;
 }
 
 .hero h1{
-font-size:38px;
+font-size:36px;
 }
 
 .hero p{
-font-size:16px;
+font-size:18px;
 }
 
 .logo img{
-width:45px;
-height:45px;
+width:50px;
+height:50px;
 }
 }
