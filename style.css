@@ -163,31 +163,70 @@ box-shadow:0 0 15px rgba(59,130,246,0.3);
 @media(max-width:768px){
 
 header{
+padding:15px 10px;
 flex-direction:column;
-padding:20px;
 }
 
-nav{
-margin-top:15px;
+.logo{
+flex-direction:column;
+gap:5px;
+}
+
+.logo img{
+width:70px;
+height:70px;
+}
+
+.logo h2{
+font-size:32px;
 text-align:center;
 }
 
+nav{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+width:100%;
+margin-top:15px;
+}
+
 nav a{
-display:inline-block;
-margin:8px;
+margin:0;
+font-size:15px;
+text-align:center;
+}
+
+.hero{
+padding:60px 15px;
 }
 
 .hero h1{
-font-size:42px;
+font-size:44px;
+line-height:1.1;
 }
 
 .hero p{
 font-size:18px;
+max-width:95%;
 }
 
-.logo img{
-width:50px;
-height:50px;
+.btn{
+width:90%;
+max-width:300px;
+}
+
+.card{
+padding:20px;
+margin:15px auto;
+max-width:95%;
+}
+
+.card h2{
+font-size:26px;
+}
+
+.card h3{
+font-size:22px;
 }
 
 .container{
