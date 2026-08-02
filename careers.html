@@ -35,31 +35,28 @@
 
 <h2>Job Application Form</h2>
 
-<form action="https://api.web3forms.com/submit" enctype="multipart/form-data" method="POST">
+<form action="https://api.web3forms.com/submit" method="POST" autocomplete="on">
 
 <input type="hidden" name="access_key" value="4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d">
-
 <input type="hidden" name="subject" value="New Job Application - Vortex Digital">
-
 <input type="hidden" name="from_name" value="Vortex Digital Careers">
-
 <input type="hidden" name="redirect" value="https://vortexdigital-intl.github.io/vortex-digital/thank-you.html">
+<input type="checkbox" name="botcheck" style="display:none">
 
-<p>Full Name</p>
-<input type="text" name="Full Name" required>
+<label for="full_name">Full Name</label>
+<input type="text" id="full_name" name="Full Name" autocomplete="name" required>
 
-<p>Email Address</p>
-<input type="email" name="Email Address" required>
+<label for="email">Email Address</label>
+<input type="email" id="email" name="Email Address" autocomplete="email" required>
 
-<p>Phone Number</p>
-<input type="text" name="Phone Number" required>
+<label for="phone">Phone Number (with country code)</label>
+<input type="tel" id="phone" name="Phone Number" placeholder="+92 3XX XXXXXXX" autocomplete="tel" required>
 
-<p>Country</p>
-<input type="text" name="Country" required>
+<label for="country">Country</label>
+<input type="text" id="country" name="Country" autocomplete="country-name" required>
 
-<p>Position Applying For</p>
-
-<select name="Position Applying For" required>
+<label for="position">Position Applying For</label>
+<select id="position" name="Position Applying For" required>
 <option value="">Select Position</option>
 <option value="Business Development Representative (Bulk Hiring)">Business Development Representative (Bulk Hiring)</option>
 <option value="Graphic Designer">Graphic Designer</option>
@@ -70,36 +67,49 @@
 <option value="Other">Other</option>
 </select>
 
-<p>Years of Experience</p>
-<input type="text" name="Experience" required>
+<label for="experience">Years of Experience</label>
+<select id="experience" name="Experience" required>
+<option value="">Select Experience</option>
+<option value="Fresher / No Experience">Fresher / No Experience</option>
+<option value="Less than 1 Year">Less than 1 Year</option>
+<option value="1-2 Years">1-2 Years</option>
+<option value="3-5 Years">3-5 Years</option>
+<option value="5+ Years">5+ Years</option>
+</select>
 
-<p>Skills</p>
-<input type="text" name="Skills" required>
+<label for="skills">Relevant Skills</label>
+<input type="text" id="skills" name="Skills" placeholder="e.g. Sales, Canva, SEO, Cold Calling" required>
 
-<p>Previous Company / Work History</p>
-<textarea name="Work History" rows="4" required></textarea>
+<label for="work_history">Previous Company / Work History</label>
+<textarea id="work_history" name="Work History" rows="4" placeholder="Company name, role, and duration" required></textarea>
 
-<p>Portfolio Link (Optional)</p>
-<input type="url" name="Portfolio Link">
+<label for="linkedin">LinkedIn Profile (Optional)</label>
+<input type="url" id="linkedin" name="LinkedIn Profile" placeholder="https://linkedin.com/in/yourname">
 
-<p>Availability</p>
-<input type="text" name="Availability" placeholder="Full Time / Part Time" required>
+<label for="portfolio">Portfolio / Work Sample Link (Optional)</label>
+<input type="url" id="portfolio" name="Portfolio Link" placeholder="https://">
 
-<p>Are You Comfortable Working On A Commission-Based Model?</p>
-<select name="Commission Agreement" required>
+<label for="availability">Availability</label>
+<select id="availability" name="Availability" required>
+<option value="">Select Availability</option>
+<option value="Full Time">Full Time</option>
+<option value="Part Time">Part Time</option>
+</select>
+
+<label for="commission">Are You Comfortable Working On A Commission-Based Model?</label>
+<select id="commission" name="Commission Agreement" required>
 <option value="">Select Option</option>
 <option value="Yes">Yes</option>
 <option value="No">No</option>
 </select>
 
-<p>Upload Resume / CV (PDF, Image, DOC - Max 5MB)</p>
-<input type="file" name="Resume/CV" required>
+<label for="why_hire">Why Should We Hire You?</label>
+<textarea id="why_hire" name="Why Should We Hire You" rows="5" placeholder="Tell us briefly why you're a good fit" required></textarea>
 
-<p>Why Should We Hire You?</p>
-<textarea name="Why Should We Hire You" rows="5" required></textarea>
-
+<label class="checkbox-label">
 <input type="checkbox" required>
 I agree to the Privacy Policy.
+</label>
 <br><br>
 
 <button type="submit" class="btn">Submit Application</button>
