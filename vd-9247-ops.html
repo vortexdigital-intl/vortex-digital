@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortex Digital</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css">
+<style>
+#lock-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+}
+#lock-screen input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  margin-top: 15px;
+  width: 250px;
+  max-width: 80vw;
+  text-align: center;
+}
+#lock-screen button {
+  margin-top: 15px;
+  padding: 12px 30px;
+}
+#error-msg {
+  color: #ff5c5c;
+  margin-top: 10px;
+  display: none;
+}
+#admin-content {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="lock-screen">
+  <h2>Restricted Access</h2>
+  <p>Enter access code to continue.</p>
+  <input type="password" id="access-code" placeholder="Access Code" autocomplete="off">
+  <br>
+  <button class="btn" onclick="checkAccess()">Enter</button>
+  <p id="error-msg">Incorrect code. Try again.</p>
+</div>
+
+<div id="admin-content">
+
+<header>
+<div class="logo">
+<h2>Vortex Digital - Admin</h2>
+</div>
+</header>
+
+<section class="hero">
+<h1>Welcome, Admin</h1>
+<p>You are logged into the Vortex Digital admin panel.</p>
+</section>
+
+<div class="container">
+<div class="card">
+<p>This page is currently under construction. More admin tools and data will be added here soon.</p>
+</div>
+</div>
+
+</div>
+
+<script>
+// Change this code to whatever you want
+const ACCESS_CODE = "vortex2026";
+
+function checkAccess() {
+  const input = document.getElementById("access-code").value;
+  if (input === ACCESS_CODE) {
+    document.getElementById("lock-screen").style.display = "none";
+    document.getElementById("admin-content").style.display = "block";
+    sessionStorage.setItem("vortex_admin_ok", "true");
+  } else {
+    document.getElementById("error-msg").style.display = "block";
+  }
+}
+
+document.getElementById("access-code").addEventListener("keyup", function(e) {
+  if (e.key === "Enter") checkAccess();
+});
+
+// Keep unlocked while this browser tab session is open
+if (sessionStorage.getItem("vortex_admin_ok") === "true") {
+  document.getElementById("lock-screen").style.display = "none";
+  document.getElementById("admin-content").style.display = "block";
+}
+</script>
+
+</body>
+</html>
