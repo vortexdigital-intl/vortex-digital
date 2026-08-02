@@ -26,7 +26,7 @@
 </header>
 
 <section class="hero">
-<h1>Contact Vortex Digital</h1>
+<h1 id="secret-trigger">Contact Vortex Digital</h1>
 <p>
 Have a question, business inquiry, or project idea?
 Get in touch with us.
@@ -42,7 +42,7 @@ Need help, want to report an issue, or have a business inquiry?
 Send us a message below.
 </p>
 
-<form action="https://api.web3forms.com/submit" method="POST">
+<form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
 
 <input type="hidden" name="access_key" value="4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d">
 
@@ -92,9 +92,9 @@ Send us a message below.
 </div>
 
 <div class="card">
-<h2>Founder & CEO</h2>
+<h2>Founder</h2>
 <br>
-<p>Ammar Talib & Hamza Talib</p>
+<p>Ammar Talib</p>
 </div>
 
 <div class="card">
@@ -110,6 +110,46 @@ Send us a message below.
 <p>© 2026 Vortex Digital - Driven By Innovation</p>
 <p>Email: vortexdigital.intl@gmail.com</p>
 </footer>
+
+<script>
+(function () {
+  const trigger = document.getElementById("secret-trigger");
+  const form = document.getElementById("contactForm");
+  let tapCount = 0;
+  let tapTimer = null;
+
+  function isFormEmpty() {
+    const fields = form.querySelectorAll("input[type='text'], input[type='email'], input[type='tel'], textarea, select");
+    for (const field of fields) {
+      if (field.tagName === "SELECT") {
+        if (field.value !== "") return false;
+      } else {
+        if (field.value.trim() !== "") return false;
+      }
+    }
+    return true;
+  }
+
+  trigger.addEventListener("click", function () {
+    if (!isFormEmpty()) {
+      tapCount = 0;
+      clearTimeout(tapTimer);
+      return;
+    }
+
+    tapCount++;
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(function () {
+      tapCount = 0;
+    }, 3000);
+
+    if (tapCount >= 5) {
+      tapCount = 0;
+      window.location.href = "admin.html";
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
