@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortex Digital</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css">
+<style>
+#lock-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+}
+#lock-screen input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  margin-top: 15px;
+  width: 250px;
+  max-width: 80vw;
+  text-align: center;
+}
+#lock-screen button {
+  margin-top: 15px;
+  padding: 12px 30px;
+}
+.back-link {
+  margin-top: 20px;
+  display: inline-block;
+  font-size: 14px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+#error-msg {
+  color: #ff5c5c;
+  margin-top: 10px;
+  display: none;
+}
+#admin-content {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="lock-screen">
+  <h2>Restricted Access</h2>
+  <p>Enter access code to continue as <strong>Anas</strong>.</p>
+  <input type="password" id="access-code" placeholder="Access Code" autocomplete="off">
+  <br>
+  <button class="btn" onclick="checkAccess()">Enter</button>
+  <p id="error-msg">Incorrect code. Try again.</p>
+  <a class="back-link" href="vx-s847-ops.html">&larr; Back to admin selection</a>
+</div>
+
+<div id="admin-content">
+
+<header>
+<div class="logo">
+<h2>Vortex Digital - Admin</h2>
+</div>
+</header>
+
+<section class="hero">
+<h1>Welcome, Anas</h1>
+<p>You are logged into the Vortex Digital admin panel.</p>
+</section>
+
+<div class="container">
+<div class="card">
+<p>This page is currently under construction. More admin tools and data will be added here soon.</p>
+</div>
+</div>
+
+<div class="container">
+<a class="back-link" href="vx-s847-ops.html">&larr; Back to admin selection</a>
+</div>
+
+</div>
+
+<script>
+const ACCESS_CODE = "426819";
+const SESSION_KEY = "vortex_admin_anas_ok";
+
+function checkAccess() {
+  const input = document.getElementById("access-code").value;
+  if (input === ACCESS_CODE) {
+    document.getElementById("lock-screen").style.display = "none";
+    document.getElementById("admin-content").style.display = "block";
+    sessionStorage.setItem(SESSION_KEY, "true");
+  } else {
+    document.getElementById("error-msg").style.display = "block";
+  }
+}
+
+document.getElementById("access-code").addEventListener("keyup", function(e) {
+  if (e.key === "Enter") checkAccess();
+});
+
+if (sessionStorage.getItem(SESSION_KEY) === "true") {
+  document.getElementById("lock-screen").style.display = "none";
+  document.getElementById("admin-content").style.display = "block";
+}
+</script>
+
+</body>
+</html>
