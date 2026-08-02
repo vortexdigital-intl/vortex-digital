@@ -30,6 +30,13 @@
   margin-top: 15px;
   padding: 12px 30px;
 }
+.back-link {
+  margin-top: 20px;
+  display: inline-block;
+  font-size: 14px;
+  opacity: 0.8;
+  cursor: pointer;
+}
 #error-msg {
   color: #ff5c5c;
   margin-top: 10px;
@@ -45,11 +52,12 @@
 
 <div id="lock-screen">
   <h2>Restricted Access</h2>
-  <p>Enter access code to continue.</p>
+  <p>Enter access code to continue as <strong>Mujtaba</strong>.</p>
   <input type="password" id="access-code" placeholder="Access Code" autocomplete="off">
   <br>
   <button class="btn" onclick="checkAccess()">Enter</button>
   <p id="error-msg">Incorrect code. Try again.</p>
+  <a class="back-link" href="vx-s847-ops.html">&larr; Back to admin selection</a>
 </div>
 
 <div id="admin-content">
@@ -61,7 +69,7 @@
 </header>
 
 <section class="hero">
-<h1>Welcome, Admin</h1>
+<h1>Welcome, Mujtaba</h1>
 <p>You are logged into the Vortex Digital admin panel.</p>
 </section>
 
@@ -71,18 +79,22 @@
 </div>
 </div>
 
+<div class="container">
+<a class="back-link" href="vx-s847-ops.html">&larr; Back to admin selection</a>
+</div>
+
 </div>
 
 <script>
-// Change this code to whatever you want
 const ACCESS_CODE = "681379";
+const SESSION_KEY = "vortex_admin_mujtaba_ok";
 
 function checkAccess() {
   const input = document.getElementById("access-code").value;
   if (input === ACCESS_CODE) {
     document.getElementById("lock-screen").style.display = "none";
     document.getElementById("admin-content").style.display = "block";
-    sessionStorage.setItem("vortex_admin_ok", "true");
+    sessionStorage.setItem(SESSION_KEY, "true");
   } else {
     document.getElementById("error-msg").style.display = "block";
   }
@@ -92,8 +104,7 @@ document.getElementById("access-code").addEventListener("keyup", function(e) {
   if (e.key === "Enter") checkAccess();
 });
 
-// Keep unlocked while this browser tab session is open
-if (sessionStorage.getItem("vortex_admin_ok") === "true") {
+if (sessionStorage.getItem(SESSION_KEY) === "true") {
   document.getElementById("lock-screen").style.display = "none";
   document.getElementById("admin-content").style.display = "block";
 }
