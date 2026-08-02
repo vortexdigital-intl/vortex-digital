@@ -1,17 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers - Vortex Digital</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+<h2>Vortex Digital</h2>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="pricing.html">Pricing</a>
+<a href="portfolio.html">Portfolio</a>
+<a href="careers.html">Careers</a>
+<a href="place-order.html">Place Order</a>
+<a href="contact.html">Contact</a>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Join Vortex Digital</h1>
+<p>Build your career with a growing international digital team.</p>
+</section>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Job Application Form</h2>
+
 <form action="https://api.web3forms.com/submit" enctype="multipart/form-data" method="POST">
 
 <input type="hidden" name="access_key" value="4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d">
+
 <input type="hidden" name="subject" value="New Job Application - Vortex Digital">
+
 <input type="hidden" name="from_name" value="Vortex Digital Careers">
+
 <input type="hidden" name="redirect" value="https://vortexdigital-intl.github.io/vortex-digital/thank-you.html">
 
 <p>Full Name</p>
 <input type="text" name="Full Name" required>
 
-... (baaki saare fields wahi rahenge) ...
+<p>Email Address</p>
+<input type="email" name="Email Address" required>
 
-<p>Resume / CV (PDF or Image, max 5MB)</p>
-<input type="file" name="Resume/CV" accept=".pdf,image/*" required>
+<p>Phone Number</p>
+<input type="text" name="Phone Number" required>
+
+<p>Country</p>
+<input type="text" name="Country" required>
+
+<p>Position Applying For</p>
+
+<select name="Position Applying For" required>
+<option value="">Select Position</option>
+<option value="Business Development Representative (Bulk Hiring)">Business Development Representative (Bulk Hiring)</option>
+<option value="Graphic Designer">Graphic Designer</option>
+<option value="Team Leader">Team Leader</option>
+<option value="Appointment Setter">Appointment Setter</option>
+<option value="Project Manager">Project Manager</option>
+<option value="Customer Support Representative">Customer Support Representative</option>
+<option value="Other">Other</option>
+</select>
+
+<p>Years of Experience</p>
+<input type="text" name="Experience" required>
+
+<p>Skills</p>
+<input type="text" name="Skills" required>
+
+<p>Previous Company / Work History</p>
+<textarea name="Work History" rows="4" required></textarea>
+
+<p>Portfolio Link (Optional)</p>
+<input type="url" name="Portfolio Link">
+
+<p>Availability</p>
+<input type="text" name="Availability" placeholder="Full Time / Part Time" required>
+
+<p>Are You Comfortable Working On A Commission-Based Model?</p>
+<select name="Commission Agreement" required>
+<option value="">Select Option</option>
+<option value="Yes">Yes</option>
+<option value="No">No</option>
+</select>
+
+<p>Upload Resume / CV (PDF, Image, DOC - Max 5MB)</p>
+<input type="file" name="Resume/CV" required>
 
 <p>Why Should We Hire You?</p>
 <textarea name="Why Should We Hire You" rows="5" required></textarea>
@@ -23,3 +105,15 @@ I agree to the Privacy Policy.
 <button type="submit" class="btn">Submit Application</button>
 
 </form>
+
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Vortex Digital - Driven By Innovation</p>
+<p>Email: vortexdigital.intl@gmail.com</p>
+</footer>
+
+</body>
+</html>
