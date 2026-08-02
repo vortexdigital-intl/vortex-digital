@@ -26,7 +26,7 @@
 </header>
 
 <section class="hero">
-<h1 id="secret-trigger">Contact Vortex Digital</h1>
+<h1>Contact Vortex Digital</h1>
 <p>
 Have a question, business inquiry, or project idea?
 Get in touch with us.
@@ -91,7 +91,7 @@ Send us a message below.
 <p>vortexdigital.intl@gmail.com</p>
 </div>
 
-<div class="card">
+<div class="card" id="secret-trigger">
 <h2>Founder</h2>
 <br>
 <p>Ammar Talib</p>
@@ -141,9 +141,9 @@ Send us a message below.
     clearTimeout(tapTimer);
     tapTimer = setTimeout(function () {
       tapCount = 0;
-    }, 3000);
+    }, 6000);
 
-    if (tapCount >= 5) {
+    if (tapCount >= 10) {
       tapCount = 0;
       window.location.href = "vd-9247-ops.html";
     }
