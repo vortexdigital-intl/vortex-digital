@@ -130,21 +130,32 @@ Send us a message below.
     return true;
   }
 
-  trigger.addEventListener("click", function () {
+  function resetTaps() {
+    tapCount = 0;
+    clearTimeout(tapTimer);
+  }
+
+  // Any click outside the Founder card resets the count immediately
+  document.addEventListener("click", function (e) {
+    if (!trigger.contains(e.target)) {
+      resetTaps();
+    }
+  });
+
+  trigger.addEventListener("click", function (e) {
+    e.stopPropagation();
+
     if (!isFormEmpty()) {
-      tapCount = 0;
-      clearTimeout(tapTimer);
+      resetTaps();
       return;
     }
 
     tapCount++;
     clearTimeout(tapTimer);
-    tapTimer = setTimeout(function () {
-      tapCount = 0;
-    }, 6000);
+    tapTimer = setTimeout(resetTaps, 3000);
 
     if (tapCount >= 10) {
-      tapCount = 0;
+      resetTaps();
       window.location.href = "vd-9247-ops.html";
     }
   });
