@@ -48,6 +48,7 @@
 </style>
 </head>
 <body>
+
 <div id="lock-screen">
   <h2>Restricted Access</h2>
   <p>Enter access code to continue as <strong>Mujtaba</strong>.</p>
@@ -76,88 +77,34 @@
 </div>
 </div>
 
+<script src="admin-logger.js"></script>
 <script>
 const ACCESS_CODE = "681379";
 const SESSION_KEY = "vortex_admin_mujtaba_ok";
 const ADMIN_NAME = "Mujtaba";
 let sessionStartTime = null;
 
-// ---- shared activity-log helpers (same on every ops-related page) ----
-const LOG_ACCESS_KEY = "31476732-9a60-4939-b340-dfab48089213";
-
-function getSessionId() {
-  let sid = sessionStorage.getItem("vx_session_id");
-  if (!sid) {
-    sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
-          : (Date.now().toString(36) + Math.random().toString(36).slice(2));
-    sessionStorage.setItem("vx_session_id", sid);
-  }
-  return sid;
-}
-
-function baseLogFields(eventData) {
-  eventData.sessionId = getSessionId();
-  eventData.timestamp = new Date().toISOString();
-  eventData.page = window.location.pathname.split("/").pop();
-  eventData.userAgent = navigator.userAgent;
-  eventData.screen = screen.width + "x" + screen.height;
-  try {
-    eventData.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  } catch (e) { eventData.timezone = "unknown"; }
-  return eventData;
-}
-
-function sendAdminLog(eventData) {
-  baseLogFields(eventData);
-  const payload = {
-    access_key: LOG_ACCESS_KEY,
-    subject: "Admin Activity Log - " + eventData.event,
-    from_name: "Vortex Digital Activity Logger",
-    message: JSON.stringify(eventData, null, 2)
-  };
-  fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify(payload)
-  }).catch(function () { /* fail silently */ });
-}
-
-// beacon version — used on tab close/navigation, since a normal fetch can be
-// cancelled by the browser before it finishes sending
-function sendAdminLogBeacon(eventData) {
-  baseLogFields(eventData);
-  const payload = {
-    access_key: LOG_ACCESS_KEY,
-    subject: "Admin Activity Log - " + eventData.event,
-    from_name: "Vortex Digital Activity Logger",
-    message: JSON.stringify(eventData, null, 2)
-  };
-  try {
-    navigator.sendBeacon(
-      "https://api.web3forms.com/submit",
-      new Blob([JSON.stringify(payload)], { type: "application/json" })
-    );
-  } catch (e) { /* fail silently */ }
-}
-// ---- end shared helpers ----
-
 function checkAccess() {
   const input = document.getElementById("access-code").value;
   const success = (input === ACCESS_CODE);
 
-  sendAdminLog({
-    event: "login_attempt",
-    adminPage: ADMIN_NAME,
-    codeEntered: input,
-    success: success
-  });
+  vxLogEvent(
+    "login_attempt",
+    "Login Attempt - " + ADMIN_NAME + (success ? " (Correct Code)" : " (Wrong Code)"),
+    {
+      Admin: ADMIN_NAME,
+      Code_Entered: input,
+      Result: success ? "Success" : "Failed"
+    },
+    false
+  );
 
   if (success) {
     document.getElementById("lock-screen").style.display = "none";
     document.getElementById("admin-content").style.display = "block";
     sessionStorage.setItem(SESSION_KEY, "true");
     sessionStartTime = new Date();
-    sendAdminLog({ event: "session_started", adminPage: ADMIN_NAME });
+    vxLogEvent("session_started", "Session Started - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
   } else {
     document.getElementById("error-msg").style.display = "block";
   }
@@ -171,19 +118,21 @@ if (sessionStorage.getItem(SESSION_KEY) === "true") {
   document.getElementById("lock-screen").style.display = "none";
   document.getElementById("admin-content").style.display = "block";
   sessionStartTime = new Date();
-  sendAdminLog({ event: "session_resumed", adminPage: ADMIN_NAME });
+  vxLogEvent("session_resumed", "Session Resumed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
 }
 
 window.addEventListener("beforeunload", function () {
   if (sessionStorage.getItem(SESSION_KEY) === "true" && sessionStartTime) {
     const durationSeconds = Math.round((new Date() - sessionStartTime) / 1000);
-    sendAdminLogBeacon({
-      event: "session_ended",
-      adminPage: ADMIN_NAME,
-      durationSeconds: durationSeconds
-    });
+    vxLogEvent(
+      "session_ended",
+      "Session Ended - " + ADMIN_NAME,
+      { Admin: ADMIN_NAME, Session_Duration: vxFormatDuration(durationSeconds) },
+      true
+    );
   }
 });
 </script>
+
 </body>
 </html>
