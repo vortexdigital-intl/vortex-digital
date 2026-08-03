@@ -36,22 +36,66 @@
 }
 </style>
 </head>
-
 <body>
-
 <div id="select-screen">
   <h2>Select Admin</h2>
   <p>Choose which admin account to log in as.</p>
-
   <div class="admin-options">
-    <div class="admin-card" onclick="window.location.href='vd-9247-ops.html'">
+    <div class="admin-card" onclick="selectAdmin('Mujtaba', 'vd-9247-ops.html')">
       <h3>Mujtaba</h3>
     </div>
-    <div class="admin-card" onclick="window.location.href='vd-9a57-ops.html'">
+    <div class="admin-card" onclick="selectAdmin('Anas', 'vd-9a57-ops-.html')">
       <h3>Anas</h3>
     </div>
   </div>
 </div>
 
+<script>
+// ---- shared activity-log helpers (same on every ops-related page) ----
+const LOG_ACCESS_KEY = "31476732-9a60-4939-b340-dfab48089213";
+
+function getSessionId() {
+  let sid = sessionStorage.getItem("vx_session_id");
+  if (!sid) {
+    sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+          : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+    sessionStorage.setItem("vx_session_id", sid);
+  }
+  return sid;
+}
+
+function sendAdminLog(eventData) {
+  eventData.sessionId = getSessionId();
+  eventData.timestamp = new Date().toISOString();
+  eventData.page = window.location.pathname.split("/").pop();
+  eventData.userAgent = navigator.userAgent;
+  eventData.screen = screen.width + "x" + screen.height;
+  try {
+    eventData.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) { eventData.timezone = "unknown"; }
+
+  const payload = {
+    access_key: LOG_ACCESS_KEY,
+    subject: "Admin Activity Log - " + eventData.event,
+    from_name: "Vortex Digital Activity Logger",
+    message: JSON.stringify(eventData, null, 2)
+  };
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(payload)
+  }).catch(function () { /* fail silently */ });
+}
+// ---- end shared helpers ----
+
+function selectAdmin(name, url) {
+  sendAdminLog({
+    event: "admin_selected",
+    adminSelected: name
+  });
+  window.location.href = url;
+}
+</script>
 </body>
 </html>
