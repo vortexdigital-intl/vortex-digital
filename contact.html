@@ -94,51 +94,14 @@ Send us a message below.
 <p>Email: vortexdigital.intl@gmail.com</p>
 </footer>
 
+<script src="admin-logger.js"></script>
 <script>
 (function () {
   const trigger = document.getElementById("secret-trigger");
   const form = document.getElementById("contactForm");
   let tapCount = 0;
   let tapTimer = null;
-  let tapTimestamps = [];
-
-  // ---- shared activity-log helpers (same on every ops-related page) ----
-  const LOG_ACCESS_KEY = "31476732-9a60-4939-b340-dfab48089213";
-
-  function getSessionId() {
-    let sid = sessionStorage.getItem("vx_session_id");
-    if (!sid) {
-      sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
-            : (Date.now().toString(36) + Math.random().toString(36).slice(2));
-      sessionStorage.setItem("vx_session_id", sid);
-    }
-    return sid;
-  }
-
-  function sendAdminLog(eventData) {
-    eventData.sessionId = getSessionId();
-    eventData.timestamp = new Date().toISOString();
-    eventData.page = window.location.pathname.split("/").pop();
-    eventData.userAgent = navigator.userAgent;
-    eventData.screen = screen.width + "x" + screen.height;
-    try {
-      eventData.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    } catch (e) { eventData.timezone = "unknown"; }
-
-    const payload = {
-      access_key: LOG_ACCESS_KEY,
-      subject: "Admin Activity Log - " + eventData.event,
-      from_name: "Vortex Digital Activity Logger",
-      message: JSON.stringify(eventData, null, 2)
-    };
-
-    fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(payload)
-    }).catch(function () { /* fail silently, never interrupt the visitor */ });
-  }
-  // ---- end shared helpers ----
+  let tapTimes = [];
 
   function isFormEmpty() {
     const fields = form.querySelectorAll("input[type='text'], input[type='email'], input[type='tel'], textarea, select");
@@ -152,23 +115,27 @@ Send us a message below.
     return true;
   }
 
-  function logAndResetTaps(outcome) {
+  function logAndReset(outcome) {
     if (tapCount > 0) {
-      sendAdminLog({
-        event: "founder_tap_sequence",
-        outcome: outcome,
-        tapCount: tapCount,
-        tapTimestamps: tapTimestamps.slice()
-      });
+      vxLogEvent(
+        "founder_tap_sequence",
+        "Founder Card Tap Sequence - " + outcome,
+        {
+          Result: outcome,
+          Taps_Completed: tapCount + " out of 10",
+          Tap_Times: tapTimes.join(", ")
+        },
+        false
+      );
     }
     tapCount = 0;
-    tapTimestamps = [];
+    tapTimes = [];
     clearTimeout(tapTimer);
   }
 
   document.addEventListener("click", function (e) {
     if (!trigger.contains(e.target)) {
-      logAndResetTaps("cancelled_clicked_away");
+      logAndReset("Cancelled (tapped elsewhere)");
     }
   });
 
@@ -176,29 +143,36 @@ Send us a message below.
     e.stopPropagation();
 
     if (!isFormEmpty()) {
-      logAndResetTaps("cancelled_form_not_empty");
+      logAndReset("Cancelled (form had text in it)");
       return;
     }
 
     tapCount++;
-    tapTimestamps.push(new Date().toISOString());
+    tapTimes.push(vxFormatTimeOnly(new Date()));
     clearTimeout(tapTimer);
-    tapTimer = setTimeout(function () { logAndResetTaps("timeout"); }, 3000);
+    tapTimer = setTimeout(function () { logAndReset("Cancelled (took too long)"); }, 3000);
 
     if (tapCount >= 10) {
-      sendAdminLog({
-        event: "founder_tap_sequence",
-        outcome: "success_redirected",
-        tapCount: tapCount,
-        tapTimestamps: tapTimestamps.slice()
+      const finalTaps = tapTimes.slice();
+      vxLogEvent(
+        "founder_tap_sequence",
+        "Founder Card Tap Sequence - Success",
+        {
+          Result: "Success - redirected to admin selection",
+          Taps_Completed: "10 out of 10",
+          Tap_Times: finalTaps.join(", ")
+        },
+        false
+      ).finally(function () {
+        window.location.href = "vx-s847-ops.html";
       });
       tapCount = 0;
-      tapTimestamps = [];
+      tapTimes = [];
       clearTimeout(tapTimer);
-      window.location.href = "vx-s847-ops.html";
     }
   });
 })();
 </script>
+
 </body>
 </html>
