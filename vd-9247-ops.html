@@ -45,6 +45,87 @@
 #admin-content {
   display: none;
 }
+
+/* ---- PayPal balance card ---- */
+.paypal-card {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: left;
+}
+.paypal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.paypal-logo {
+  height: 26px;
+}
+.balance-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid #444;
+  margin-bottom: 12px;
+}
+.balance-main .balance-value {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.balance-sub {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+.balance-sub-item {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  text-align: center;
+}
+.balance-sub-item .balance-value {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.balance-label {
+  font-size: 12px;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.balance-actions {
+  display: flex;
+  gap: 10px;
+}
+#balance-code-prompt {
+  margin-top: 14px;
+}
+#balance-code-prompt input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  width: 55%;
+  margin-right: 8px;
+}
+#balance-error-msg {
+  color: #ff5c5c;
+  margin-top: 8px;
+  display: none;
+  font-size: 13px;
+}
+#balance-loading {
+  margin-top: 12px;
+  opacity: 0.8;
+  font-style: italic;
+  font-size: 14px;
+}
 </style>
 </head>
 <body>
@@ -67,6 +148,45 @@
 <h1>Welcome, Mujtaba</h1>
 <p>You are logged into the Vortex Digital admin panel.</p>
 </section>
+
+<div class="container">
+<div class="card paypal-card" id="paypal-card">
+  <div class="paypal-header">
+    <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" class="paypal-logo">
+    <h2 style="margin:0;">PayPal Balance</h2>
+  </div>
+
+  <div class="balance-main">
+    <span class="balance-label">Current Balance</span>
+    <span class="balance-value" id="balance-main-value">***</span>
+  </div>
+
+  <div class="balance-sub">
+    <div class="balance-sub-item">
+      <span class="balance-label">Backup Balance</span>
+      <span class="balance-value" id="balance-backup-value">***</span>
+    </div>
+    <div class="balance-sub-item">
+      <span class="balance-label">Backend Balance</span>
+      <span class="balance-value" id="balance-backend-value">***</span>
+    </div>
+  </div>
+
+  <div class="balance-actions">
+    <button class="btn" id="balance-show-btn" onclick="showBalance()">Show Balance</button>
+    <button class="btn" id="balance-hide-btn" onclick="hideBalance()" style="display:none;">Hide Balance</button>
+  </div>
+
+  <div id="balance-code-prompt" style="display:none;">
+    <input type="password" id="balance-access-code" placeholder="Enter Access Code" autocomplete="off">
+    <button class="btn" onclick="confirmBalanceCode()">Confirm</button>
+    <p id="balance-error-msg">Incorrect code. Try again.</p>
+  </div>
+
+  <div id="balance-loading" style="display:none;">Loading balance…</div>
+</div>
+</div>
+
 <div class="container">
 <div class="card">
 <p>This page is currently under construction. More admin tools and data will be added here soon.</p>
@@ -132,6 +252,55 @@ window.addEventListener("beforeunload", function () {
     );
   }
 });
+
+/* ---- PayPal balance card logic ---- */
+/* NOTE: these are static reference numbers, not a live PayPal feed.
+   Update them by hand here whenever the real balance changes. */
+const REAL_BALANCE = { current: "1,400.27", backup: "170.00", backend: "0.00" };
+
+function showBalance() {
+  document.getElementById("balance-code-prompt").style.display = "block";
+  document.getElementById("balance-show-btn").style.display = "none";
+  document.getElementById("balance-access-code").focus();
+}
+
+function confirmBalanceCode() {
+  const input = document.getElementById("balance-access-code").value;
+  const errorMsg = document.getElementById("balance-error-msg");
+
+  if (input === ACCESS_CODE) {
+    errorMsg.style.display = "none";
+    document.getElementById("balance-code-prompt").style.display = "none";
+    document.getElementById("balance-loading").style.display = "block";
+
+    vxLogEvent("balance_viewed", "PayPal Balance Viewed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
+
+    setTimeout(function () {
+      document.getElementById("balance-loading").style.display = "none";
+      document.getElementById("balance-main-value").textContent = "$" + REAL_BALANCE.current;
+      document.getElementById("balance-backup-value").textContent = "$" + REAL_BALANCE.backup;
+      document.getElementById("balance-backend-value").textContent = "$" + REAL_BALANCE.backend;
+      document.getElementById("balance-hide-btn").style.display = "inline-block";
+    }, 900);
+  } else {
+    errorMsg.style.display = "block";
+  }
+  document.getElementById("balance-access-code").value = "";
+}
+
+document.addEventListener("keyup", function (e) {
+  if (e.target && e.target.id === "balance-access-code" && e.key === "Enter") {
+    confirmBalanceCode();
+  }
+});
+
+function hideBalance() {
+  document.getElementById("balance-main-value").textContent = "***";
+  document.getElementById("balance-backup-value").textContent = "***";
+  document.getElementById("balance-backend-value").textContent = "***";
+  document.getElementById("balance-hide-btn").style.display = "none";
+  document.getElementById("balance-show-btn").style.display = "inline-block";
+}
 </script>
 
 </body>
