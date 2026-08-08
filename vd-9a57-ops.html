@@ -46,6 +46,33 @@
   display: none;
 }
 
+/* ---- shared dashboard bits ---- */
+.stat-sub {
+  font-size: 13px;
+  opacity: 0.7;
+  margin: 6px 0 0;
+}
+.balance-label {
+  font-size: 12px;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+/* ---- Your Balance stat card ---- */
+.stat-card {
+  max-width: 420px;
+  margin: 0 auto;
+}
+.stat-value {
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---- PayPal balance card ---- */
 .paypal-card {
   max-width: 420px;
@@ -94,12 +121,6 @@
   margin-top: 4px;
   font-variant-numeric: tabular-nums;
 }
-.balance-label {
-  font-size: 12px;
-  opacity: 0.75;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
 .balance-actions {
   display: flex;
   gap: 10px;
@@ -126,6 +147,125 @@
   font-style: italic;
   font-size: 14px;
 }
+
+/* ---- Team Leader toggle ---- */
+.tl-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #444;
+  transition: 0.2s;
+  border-radius: 28px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+.switch input:checked + .slider {
+  background-color: #4a7dff;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* ---- Your BDs / Add BD form ---- */
+#tl-section .card { max-width: 480px; margin: 0 auto; text-align: left; }
+.bd-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+}
+.bd-item:last-child { border-bottom: none; }
+.bd-photo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.bd-photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  font-weight: 700;
+}
+.bd-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.bd-info strong { font-size: 15px; }
+#add-bd-btn { margin-top: 14px; }
+#add-bd-form {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #333;
+}
+#add-bd-form label {
+  display: block;
+  font-size: 13px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  opacity: 0.85;
+}
+#add-bd-form input[type="text"],
+#add-bd-form input[type="tel"],
+#add-bd-form input[type="email"],
+#add-bd-form select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  box-sizing: border-box;
+}
+#bd-photo-preview {
+  display: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+}
+.tl-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #444;
+}
+#bd-success-msg {
+  display: none;
+  margin-top: 14px;
+  color: #4ade80;
+  font-weight: 600;
+}
 </style>
 </head>
 <body>
@@ -148,6 +288,14 @@
 <h1>Welcome, Anas</h1>
 <p>You are logged into the Vortex Digital admin panel.</p>
 </section>
+
+<div class="container">
+  <div class="card stat-card">
+    <span class="balance-label">Your Balance</span>
+    <span class="stat-value" id="your-balance-value">$0.00</span>
+    <p class="stat-sub">Total commission earned so far</p>
+  </div>
+</div>
 
 <div class="container">
 <div class="card paypal-card" id="paypal-card">
@@ -188,10 +336,63 @@
 </div>
 
 <div class="container">
-<div class="card">
-<p>This page is currently under construction. More admin tools and data will be added here soon.</p>
+  <div class="card">
+    <div class="tl-toggle-row">
+      <div>
+        <h2 style="margin:0;">Team Leader Mode</h2>
+        <p class="stat-sub">Turn on to manage your Business Development team.</p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="tl-mode-toggle" onchange="toggleTeamLeaderMode()">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="tl-section" style="display:none;">
+  <div class="card">
+    <h2>Your BDs</h2>
+    <div id="bd-list"><p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p></div>
+
+    <button class="btn" id="add-bd-btn" onclick="openAddBdForm()">+ Add New BD</button>
+
+    <div id="add-bd-form">
+      <label for="bd-name">Full Name</label>
+      <input type="text" id="bd-name" placeholder="Full Name">
+
+      <label for="bd-phone">Phone Number</label>
+      <input type="tel" id="bd-phone" placeholder="Phone Number">
+
+      <label for="bd-email">Email Address</label>
+      <input type="email" id="bd-email" placeholder="Email Address">
+
+      <label for="bd-position">Position</label>
+      <select id="bd-position">
+        <option value="BD">BD</option>
+        <option value="Senior BD">Senior BD</option>
+      </select>
+
+      <label for="bd-photo">Photo (optional)</label>
+      <input type="file" id="bd-photo" accept="image/*">
+      <img id="bd-photo-preview" alt="Preview">
+
+      <div class="tl-form-actions">
+        <button class="btn" onclick="submitNewBd()">Add BD</button>
+        <button class="btn btn-secondary" onclick="cancelAddBd()">Cancel</button>
+      </div>
+      <p id="bd-success-msg">✅ BD Added!</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<div class="card" id="tasks-card">
+<h2>Tasks</h2>
+<p class="stat-sub" id="tasks-empty-msg">No tasks assigned yet.</p>
 </div>
 </div>
+
 <div class="container">
 <a class="back-link" href="vx-s847-ops.html">&larr; Back to admin selection</a>
 </div>
@@ -253,10 +454,13 @@ window.addEventListener("beforeunload", function () {
   }
 });
 
+/* ---- Your Balance (static reference number, edit by hand) ---- */
+const YOUR_BALANCE = "0.00";
+document.getElementById("your-balance-value").textContent = "$" + YOUR_BALANCE;
+
 /* ---- PayPal balance card logic ---- */
-/* NOTE: these are static reference numbers, not a live PayPal feed.
-   Update them by hand here whenever the real balance changes. */
-const REAL_BALANCE = { current: "890.64", backup: "3000.00", backend: "200.00" };
+/* NOTE: static reference numbers, not a live PayPal feed. Edit by hand. */
+const REAL_BALANCE = { current: "1,400.27", backup: "170.00", backend: "0.00" };
 
 function showBalance() {
   document.getElementById("balance-code-prompt").style.display = "block";
@@ -281,7 +485,7 @@ function confirmBalanceCode() {
       document.getElementById("balance-backup-value").textContent = "$" + REAL_BALANCE.backup;
       document.getElementById("balance-backend-value").textContent = "$" + REAL_BALANCE.backend;
       document.getElementById("balance-hide-btn").style.display = "inline-block";
-    }, 5000);
+    }, 900);
   } else {
     errorMsg.style.display = "block";
   }
@@ -301,6 +505,150 @@ function hideBalance() {
   document.getElementById("balance-hide-btn").style.display = "none";
   document.getElementById("balance-show-btn").style.display = "inline-block";
 }
+
+/* ---- Team Leader Mode (no access code needed) ---- */
+const TL_KEY = "vortex_tl_mode_" + ADMIN_NAME.toLowerCase();
+const BD_LIST_KEY = "vortex_bd_list_" + ADMIN_NAME.toLowerCase();
+
+function toggleTeamLeaderMode() {
+  const on = document.getElementById("tl-mode-toggle").checked;
+  document.getElementById("tl-section").style.display = on ? "block" : "none";
+  localStorage.setItem(TL_KEY, on ? "true" : "false");
+  vxLogEvent(
+    "team_leader_mode_toggled",
+    "Team Leader Mode " + (on ? "Enabled" : "Disabled") + " - " + ADMIN_NAME,
+    { Admin: ADMIN_NAME, Mode: on ? "ON" : "OFF" },
+    false
+  );
+}
+
+(function restoreTlMode() {
+  if (localStorage.getItem(TL_KEY) === "true") {
+    document.getElementById("tl-mode-toggle").checked = true;
+    document.getElementById("tl-section").style.display = "block";
+  }
+})();
+
+/* ---- Add BD flow ---- */
+document.getElementById("add-bd-form").style.display = "none";
+
+function openAddBdForm() {
+  document.getElementById("add-bd-form").style.display = "block";
+  document.getElementById("add-bd-btn").style.display = "none";
+}
+
+function cancelAddBd() {
+  document.getElementById("add-bd-form").style.display = "none";
+  document.getElementById("add-bd-btn").style.display = "inline-block";
+  clearBdFormFields();
+}
+
+document.getElementById("bd-photo").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+  const preview = document.getElementById("bd-photo-preview");
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (ev) {
+      preview.src = ev.target.result;
+      preview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.style.display = "none";
+    preview.src = "";
+  }
+});
+
+function clearBdFormFields() {
+  document.getElementById("bd-name").value = "";
+  document.getElementById("bd-phone").value = "";
+  document.getElementById("bd-email").value = "";
+  document.getElementById("bd-position").value = "BD";
+  document.getElementById("bd-photo").value = "";
+  document.getElementById("bd-photo-preview").style.display = "none";
+  document.getElementById("bd-photo-preview").src = "";
+}
+
+function submitNewBd() {
+  const name = document.getElementById("bd-name").value.trim();
+  const phone = document.getElementById("bd-phone").value.trim();
+  const email = document.getElementById("bd-email").value.trim();
+  const position = document.getElementById("bd-position").value;
+  const photoDataUrl = document.getElementById("bd-photo-preview").src &&
+    document.getElementById("bd-photo-preview").style.display !== "none"
+    ? document.getElementById("bd-photo-preview").src : "";
+
+  if (!name || !phone || !email) {
+    alert("Please fill in name, phone, and email.");
+    return;
+  }
+
+  // Email the new-BD details to the business inbox.
+  // Text only — photos can't be sent through the free Web3Forms plan
+  // (same limit that ruled out resume uploads on the careers form).
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      access_key: "4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d",
+      subject: "New BD Added by " + ADMIN_NAME,
+      from_name: "Vortex Digital Team Leader Panel",
+      "Full Name": name,
+      "Phone Number": phone,
+      "Email Address": email,
+      "Position": position,
+      "Added By": ADMIN_NAME,
+      "Has Photo": photoDataUrl ? "Yes (saved on " + ADMIN_NAME + "'s device only, not emailed)" : "No"
+    })
+  }).catch(function () { /* fail silently */ });
+
+  vxLogEvent(
+    "bd_added",
+    "New BD Added - " + ADMIN_NAME,
+    { Admin: ADMIN_NAME, BD_Name: name, BD_Position: position },
+    false
+  );
+
+  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+  list.push({ name: name, phone: phone, email: email, position: position, photo: photoDataUrl });
+  localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
+  renderBdList();
+
+  document.getElementById("add-bd-form").style.display = "none";
+  document.getElementById("bd-success-msg").style.display = "block";
+  setTimeout(function () {
+    document.getElementById("bd-success-msg").style.display = "none";
+    document.getElementById("add-bd-btn").style.display = "inline-block";
+    clearBdFormFields();
+  }, 1800);
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+function renderBdList() {
+  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+  const container = document.getElementById("bd-list");
+  if (list.length === 0) {
+    container.innerHTML = '<p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p>';
+    return;
+  }
+  container.innerHTML = list.map(function (bd) {
+    const photoHtml = bd.photo
+      ? '<img src="' + bd.photo + '" class="bd-photo">'
+      : '<div class="bd-photo bd-photo-placeholder">' + escapeHtml(bd.name.charAt(0).toUpperCase()) + '</div>';
+    return '<div class="bd-item">' + photoHtml +
+      '<div class="bd-info"><strong>' + escapeHtml(bd.name) + '</strong>' +
+      '<span>' + escapeHtml(bd.position) + '</span>' +
+      '<span>' + escapeHtml(bd.email) + '</span>' +
+      '<span>' + escapeHtml(bd.phone) + '</span></div></div>';
+  }).join("");
+}
+
+renderBdList();
 </script>
 
 </body>
