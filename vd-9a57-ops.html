@@ -501,55 +501,67 @@ window.addEventListener("beforeunload", function () {
 });
 
 /* ---- Your Balance (static reference number, edit by hand) ---- */
-const YOUR_BALANCE = "0.00";
-document.getElementById("your-balance-value").textContent = "$" + YOUR_BALANCE;
+try {
+  const YOUR_BALANCE = "0.00";
+  document.getElementById("your-balance-value").textContent = "$" + YOUR_BALANCE;
+} catch (err) {
+  alert("DEBUG ERROR in Your Balance section: " + err.message);
+}
 
 /* ---- PayPal balance card logic ---- */
 /* NOTE: static reference numbers, not a live PayPal feed. Edit by hand. */
 const REAL_BALANCE = { current: "1,400.27", backup: "170.00", backend: "0.00" };
 
 function showBalance() {
-  document.getElementById("balance-code-prompt").style.display = "block";
-  document.getElementById("balance-show-btn").style.display = "none";
-  document.getElementById("balance-access-code").focus();
+  try {
+    document.getElementById("balance-code-prompt").style.display = "block";
+    document.getElementById("balance-show-btn").style.display = "none";
+    document.getElementById("balance-access-code").focus();
+  } catch (err) { alert("DEBUG ERROR in showBalance: " + err.message); }
 }
 
 function confirmBalanceCode() {
-  const input = document.getElementById("balance-access-code").value;
-  const errorMsg = document.getElementById("balance-error-msg");
+  try {
+    const input = document.getElementById("balance-access-code").value;
+    const errorMsg = document.getElementById("balance-error-msg");
 
-  if (input === ACCESS_CODE) {
-    errorMsg.style.display = "none";
-    document.getElementById("balance-code-prompt").style.display = "none";
-    document.getElementById("balance-loading").style.display = "block";
+    if (input === ACCESS_CODE) {
+      errorMsg.style.display = "none";
+      document.getElementById("balance-code-prompt").style.display = "none";
+      document.getElementById("balance-loading").style.display = "block";
 
-    safeLog("balance_viewed", "PayPal Balance Viewed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
+      safeLog("balance_viewed", "PayPal Balance Viewed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
 
-    setTimeout(function () {
-      document.getElementById("balance-loading").style.display = "none";
-      document.getElementById("balance-main-value").textContent = "$" + REAL_BALANCE.current;
-      document.getElementById("balance-backup-value").textContent = "$" + REAL_BALANCE.backup;
-      document.getElementById("balance-backend-value").textContent = "$" + REAL_BALANCE.backend;
-      document.getElementById("balance-hide-btn").style.display = "inline-block";
-    }, 900);
-  } else {
-    errorMsg.style.display = "block";
-  }
-  document.getElementById("balance-access-code").value = "";
+      setTimeout(function () {
+        document.getElementById("balance-loading").style.display = "none";
+        document.getElementById("balance-main-value").textContent = "$" + REAL_BALANCE.current;
+        document.getElementById("balance-backup-value").textContent = "$" + REAL_BALANCE.backup;
+        document.getElementById("balance-backend-value").textContent = "$" + REAL_BALANCE.backend;
+        document.getElementById("balance-hide-btn").style.display = "inline-block";
+      }, 900);
+    } else {
+      errorMsg.style.display = "block";
+    }
+    document.getElementById("balance-access-code").value = "";
+  } catch (err) { alert("DEBUG ERROR in confirmBalanceCode: " + err.message); }
 }
 
-document.addEventListener("keyup", function (e) {
-  if (e.target && e.target.id === "balance-access-code" && e.key === "Enter") {
-    confirmBalanceCode();
-  }
-});
+try {
+  document.addEventListener("keyup", function (e) {
+    if (e.target && e.target.id === "balance-access-code" && e.key === "Enter") {
+      confirmBalanceCode();
+    }
+  });
+} catch (err) { alert("DEBUG ERROR attaching balance keyup listener: " + err.message); }
 
 function hideBalance() {
-  document.getElementById("balance-main-value").textContent = "***";
-  document.getElementById("balance-backup-value").textContent = "***";
-  document.getElementById("balance-backend-value").textContent = "***";
-  document.getElementById("balance-hide-btn").style.display = "none";
-  document.getElementById("balance-show-btn").style.display = "inline-block";
+  try {
+    document.getElementById("balance-main-value").textContent = "***";
+    document.getElementById("balance-backup-value").textContent = "***";
+    document.getElementById("balance-backend-value").textContent = "***";
+    document.getElementById("balance-hide-btn").style.display = "none";
+    document.getElementById("balance-show-btn").style.display = "inline-block";
+  } catch (err) { alert("DEBUG ERROR in hideBalance: " + err.message); }
 }
 
 /* ---- Team Leader Mode (no access code needed) ---- */
@@ -557,120 +569,135 @@ const TL_KEY = "vortex_tl_mode_" + ADMIN_NAME.toLowerCase();
 const BD_LIST_KEY = "vortex_bd_list_" + ADMIN_NAME.toLowerCase();
 
 function toggleTeamLeaderMode() {
-  const on = document.getElementById("tl-mode-toggle").checked;
-  document.getElementById("tl-section").style.display = on ? "block" : "none";
-  localStorage.setItem(TL_KEY, on ? "true" : "false");
-  safeLog(
-    "team_leader_mode_toggled",
-    "Team Leader Mode " + (on ? "Enabled" : "Disabled") + " - " + ADMIN_NAME,
-    { Admin: ADMIN_NAME, Mode: on ? "ON" : "OFF" },
-    false
-  );
+  try {
+    const on = document.getElementById("tl-mode-toggle").checked;
+    document.getElementById("tl-section").style.display = on ? "block" : "none";
+    localStorage.setItem(TL_KEY, on ? "true" : "false");
+    safeLog(
+      "team_leader_mode_toggled",
+      "Team Leader Mode " + (on ? "Enabled" : "Disabled") + " - " + ADMIN_NAME,
+      { Admin: ADMIN_NAME, Mode: on ? "ON" : "OFF" },
+      false
+    );
+  } catch (err) { alert("DEBUG ERROR in toggleTeamLeaderMode: " + err.message); }
 }
 
-(function restoreTlMode() {
+try {
   if (localStorage.getItem(TL_KEY) === "true") {
     document.getElementById("tl-mode-toggle").checked = true;
     document.getElementById("tl-section").style.display = "block";
   }
-})();
+} catch (err) { alert("DEBUG ERROR restoring Team Leader Mode: " + err.message); }
 
 /* ---- Add BD flow ---- */
-document.getElementById("add-bd-form").style.display = "none";
+try {
+  document.getElementById("add-bd-form").style.display = "none";
+} catch (err) { alert("DEBUG ERROR hiding add-bd-form: " + err.message); }
 
 function openAddBdForm() {
-  document.getElementById("add-bd-form").style.display = "block";
-  document.getElementById("add-bd-btn").style.display = "none";
+  try {
+    document.getElementById("add-bd-form").style.display = "block";
+    document.getElementById("add-bd-btn").style.display = "none";
+  } catch (err) { alert("DEBUG ERROR in openAddBdForm: " + err.message); }
 }
 
 function cancelAddBd() {
-  document.getElementById("add-bd-form").style.display = "none";
-  document.getElementById("add-bd-btn").style.display = "inline-block";
-  clearBdFormFields();
+  try {
+    document.getElementById("add-bd-form").style.display = "none";
+    document.getElementById("add-bd-btn").style.display = "inline-block";
+    clearBdFormFields();
+  } catch (err) { alert("DEBUG ERROR in cancelAddBd: " + err.message); }
 }
 
-document.getElementById("bd-photo").addEventListener("change", function (e) {
-  const file = e.target.files[0];
-  const preview = document.getElementById("bd-photo-preview");
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (ev) {
-      preview.src = ev.target.result;
-      preview.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-  } else {
-    preview.style.display = "none";
-    preview.src = "";
-  }
-});
+try {
+  document.getElementById("bd-photo").addEventListener("change", function (e) {
+    try {
+      const file = e.target.files[0];
+      const preview = document.getElementById("bd-photo-preview");
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          preview.src = ev.target.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.style.display = "none";
+        preview.src = "";
+      }
+    } catch (err) { alert("DEBUG ERROR reading photo: " + err.message); }
+  });
+} catch (err) { alert("DEBUG ERROR attaching photo listener: " + err.message); }
 
 function clearBdFormFields() {
-  document.getElementById("bd-name").value = "";
-  document.getElementById("bd-phone").value = "";
-  document.getElementById("bd-email").value = "";
-  document.getElementById("bd-position").value = "BD";
-  document.getElementById("bd-photo").value = "";
-  document.getElementById("bd-photo-preview").style.display = "none";
-  document.getElementById("bd-photo-preview").src = "";
+  try {
+    document.getElementById("bd-name").value = "";
+    document.getElementById("bd-phone").value = "";
+    document.getElementById("bd-email").value = "";
+    document.getElementById("bd-position").value = "BD";
+    document.getElementById("bd-photo").value = "";
+    document.getElementById("bd-photo-preview").style.display = "none";
+    document.getElementById("bd-photo-preview").src = "";
+  } catch (err) { alert("DEBUG ERROR in clearBdFormFields: " + err.message); }
 }
 
 function submitNewBd() {
-  const name = document.getElementById("bd-name").value.trim();
-  const phone = document.getElementById("bd-phone").value.trim();
-  const email = document.getElementById("bd-email").value.trim();
-  const position = document.getElementById("bd-position").value;
-  const photoDataUrl = document.getElementById("bd-photo-preview").src &&
-    document.getElementById("bd-photo-preview").style.display !== "none"
-    ? document.getElementById("bd-photo-preview").src : "";
+  try {
+    const name = document.getElementById("bd-name").value.trim();
+    const phone = document.getElementById("bd-phone").value.trim();
+    const email = document.getElementById("bd-email").value.trim();
+    const position = document.getElementById("bd-position").value;
+    const photoDataUrl = document.getElementById("bd-photo-preview").src &&
+      document.getElementById("bd-photo-preview").style.display !== "none"
+      ? document.getElementById("bd-photo-preview").src : "";
 
-  if (!name || !phone || !email) {
-    alert("Please fill in name, phone, and email.");
-    return;
+    if (!name || !phone || !email) {
+      alert("Please fill in name, phone, and email.");
+      return;
+    }
+
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        access_key: "4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d",
+        subject: "New BD Added by " + ADMIN_NAME,
+        from_name: "Vortex Digital Team Leader Panel",
+        "Full Name": name,
+        "Phone Number": phone,
+        "Email Address": email,
+        "Position": position,
+        "Added By": ADMIN_NAME,
+        "Has Photo": photoDataUrl ? "Yes (saved on " + ADMIN_NAME + "'s device only, not emailed)" : "No"
+      })
+    }).catch(function () { /* fail silently */ });
+
+    safeLog(
+      "bd_added",
+      "New BD Added - " + ADMIN_NAME,
+      { Admin: ADMIN_NAME, BD_Name: name, BD_Position: position },
+      false
+    );
+
+    const newId = (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+    list.push({ id: newId, name: name, phone: phone, email: email, position: position, photo: photoDataUrl, suspended: false });
+    localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
+    renderBdList();
+
+    document.getElementById("add-bd-form").style.display = "none";
+    document.getElementById("bd-success-msg").style.display = "block";
+    setTimeout(function () {
+      document.getElementById("bd-success-msg").style.display = "none";
+      document.getElementById("add-bd-btn").style.display = "inline-block";
+      clearBdFormFields();
+    }, 1800);
+  } catch (err) {
+    alert("DEBUG ERROR in submitNewBd: " + err.message);
   }
-
-  // Email the new-BD details to the business inbox.
-  // Text only — photos can't be sent through the free Web3Forms plan
-  // (same limit that ruled out resume uploads on the careers form).
-  fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify({
-      access_key: "4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d",
-      subject: "New BD Added by " + ADMIN_NAME,
-      from_name: "Vortex Digital Team Leader Panel",
-      "Full Name": name,
-      "Phone Number": phone,
-      "Email Address": email,
-      "Position": position,
-      "Added By": ADMIN_NAME,
-      "Has Photo": photoDataUrl ? "Yes (saved on " + ADMIN_NAME + "'s device only, not emailed)" : "No"
-    })
-  }).catch(function () { /* fail silently */ });
-
-  safeLog(
-    "bd_added",
-    "New BD Added - " + ADMIN_NAME,
-    { Admin: ADMIN_NAME, BD_Name: name, BD_Position: position },
-    false
-  );
-
-  const newId = (window.crypto && crypto.randomUUID)
-    ? crypto.randomUUID()
-    : (Date.now().toString(36) + Math.random().toString(36).slice(2));
-
-  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-  list.push({ id: newId, name: name, phone: phone, email: email, position: position, photo: photoDataUrl, suspended: false });
-  localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
-  renderBdList();
-
-  document.getElementById("add-bd-form").style.display = "none";
-  document.getElementById("bd-success-msg").style.display = "block";
-  setTimeout(function () {
-    document.getElementById("bd-success-msg").style.display = "none";
-    document.getElementById("add-bd-btn").style.display = "inline-block";
-    clearBdFormFields();
-  }, 1800);
 }
 
 function escapeHtml(str) {
@@ -680,62 +707,74 @@ function escapeHtml(str) {
 }
 
 function renderBdList() {
-  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-  const container = document.getElementById("bd-list");
-  if (list.length === 0) {
-    container.innerHTML = '<p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p>';
-    return;
+  try {
+    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+    const container = document.getElementById("bd-list");
+    if (list.length === 0) {
+      container.innerHTML = '<p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p>';
+      return;
+    }
+    container.innerHTML = list.map(function (bd) {
+      const photoHtml = bd.photo
+        ? '<img src="' + bd.photo + '" class="bd-photo">'
+        : '<div class="bd-photo bd-photo-placeholder">' + escapeHtml(bd.name.charAt(0).toUpperCase()) + '</div>';
+      const statusHtml = bd.suspended ? '<span class="bd-status-suspended">Suspended</span>' : '';
+      const suspendBtnHtml = bd.suspended ? '' :
+        '<button type="button" class="btn-mini btn-suspend" data-action="suspend" data-id="' + escapeHtml(bd.id) + '">Suspend</button>';
+      return '<div class="bd-item">' + photoHtml +
+        '<div class="bd-info"><strong>' + escapeHtml(bd.name) + '</strong>' +
+        '<span>' + escapeHtml(bd.position) + '</span>' +
+        '<span>' + escapeHtml(bd.email) + '</span>' +
+        '<span>' + escapeHtml(bd.phone) + '</span>' +
+        statusHtml + '</div>' +
+        '<div class="bd-actions">' + suspendBtnHtml +
+        '<button type="button" class="btn-mini btn-delete" data-action="delete" data-id="' + escapeHtml(bd.id) + '">Delete</button>' +
+        '</div></div>';
+    }).join("");
+  } catch (err) {
+    alert("DEBUG ERROR in renderBdList: " + err.message);
   }
-  container.innerHTML = list.map(function (bd) {
-    const photoHtml = bd.photo
-      ? '<img src="' + bd.photo + '" class="bd-photo">'
-      : '<div class="bd-photo bd-photo-placeholder">' + escapeHtml(bd.name.charAt(0).toUpperCase()) + '</div>';
-    const statusHtml = bd.suspended ? '<span class="bd-status-suspended">Suspended</span>' : '';
-    const suspendBtnHtml = bd.suspended ? '' :
-      '<button type="button" class="btn-mini btn-suspend" data-action="suspend" data-id="' + escapeHtml(bd.id) + '">Suspend</button>';
-    return '<div class="bd-item">' + photoHtml +
-      '<div class="bd-info"><strong>' + escapeHtml(bd.name) + '</strong>' +
-      '<span>' + escapeHtml(bd.position) + '</span>' +
-      '<span>' + escapeHtml(bd.email) + '</span>' +
-      '<span>' + escapeHtml(bd.phone) + '</span>' +
-      statusHtml + '</div>' +
-      '<div class="bd-actions">' + suspendBtnHtml +
-      '<button type="button" class="btn-mini btn-delete" data-action="delete" data-id="' + escapeHtml(bd.id) + '">Delete</button>' +
-      '</div></div>';
-  }).join("");
 }
 
 function suspendBd(id) {
-  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-  const bd = list.find(function (b) { return b.id === id; });
-  if (!bd) return;
-  bd.suspended = true;
-  localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
-  safeLog("bd_suspended", "BD Suspended - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
-  renderBdList();
+  try {
+    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+    const bd = list.find(function (b) { return b.id === id; });
+    if (!bd) return;
+    bd.suspended = true;
+    localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
+    safeLog("bd_suspended", "BD Suspended - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
+    renderBdList();
+  } catch (err) { alert("DEBUG ERROR in suspendBd: " + err.message); }
 }
 
 function deleteBd(id) {
-  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-  const bd = list.find(function (b) { return b.id === id; });
-  if (!bd) return;
-  if (!confirm('Delete "' + bd.name + '"? This cannot be undone.')) return;
-  const newList = list.filter(function (b) { return b.id !== id; });
-  localStorage.setItem(BD_LIST_KEY, JSON.stringify(newList));
-  safeLog("bd_deleted", "BD Deleted - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
-  renderBdList();
+  try {
+    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+    const bd = list.find(function (b) { return b.id === id; });
+    if (!bd) return;
+    if (!confirm('Delete "' + bd.name + '"? This cannot be undone.')) return;
+    const newList = list.filter(function (b) { return b.id !== id; });
+    localStorage.setItem(BD_LIST_KEY, JSON.stringify(newList));
+    safeLog("bd_deleted", "BD Deleted - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
+    renderBdList();
+  } catch (err) { alert("DEBUG ERROR in deleteBd: " + err.message); }
 }
 
-document.getElementById("bd-list").addEventListener("click", function (e) {
-  const btn = e.target.closest("button[data-action]");
-  if (!btn) return;
-  const id = btn.getAttribute("data-id");
-  const action = btn.getAttribute("data-action");
-  if (action === "suspend") suspendBd(id);
-  if (action === "delete") deleteBd(id);
-});
+try {
+  document.getElementById("bd-list").addEventListener("click", function (e) {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const id = btn.getAttribute("data-id");
+    const action = btn.getAttribute("data-action");
+    if (action === "suspend") suspendBd(id);
+    if (action === "delete") deleteBd(id);
+  });
+} catch (err) { alert("DEBUG ERROR attaching bd-list click listener: " + err.message); }
 
-renderBdList();
+try {
+  renderBdList();
+} catch (err) { alert("DEBUG ERROR calling renderBdList: " + err.message); }
 </script>
 
 </body>
