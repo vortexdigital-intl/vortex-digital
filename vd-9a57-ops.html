@@ -256,7 +256,7 @@ window.addEventListener("beforeunload", function () {
 /* ---- PayPal balance card logic ---- */
 /* NOTE: these are static reference numbers, not a live PayPal feed.
    Update them by hand here whenever the real balance changes. */
-const REAL_BALANCE = { current: "200.64", backup: "0.00", backend: "0.00" };
+const REAL_BALANCE = { current: "890.64", backup: "3000.00", backend: "200.00" };
 
 function showBalance() {
   document.getElementById("balance-code-prompt").style.display = "block";
@@ -281,7 +281,7 @@ function confirmBalanceCode() {
       document.getElementById("balance-backup-value").textContent = "$" + REAL_BALANCE.backup;
       document.getElementById("balance-backend-value").textContent = "$" + REAL_BALANCE.backend;
       document.getElementById("balance-hide-btn").style.display = "inline-block";
-    }, 3000);
+    }, 5000);
   } else {
     errorMsg.style.display = "block";
   }
