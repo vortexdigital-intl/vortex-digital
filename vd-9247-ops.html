@@ -426,6 +426,18 @@
 
 <script src="admin-logger.js"></script>
 <script>
+// If admin-logger.js fails to load for any reason (missing file, wrong path,
+// network hiccup), this makes sure logging just gets skipped instead of
+// breaking login or any other feature on the page.
+function safeLog() {
+  try {
+    if (typeof vxLogEvent === "function") {
+      return vxLogEvent.apply(null, arguments);
+    }
+  } catch (e) { /* never let logging break the real feature */ }
+  return Promise.resolve();
+}
+
 const ACCESS_CODE = "681379";
 const SESSION_KEY = "vortex_admin_mujtaba_ok";
 const ADMIN_NAME = "Mujtaba";
@@ -435,7 +447,7 @@ function checkAccess() {
   const input = document.getElementById("access-code").value;
   const success = (input === ACCESS_CODE);
 
-  vxLogEvent(
+  safeLog(
     "login_attempt",
     "Login Attempt - " + ADMIN_NAME + (success ? " (Correct Code)" : " (Wrong Code)"),
     {
@@ -451,7 +463,7 @@ function checkAccess() {
     document.getElementById("admin-content").style.display = "block";
     sessionStorage.setItem(SESSION_KEY, "true");
     sessionStartTime = new Date();
-    vxLogEvent("session_started", "Session Started - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
+    safeLog("session_started", "Session Started - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
   } else {
     document.getElementById("error-msg").style.display = "block";
   }
@@ -465,13 +477,13 @@ if (sessionStorage.getItem(SESSION_KEY) === "true") {
   document.getElementById("lock-screen").style.display = "none";
   document.getElementById("admin-content").style.display = "block";
   sessionStartTime = new Date();
-  vxLogEvent("session_resumed", "Session Resumed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
+  safeLog("session_resumed", "Session Resumed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
 }
 
 window.addEventListener("beforeunload", function () {
   if (sessionStorage.getItem(SESSION_KEY) === "true" && sessionStartTime) {
     const durationSeconds = Math.round((new Date() - sessionStartTime) / 1000);
-    vxLogEvent(
+    safeLog(
       "session_ended",
       "Session Ended - " + ADMIN_NAME,
       { Admin: ADMIN_NAME, Session_Duration: vxFormatDuration(durationSeconds) },
@@ -503,7 +515,7 @@ function confirmBalanceCode() {
     document.getElementById("balance-code-prompt").style.display = "none";
     document.getElementById("balance-loading").style.display = "block";
 
-    vxLogEvent("balance_viewed", "PayPal Balance Viewed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
+    safeLog("balance_viewed", "PayPal Balance Viewed - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
 
     setTimeout(function () {
       document.getElementById("balance-loading").style.display = "none";
@@ -540,7 +552,7 @@ function toggleTeamLeaderMode() {
   const on = document.getElementById("tl-mode-toggle").checked;
   document.getElementById("tl-section").style.display = on ? "block" : "none";
   localStorage.setItem(TL_KEY, on ? "true" : "false");
-  vxLogEvent(
+  safeLog(
     "team_leader_mode_toggled",
     "Team Leader Mode " + (on ? "Enabled" : "Disabled") + " - " + ADMIN_NAME,
     { Admin: ADMIN_NAME, Mode: on ? "ON" : "OFF" },
@@ -628,7 +640,7 @@ function submitNewBd() {
     })
   }).catch(function () { /* fail silently */ });
 
-  vxLogEvent(
+  safeLog(
     "bd_added",
     "New BD Added - " + ADMIN_NAME,
     { Admin: ADMIN_NAME, BD_Name: name, BD_Position: position },
@@ -676,14 +688,4 @@ function renderBdList() {
     return '<div class="bd-item">' + photoHtml +
       '<div class="bd-info"><strong>' + escapeHtml(bd.name) + '</strong>' +
       '<span>' + escapeHtml(bd.position) + '</span>' +
-      '<span>' + escapeHtml(bd.email) + '</span>' +
-      '<span>' + escapeHtml(bd.phone) + '</span>' +
-      statusHtml + '</div>' +
-      '<div class="bd-actions">' + suspendBtnHtml +
-      '<button type="button" class="btn-mini btn-delete" data-action="delete" data-id="' + escapeHtml(bd.id) + '">Delete</button>' +
-      '</div></div>';
-  }).join("");
-}
-
-function suspendBd(id) {
-  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) 
+      '<span>' + escapeHtml(bd.email) +
