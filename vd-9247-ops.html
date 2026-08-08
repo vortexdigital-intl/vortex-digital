@@ -444,34 +444,42 @@ const ADMIN_NAME = "Mujtaba";
 let sessionStartTime = null;
 
 function checkAccess() {
-  const input = document.getElementById("access-code").value;
-  const success = (input === ACCESS_CODE);
+  try {
+    const input = document.getElementById("access-code").value;
+    const success = (input === ACCESS_CODE);
 
-  safeLog(
-    "login_attempt",
-    "Login Attempt - " + ADMIN_NAME + (success ? " (Correct Code)" : " (Wrong Code)"),
-    {
-      Admin: ADMIN_NAME,
-      Code_Entered: input,
-      Result: success ? "Success" : "Failed"
-    },
-    false
-  );
+    safeLog(
+      "login_attempt",
+      "Login Attempt - " + ADMIN_NAME + (success ? " (Correct Code)" : " (Wrong Code)"),
+      {
+        Admin: ADMIN_NAME,
+        Code_Entered: input,
+        Result: success ? "Success" : "Failed"
+      },
+      false
+    );
 
-  if (success) {
-    document.getElementById("lock-screen").style.display = "none";
-    document.getElementById("admin-content").style.display = "block";
-    sessionStorage.setItem(SESSION_KEY, "true");
-    sessionStartTime = new Date();
-    safeLog("session_started", "Session Started - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
-  } else {
-    document.getElementById("error-msg").style.display = "block";
+    if (success) {
+      document.getElementById("lock-screen").style.display = "none";
+      document.getElementById("admin-content").style.display = "block";
+      sessionStorage.setItem(SESSION_KEY, "true");
+      sessionStartTime = new Date();
+      safeLog("session_started", "Session Started - " + ADMIN_NAME, { Admin: ADMIN_NAME }, false);
+    } else {
+      document.getElementById("error-msg").style.display = "block";
+    }
+  } catch (err) {
+    alert("DEBUG ERROR in checkAccess: " + err.message);
   }
 }
 
-document.getElementById("access-code").addEventListener("keyup", function (e) {
-  if (e.key === "Enter") checkAccess();
-});
+try {
+  document.getElementById("access-code").addEventListener("keyup", function (e) {
+    if (e.key === "Enter") checkAccess();
+  });
+} catch (err) {
+  alert("DEBUG ERROR attaching keyup listener: " + err.message);
+}
 
 if (sessionStorage.getItem(SESSION_KEY) === "true") {
   document.getElementById("lock-screen").style.display = "none";
@@ -688,4 +696,47 @@ function renderBdList() {
     return '<div class="bd-item">' + photoHtml +
       '<div class="bd-info"><strong>' + escapeHtml(bd.name) + '</strong>' +
       '<span>' + escapeHtml(bd.position) + '</span>' +
-      '<span>' + escapeHtml(bd.email) +
+      '<span>' + escapeHtml(bd.email) + '</span>' +
+      '<span>' + escapeHtml(bd.phone) + '</span>' +
+      statusHtml + '</div>' +
+      '<div class="bd-actions">' + suspendBtnHtml +
+      '<button type="button" class="btn-mini btn-delete" data-action="delete" data-id="' + escapeHtml(bd.id) + '">Delete</button>' +
+      '</div></div>';
+  }).join("");
+}
+
+function suspendBd(id) {
+  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+  const bd = list.find(function (b) { return b.id === id; });
+  if (!bd) return;
+  bd.suspended = true;
+  localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
+  safeLog("bd_suspended", "BD Suspended - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
+  renderBdList();
+}
+
+function deleteBd(id) {
+  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+  const bd = list.find(function (b) { return b.id === id; });
+  if (!bd) return;
+  if (!confirm('Delete "' + bd.name + '"? This cannot be undone.')) return;
+  const newList = list.filter(function (b) { return b.id !== id; });
+  localStorage.setItem(BD_LIST_KEY, JSON.stringify(newList));
+  safeLog("bd_deleted", "BD Deleted - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
+  renderBdList();
+}
+
+document.getElementById("bd-list").addEventListener("click", function (e) {
+  const btn = e.target.closest("button[data-action]");
+  if (!btn) return;
+  const id = btn.getAttribute("data-id");
+  const action = btn.getAttribute("data-action");
+  if (action === "suspend") suspendBd(id);
+  if (action === "delete") deleteBd(id);
+});
+
+renderBdList();
+</script>
+
+</body>
+</html>
