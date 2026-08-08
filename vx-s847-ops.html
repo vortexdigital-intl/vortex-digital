@@ -45,7 +45,7 @@
     <div class="admin-card" onclick="selectAdmin('Mujtaba', 'vd-9247-ops.html')">
       <h3>Mujtaba</h3>
     </div>
-    <div class="admin-card" onclick="selectAdmin('Anas', 'vd-9a57-ops.html')">
+    <div class="admin-card" onclick="selectAdmin('Anas', 'vd-9a57-ops-.html')">
       <h3>Anas</h3>
     </div>
   </div>
@@ -53,8 +53,17 @@
 
 <script src="admin-logger.js"></script>
 <script>
+function safeLog() {
+  try {
+    if (typeof vxLogEvent === "function") {
+      return vxLogEvent.apply(null, arguments);
+    }
+  } catch (e) { /* never let logging break the real feature */ }
+  return Promise.resolve();
+}
+
 function selectAdmin(name, url) {
-  vxLogEvent(
+  safeLog(
     "admin_selected",
     "Admin Card Selected: " + name,
     { Admin_Selected: name },
