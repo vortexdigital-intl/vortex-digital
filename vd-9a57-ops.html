@@ -220,6 +220,32 @@
   line-height: 1.5;
 }
 .bd-info strong { font-size: 15px; }
+.bd-status-suspended {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ff5c5c;
+}
+.bd-actions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.btn-mini {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: transparent;
+  cursor: pointer;
+}
+.btn-suspend { color: #ffb020; border-color: #ffb020; }
+.btn-delete { color: #ff5c5c; border-color: #ff5c5c; }
 #add-bd-btn { margin-top: 14px; }
 #add-bd-form {
   margin-top: 16px;
@@ -609,8 +635,12 @@ function submitNewBd() {
     false
   );
 
+  const newId = (window.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+
   const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-  list.push({ name: name, phone: phone, email: email, position: position, photo: photoDataUrl });
+  list.push({ id: newId, name: name, phone: phone, email: email, position: position, photo: photoDataUrl, suspended: false });
   localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
   renderBdList();
 
@@ -640,16 +670,21 @@ function renderBdList() {
     const photoHtml = bd.photo
       ? '<img src="' + bd.photo + '" class="bd-photo">'
       : '<div class="bd-photo bd-photo-placeholder">' + escapeHtml(bd.name.charAt(0).toUpperCase()) + '</div>';
+    const statusHtml = bd.suspended ? '<span class="bd-status-suspended">Suspended</span>' : '';
+    const suspendBtnHtml = bd.suspended ? '' :
+      '<button type="button" class="btn-mini btn-suspend" data-action="suspend" data-id="' + escapeHtml(bd.id) + '">Suspend</button>';
     return '<div class="bd-item">' + photoHtml +
       '<div class="bd-info"><strong>' + escapeHtml(bd.name) + '</strong>' +
       '<span>' + escapeHtml(bd.position) + '</span>' +
       '<span>' + escapeHtml(bd.email) + '</span>' +
-      '<span>' + escapeHtml(bd.phone) + '</span></div></div>';
+      '<span>' + escapeHtml(bd.phone) + '</span>' +
+      statusHtml + '</div>' +
+      '<div class="bd-actions">' + suspendBtnHtml +
+      '<button type="button" class="btn-mini btn-delete" data-action="delete" data-id="' + escapeHtml(bd.id) + '">Delete</button>' +
+      '</div></div>';
   }).join("");
 }
 
-renderBdList();
-</script>
-
-</body>
-</html>
+function suspendBd(id) {
+  const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+  
