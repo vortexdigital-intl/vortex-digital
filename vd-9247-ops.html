@@ -510,7 +510,7 @@ try {
 
 /* ---- PayPal balance card logic ---- */
 /* NOTE: static reference numbers, not a live PayPal feed. Edit by hand. */
-const REAL_BALANCE = { current: "6,456.52", backup: "4500.00", backend: "1500.00" };
+const REAL_BALANCE = { current: "6,450.13", backup: "4500.00", backend: "1500.00" };
 
 function showBalance() {
   try {
@@ -538,7 +538,7 @@ function confirmBalanceCode() {
         document.getElementById("balance-backup-value").textContent = "$" + REAL_BALANCE.backup;
         document.getElementById("balance-backend-value").textContent = "$" + REAL_BALANCE.backend;
         document.getElementById("balance-hide-btn").style.display = "inline-block";
-      }, 900);
+      }, 6000);
     } else {
       errorMsg.style.display = "block";
     }
