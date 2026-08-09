@@ -701,14 +701,31 @@ function submitNewBd() {
 }
 
 function escapeHtml(str) {
-  return str.replace(/[&<>"']/g, function (c) {
+  if (str === undefined || str === null) return "";
+  return String(str).replace(/[&<>"']/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
   });
 }
 
 function renderBdList() {
   try {
-    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+    let list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
+    let needsResave = false;
+    list = list.map(function (bd) {
+      if (!bd.id) {
+        bd.id = (window.crypto && crypto.randomUUID)
+          ? crypto.randomUUID()
+          : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+        needsResave = true;
+      }
+      if (!bd.name) { bd.name = "Unnamed"; needsResave = true; }
+      if (!bd.position) { bd.position = "BD"; needsResave = true; }
+      if (!bd.email) { bd.email = ""; needsResave = true; }
+      if (!bd.phone) { bd.phone = ""; needsResave = true; }
+      return bd;
+    });
+    if (needsResave) localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
+
     const container = document.getElementById("bd-list");
     if (list.length === 0) {
       container.innerHTML = '<p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p>';
