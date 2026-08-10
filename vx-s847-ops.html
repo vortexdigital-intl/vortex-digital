@@ -34,6 +34,28 @@
 .admin-card:hover {
   transform: translateY(-3px);
 }
+.admin-card-suspended {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.45;
+}
+.admin-card-suspended:hover {
+  transform: none;
+}
+.suspended-label {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ff5c5c;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
+.suspended-name {
+  text-decoration: line-through;
+  text-decoration-color: #ff5c5c;
+  text-decoration-thickness: 3px;
+}
 </style>
 </head>
 <body>
@@ -45,8 +67,9 @@
     <div class="admin-card" onclick="selectAdmin('Mujtaba', 'vd-9247-ops.html')">
       <h3>Mujtaba</h3>
     </div>
-    <div class="admin-card" onclick="selectAdmin('Anas', 'vd-9a57-ops.html')">
-      <h3>Anas</h3>
+    <div class="admin-card admin-card-suspended">
+      <h3 class="suspended-name">Anas</h3>
+      <span class="suspended-label">Suspended</span>
     </div>
   </div>
 </div>
