@@ -656,7 +656,7 @@ try {
 
 /* ---- PayPal balance card logic ---- */
 /* NOTE: static reference numbers, not a live PayPal feed. Edit by hand. */
-const REAL_BALANCE = { current: 20,000.07, backup: 6700.00, backend: 3100.00 };
+const REAL_BALANCE = { current: 20000.07, backup: 6700.00, backend: 3100.00 };
 
 function animateCountUp(el, target, duration) {
   const start = 0;
@@ -695,9 +695,9 @@ function confirmBalanceCode() {
 
       setTimeout(function () {
         loadingEl.classList.remove("show");
-        animateCountUp(document.getElementById("balance-main-value"), 1400.27, 900);
-        animateCountUp(document.getElementById("balance-backup-value"), 170.00, 900);
-        animateCountUp(document.getElementById("balance-backend-value"), 0.00, 900);
+        animateCountUp(document.getElementById("balance-main-value"), REAL_BALANCE.current, 900);
+        animateCountUp(document.getElementById("balance-backup-value"), REAL_BALANCE.backup, 900);
+        animateCountUp(document.getElementById("balance-backend-value"), REAL_BALANCE.backend, 900);
         document.getElementById("balance-hide-btn").style.display = "inline-block";
         document.getElementById("paypal-card").classList.add("revealed");
         setTimeout(function () {
