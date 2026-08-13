@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Place Order - Vortex Digital</title>
 <link rel="stylesheet" href="style.css">
+<meta property="og:title" content="Vortex Digital - Place Order">
+<meta property="og:description" content="Submit your project requirements and our team will contact you shortly.">
+<meta property="og:image" content="https://vortexdigital-intl.github.io/vortex-digital/vortex.digital.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:url" content="https://vortexdigital-intl.github.io/vortex-digital/place-order.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vortex Digital - Place Order">
+<meta name="twitter:description" content="Submit your project requirements and our team will contact you shortly.">
+<meta name="twitter:image" content="https://vortexdigital-intl.github.io/vortex-digital/vortex.digital.png">
 </head>
 
 <body>
 
 <header>
 <div class="logo">
+<img src="logo.png.jpeg" alt="Vortex Digital">
 <h2>Vortex Digital</h2>
 </div>
 
@@ -25,7 +37,8 @@
 </nav>
 </header>
 
-<section class="hero">
+<section class="hero hero-small">
+<span class="eyebrow">Start Your Project</span>
 <h1>Place Your Order</h1>
 <p>Submit your project requirements and our team will contact you shortly.</p>
 </section>
@@ -39,26 +52,23 @@
 <form action="https://api.web3forms.com/submit" method="POST">
 
 <input type="hidden" name="access_key" value="4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d">
-
 <input type="hidden" name="subject" value="New Client Order - Vortex Digital">
-
 <input type="hidden" name="from_name" value="Vortex Digital Orders">
-
 <input type="hidden" name="redirect" value="https://vortexdigital-intl.github.io/vortex-digital/thank-you.html">
 
-<p>Full Name</p>
+<label>Full Name</label>
 <input type="text" name="Full Name" required>
 
-<p>Email Address</p>
+<label>Email Address</label>
 <input type="email" name="Email Address" required>
 
-<p>Brand / Channel / Project Name</p>
+<label>Brand / Channel / Project Name</label>
 <input type="text" name="Brand or Channel Name" required>
 
-<p>Discord Username (Optional)</p>
+<label>Discord Username (Optional)</label>
 <input type="text" name="Discord Username" placeholder="username or username#1234">
-  
-<p>Service Required</p>
+
+<label>Service Required</label>
 <select name="Service Required" required>
 <option value="">Select Service</option>
 <option>Graphic Design</option>
@@ -71,8 +81,7 @@
 <option>VTuber Services</option>
 </select>
 
-<p>Budget (USD)</p>
-
+<label>Budget (USD)</label>
 <select name="Budget" required>
 <option value="">Select Budget Range</option>
 <option>$5 - $15</option>
@@ -84,9 +93,8 @@
 <option>$250 - $500</option>
 <option>$500+</option>
 </select>
-  
-<p>Delivery Requirement</p>
 
+<label>Delivery Requirement</label>
 <select name="Delivery Requirement" required>
 <option value="">Select Delivery Time</option>
 <option>24 Hours</option>
@@ -96,10 +104,10 @@
 <option>Flexible</option>
 </select>
 
-<p>Reference Links (Optional)</p>
+<label>Reference Links (Optional)</label>
 <input type="text" name="Reference Links">
 
-<p>Project Requirements</p>
+<label>Project Requirements</label>
 <textarea name="Project Requirements" rows="6" required></textarea>
 
 <button type="submit" class="btn">Submit Order</button>
