@@ -733,3 +733,463 @@ font-size:22px;
 width:95%;
 }
 }
+
+/* =========================================================
+   VORTEX DIGITAL - INDEPENDENCE DAY CHALLENGE
+   ========================================================= */
+
+.vd-challenge{
+  position:relative;
+  width:92%;
+  max-width:1050px;
+  margin:35px auto 20px;
+  padding:55px 30px;
+  text-align:center;
+  overflow:hidden;
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(0,130,70,.22),transparent 35%),
+    radial-gradient(circle at 80% 80%,rgba(0,100,55,.18),transparent 35%),
+    rgba(8,22,38,.92);
+  border:1px solid rgba(70,190,120,.45);
+  box-shadow:
+    0 0 35px rgba(0,100,55,.18),
+    inset 0 0 50px rgba(0,60,35,.12);
+}
+
+.challenge-badge{
+  display:inline-block;
+  padding:8px 18px;
+  border-radius:999px;
+  background:rgba(0,100,55,.18);
+  border:1px solid rgba(100,220,150,.35);
+  color:#b9ffd5;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  margin-bottom:18px;
+}
+
+.vd-challenge h2{
+  font-family:'Sora',Arial,sans-serif;
+  font-size:42px;
+  margin-bottom:15px;
+  background:linear-gradient(90deg,#ffffff,#b9ffd5,#ffffff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.challenge-subtitle{
+  color:#dbeafe;
+  font-size:18px;
+  margin-bottom:25px;
+}
+
+.prize-box{
+  width:fit-content;
+  min-width:270px;
+  margin:25px auto;
+  padding:22px 35px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#064e2b,#08783f);
+  border:1px solid rgba(180,255,210,.35);
+  box-shadow:0 0 35px rgba(0,180,90,.25);
+}
+
+.prize-small{
+  display:block;
+  font-size:11px;
+  letter-spacing:2px;
+  color:#b9ffd5;
+}
+
+.prize-box strong{
+  display:block;
+  font-size:34px;
+  color:white;
+}
+
+.prize-box span:not(.prize-small){
+  display:block;
+  color:#d8ffe7;
+  font-weight:600;
+}
+
+.prize-box small{
+  display:block;
+  margin-top:5px;
+  color:#b9ffd5;
+  font-size:10px;
+}
+
+.challenge-info{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  max-width:850px;
+  margin:25px auto;
+}
+
+.challenge-info div{
+  padding:13px;
+  border-radius:14px;
+  background:rgba(13,35,55,.8);
+  border:1px solid rgba(96,165,250,.15);
+  color:#dbeafe;
+  font-size:13px;
+  font-weight:600;
+}
+
+.challenge-window{
+  margin:25px auto;
+  max-width:600px;
+  padding:18px;
+  border-radius:16px;
+  background:rgba(3,50,28,.45);
+  border:1px solid rgba(90,220,140,.25);
+  color:#eafff1;
+}
+
+.challenge-window small{
+  opacity:.75;
+}
+
+.challenge-start-btn,
+.challenge-submit-btn{
+  border:none;
+  cursor:pointer;
+  color:white;
+  font-weight:800;
+  border-radius:14px;
+  padding:16px 32px;
+  font-size:16px;
+  background:linear-gradient(135deg,#08783f,#075d32);
+  box-shadow:0 0 25px rgba(0,170,80,.35);
+  transition:.25s;
+}
+
+.challenge-start-btn:hover,
+.challenge-submit-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 35px rgba(0,210,100,.5);
+}
+
+.challenge-note{
+  font-size:12px;
+  color:#9fb3d1;
+  margin-top:18px;
+}
+
+
+/* ================= QUIZ MODAL ================= */
+
+.quiz-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  overflow-y:auto;
+  padding:25px 12px;
+  background:rgba(1,5,12,.94);
+  backdrop-filter:blur(15px);
+}
+
+.quiz-box,
+.result-box{
+  width:100%;
+  max-width:760px;
+  margin:25px auto;
+  padding:28px;
+  border-radius:24px;
+  background:#091426;
+  border:1px solid rgba(59,130,246,.35);
+  box-shadow:
+    0 0 45px rgba(20,90,200,.18),
+    0 20px 80px rgba(0,0,0,.5);
+}
+
+.quiz-top{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+}
+
+.quiz-brand{
+  color:#60a5fa;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+
+.quiz-top h2{
+  margin-top:5px;
+  color:white;
+}
+
+.quiz-close{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid #334155;
+  background:#111c2e;
+  color:white;
+  font-size:26px;
+  cursor:pointer;
+}
+
+.quiz-progress-area{
+  margin-top:25px;
+}
+
+.quiz-progress-text{
+  display:flex;
+  justify-content:space-between;
+  color:#9fb3d1;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+#timerText{
+  color:#facc15;
+  font-weight:800;
+}
+
+.progress-track{
+  width:100%;
+  height:8px;
+  background:#172238;
+  border-radius:99px;
+  overflow:hidden;
+}
+
+#progressBar{
+  width:5%;
+  height:100%;
+  background:linear-gradient(90deg,#16a34a,#60a5fa);
+  transition:width .3s ease;
+}
+
+.timer-circle{
+  width:72px;
+  height:72px;
+  margin:25px auto 15px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#101d31;
+  border:3px solid #facc15;
+  box-shadow:0 0 20px rgba(250,204,21,.18);
+}
+
+.timer-circle span{
+  font-size:27px;
+  font-weight:800;
+  color:#facc15;
+}
+
+.question-number{
+  text-align:center;
+  font-size:11px;
+  letter-spacing:2px;
+  color:#60a5fa;
+  font-weight:800;
+}
+
+#questionText{
+  font-size:25px;
+  text-align:center;
+  line-height:1.35;
+  margin:15px 0 25px;
+}
+
+.answers-container{
+  display:grid;
+  gap:12px;
+}
+
+.answer-btn{
+  width:100%;
+  padding:16px;
+  text-align:left;
+  border-radius:14px;
+  border:1px solid rgba(96,165,250,.18);
+  background:#101d31;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.answer-btn:hover{
+  border-color:#60a5fa;
+  background:#152641;
+  transform:translateX(3px);
+}
+
+.answer-btn:disabled{
+  cursor:not-allowed;
+  opacity:.7;
+}
+
+.quiz-controls{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:18px;
+}
+
+.skip-btn{
+  border:1px solid #334155;
+  background:#111c2e;
+  color:#cbd5e1;
+  padding:10px 18px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.quiz-status{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:22px;
+  margin-top:25px;
+  padding-top:18px;
+  border-top:1px solid #1e293b;
+  font-size:12px;
+  color:#94a3b8;
+}
+
+.quiz-status b{
+  color:white;
+}
+
+.result-box{
+  text-align:center;
+}
+
+.success-icon{
+  font-size:55px;
+  margin-bottom:10px;
+}
+
+.result-box h2{
+  margin:15px 0 8px;
+  color:#60a5fa;
+}
+
+.result-box>p{
+  color:#a9bad0;
+  margin-bottom:22px;
+}
+
+.score-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+
+.score-grid div{
+  padding:15px 8px;
+  background:#101d31;
+  border-radius:13px;
+  border:1px solid #20304a;
+}
+
+.score-grid span{
+  display:block;
+  font-size:25px;
+  font-weight:800;
+  color:white;
+}
+
+.score-grid small{
+  color:#8da0b8;
+}
+
+.iq-style-result{
+  padding:16px;
+  border-radius:15px;
+  background:rgba(59,130,246,.08);
+  border:1px solid rgba(96,165,250,.2);
+  margin-bottom:25px;
+  color:#dbeafe;
+}
+
+.iq-style-result small{
+  color:#8da0b8;
+}
+
+#challengeForm{
+  text-align:left;
+}
+
+#challengeForm label{
+  display:block;
+  margin:14px 0 7px;
+  color:#cbd5e1;
+  font-size:13px;
+  font-weight:600;
+}
+
+#challengeForm input,
+#challengeForm select,
+#challengeForm textarea{
+  margin-bottom:4px;
+}
+
+.submission-warning{
+  margin:18px 0;
+  padding:14px;
+  border-radius:12px;
+  background:rgba(234,179,8,.07);
+  border:1px solid rgba(234,179,8,.2);
+  color:#fef3c7;
+  font-size:12px;
+}
+
+.challenge-submit-btn{
+  width:100%;
+  margin-top:10px;
+}
+
+#submitStatus{
+  text-align:center;
+  margin-top:15px;
+  font-weight:700;
+}
+
+.payment-extra{
+  margin-top:8px;
+}
+
+@media(max-width:700px){
+
+  .vd-challenge{
+    padding:40px 18px;
+  }
+
+  .vd-challenge h2{
+    font-size:30px;
+  }
+
+  .challenge-info{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .quiz-box,
+  .result-box{
+    padding:20px;
+    margin:8px auto;
+  }
+
+  #questionText{
+    font-size:21px;
+  }
+
+  .score-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
