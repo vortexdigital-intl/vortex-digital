@@ -1193,3 +1193,195 @@ width:95%;
     grid-template-columns:repeat(2,1fr);
   }
 }
+
+/* =============================================================
+   VORTEX DIGITAL - PARTICIPANTS COUNTER, ACCESS CARD & WALL
+   (added for Independence Day Challenge — green accent theme,
+   matches existing glass/glow design language)
+   ============================================================= */
+
+/* Small site-wide access card/link -> used on every page */
+.participants-access{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:16px 22px;
+  border-radius:16px;
+  background:rgba(3,50,28,.35);
+  border:1px solid rgba(90,220,140,.3);
+  box-shadow:0 0 20px rgba(0,140,70,.15);
+  text-decoration:none;
+  color:#eafff1;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  max-width:1000px;
+  margin:0 auto 20px;
+}
+.participants-access:hover{
+  transform:translateY(-3px);
+  border-color:rgba(140,255,190,.5);
+  box-shadow:0 0 30px rgba(0,190,95,.3);
+}
+.participants-access .pa-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:700;
+  font-size:15px;
+}
+.participants-access .pa-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:34px;
+  height:28px;
+  padding:0 8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#08783f,#075d32);
+  color:white;
+  font-size:13px;
+  font-weight:800;
+  box-shadow:0 0 12px rgba(0,170,80,.35);
+}
+.participants-access .pa-arrow{
+  font-size:13px;
+  color:#b9ffd5;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* Public participant count banner (index hero area) */
+.participants-counter{
+  width:fit-content;
+  min-width:240px;
+  margin:20px auto 0;
+  padding:14px 26px;
+  border-radius:999px;
+  text-align:center;
+  background:rgba(3,50,28,.45);
+  border:1px solid rgba(90,220,140,.3);
+  color:#eafff1;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.3px;
+}
+.participants-counter .pc-num{
+  color:#b9ffd5;
+  font-size:18px;
+  font-weight:800;
+  margin:0 4px;
+}
+
+/* Participant wall grid */
+.participants-wall{
+  margin-top:20px;
+}
+.wall-empty{
+  text-align:center;
+  color:#9fb3d1;
+  padding:30px 15px;
+  font-size:14px;
+}
+.wall-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+  margin-top:10px;
+}
+.wall-card{
+  padding:22px;
+  border-radius:18px;
+  background:rgba(8,22,38,.85);
+  border:1px solid rgba(90,220,140,.25);
+  box-shadow:0 0 18px rgba(0,120,65,.12);
+  transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  word-break:break-word;
+}
+.wall-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(140,255,190,.5);
+  box-shadow:0 0 28px rgba(0,180,90,.25);
+}
+.wall-card .wc-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.wall-card .wc-name{
+  font-family:'Sora',Arial,sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:#eafff1;
+}
+.wall-card .wc-age{
+  flex-shrink:0;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.5px;
+  color:#b9ffd5;
+  background:rgba(0,100,55,.25);
+  border:1px solid rgba(100,220,150,.3);
+  border-radius:999px;
+  padding:4px 10px;
+}
+.wall-card .wc-message{
+  font-size:14px;
+  color:#c9dbea;
+  line-height:1.5;
+}
+.wall-loadmore{
+  display:block;
+  margin:26px auto 0;
+  background:transparent;
+  border:1px solid rgba(90,220,140,.35);
+  color:#b9ffd5;
+  padding:12px 28px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+}
+.wall-loadmore:hover{
+  background:rgba(0,120,65,.15);
+  border-color:rgba(140,255,190,.6);
+}
+
+/* Message field char counter inside the challenge form */
+.char-counter{
+  display:block;
+  text-align:right;
+  font-size:11px;
+  color:#8da0b8;
+  margin:-2px 0 12px;
+}
+.char-counter.char-error{
+  color:#fca5a5;
+}
+#challengeForm textarea.field-error,
+#challengeForm input.field-error{
+  border-color:#f87171 !important;
+  box-shadow:0 0 12px rgba(248,113,113,.25) !important;
+}
+.field-error-msg{
+  font-size:11px;
+  color:#fca5a5;
+  margin:-10px 0 12px;
+  display:none;
+}
+.field-error-msg.show{
+  display:block;
+}
+
+@media(max-width:700px){
+  .participants-access{
+    flex-direction:column;
+    align-items:flex-start;
+    text-align:left;
+  }
+  .wall-grid{
+    grid-template-columns:1fr;
+  }
+}
