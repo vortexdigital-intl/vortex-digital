@@ -1385,3 +1385,59 @@ width:95%;
     grid-template-columns:1fr;
   }
 }
+
+/* Home page mini card -> links to the full challenge on wall.html */
+.challenge-mini-card{
+  display:block;
+  width:92%;
+  max-width:520px;
+  margin:0 auto 30px;
+  padding:24px 26px;
+  border-radius:22px;
+  text-decoration:none;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(0,130,70,.22),transparent 45%),
+    rgba(8,22,38,.92);
+  border:1px solid rgba(70,190,120,.45);
+  box-shadow:0 0 25px rgba(0,100,55,.18);
+  text-align:center;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.challenge-mini-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(140,255,190,.6);
+  box-shadow:0 0 35px rgba(0,190,95,.3);
+}
+.challenge-mini-badge{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(0,100,55,.18);
+  border:1px solid rgba(100,220,150,.35);
+  color:#b9ffd5;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  margin-bottom:12px;
+}
+.challenge-mini-card h3{
+  font-family:'Sora',Arial,sans-serif;
+  font-size:22px;
+  color:white;
+  margin-bottom:8px;
+}
+.challenge-mini-card p{
+  color:#c9dbea;
+  font-size:13px;
+  margin-bottom:16px;
+}
+.challenge-mini-btn{
+  display:inline-block;
+  padding:12px 30px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#08783f,#075d32);
+  color:white;
+  font-weight:800;
+  font-size:14px;
+  box-shadow:0 0 20px rgba(0,170,80,.3);
+}
