@@ -37,197 +37,16 @@
 
 <section class="hero">
 
-  <!-- ================= INDEPENDENCE DAY CHALLENGE ================= -->
-  <section class="vd-challenge" id="independence-challenge">
-    <div class="challenge-glow"></div>
-    <div class="challenge-badge">🇵🇰 INDEPENDENCE DAY SPECIAL 🇵🇰</div>
-    <h2>🏆 Pakistan Independence Day Challenge</h2>
-    <p class="challenge-subtitle">
-      Think you know Pakistan? Prove it.
-      <br>
-      <strong>20 Questions • 10 Seconds Each • One Attempt Only</strong>
-    </p>
+  <!-- ================= INDEPENDENCE DAY CHALLENGE — mini card only ================= -->
+  <a href="wall.html" class="challenge-mini-card">
+    <div class="challenge-mini-badge">🇵🇰 INDEPENDENCE DAY SPECIAL 🇵🇰</div>
+    <h3>🏆 Play &amp; Win PKR 10,000 — Azadi Challenge</h3>
+    <p>20 Questions • 10 Seconds Each • One Attempt Only</p>
+    <span class="challenge-mini-btn">▶ Play Now</span>
+  </a>
 
-    <div class="prize-box">
-      <span class="prize-small">GRAND PRIZE</span>
-      <strong>🏆 PKR 10,000</strong>
-      <span>≈ USD $35.70</span>
-      <small>USD value is approximate and may vary with exchange rates.</small>
-    </div>
-
-    <!-- Public participant counter -->
-    <div class="participants-counter">
-      🏆 Participants so far: <span class="pc-num" data-vx-participant-count>0</span>
-    </div>
-
-    <div class="challenge-info">
-      <div>⚡ 10 Seconds / Question</div>
-      <div>🇵🇰 Pakistan History &amp; Culture</div>
-      <div>🎯 20 Questions</div>
-      <div>🔒 One Attempt</div>
-    </div>
-
-    <div class="challenge-window">
-      🕛 <strong>Competition Window</strong><br>
-      Sunday 12:00 AM → Monday 12:00 AM<br>
-      <small>That's the complete 24-hour Sunday period.</small>
-    </div>
-
-    <button class="challenge-start-btn" onclick="openChallenge()">
-      🚀 PLAY &amp; START CHALLENGE
-    </button>
-
-    <p class="challenge-note">
-      Search engines are allowed — but you only have <strong>10 seconds</strong> for each question.
-    </p>
-
-    <!-- Small access link to the participant wall (also appears on every other page) -->
-    <a href="wall.html" class="participants-access" style="margin-top:25px;">
-      <span class="pa-left">🏆 Independence Day Challenge — Participants: <span class="pa-count" data-vx-participant-count>0</span></span>
-      <span class="pa-arrow">View Wall →</span>
-    </a>
-  </section>
-
-  <!-- ================= QUIZ MODAL ================= -->
-  <div id="quizModal" class="quiz-modal">
-    <div class="quiz-box">
-      <div class="quiz-top">
-        <div>
-          <span class="quiz-brand">VORTEX DIGITAL</span>
-          <h2>🇵🇰 Independence Day Challenge</h2>
-        </div>
-        <button class="quiz-close" onclick="closeQuiz()">×</button>
-      </div>
-
-      <div class="quiz-progress-area">
-        <div class="quiz-progress-text">
-          <span id="questionCounter">Question 1 of 20</span>
-          <span id="timerText">10s</span>
-        </div>
-        <div class="progress-track">
-          <div id="progressBar"></div>
-        </div>
-      </div>
-
-      <div class="timer-circle" id="timerCircle">
-        <span id="timerNumber">10</span>
-      </div>
-
-      <div class="question-number" id="questionNumber">QUESTION 01</div>
-      <h3 id="questionText">Loading question...</h3>
-      <div id="answersContainer" class="answers-container"></div>
-
-      <div class="quiz-controls">
-        <button id="skipBtn" class="skip-btn" onclick="skipQuestion()">Skip →</button>
-      </div>
-
-      <div class="quiz-status">
-        <span>Attempted: <b id="attemptedCount">0</b></span>
-        <span>Correct: <b id="correctCount">0</b></span>
-        <span>Skipped: <b id="skippedCount">0</b></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= RESULT / SUBMISSION ================= -->
-  <div id="resultModal" class="quiz-modal">
-    <div class="result-box">
-      <div class="success-icon">🏆</div>
-      <div class="challenge-badge">CHALLENGE COMPLETED</div>
-      <h2>Your Answers Have Been Completed ✅</h2>
-      <p>
-        Your answers have been recorded successfully.
-        Complete the participant details below to submit your entry.
-      </p>
-
-      <div class="score-grid">
-        <div><span id="resultCorrect">0</span><small>Correct</small></div>
-        <div><span id="resultWrong">0</span><small>Wrong</small></div>
-        <div><span id="resultSkipped">0</span><small>Skipped</small></div>
-        <div><span id="resultScore">0%</span><small>Score</small></div>
-      </div>
-
-      <div class="iq-style-result">
-        🧠 <strong id="iqLevel">Knowledge Score</strong>
-        <br>
-        <small>This is an IQ-style knowledge challenge score, not a clinical IQ measurement.</small>
-      </div>
-
-      <form id="challengeForm">
-        <input type="hidden" name="access_key" value="YOUR_NEW_CHALLENGE_ACCESS_KEY">
-        <input type="hidden" name="subject" value="🏆 Vortex Digital Independence Day Challenge Submission">
-        <input type="hidden" name="botcheck" value="">
-
-        <input type="hidden" name="quiz_correct" id="formCorrect">
-        <input type="hidden" name="quiz_wrong" id="formWrong">
-        <input type="hidden" name="quiz_skipped" id="formSkipped">
-        <input type="hidden" name="quiz_score" id="formScore">
-        <input type="hidden" name="knowledge_level" id="formLevel">
-        <input type="hidden" name="device_id" id="formDevice">
-        <input type="hidden" name="ip_address" id="formIP">
-        <!-- Extra technical fingerprint fields (private, business-record only — never shown publicly) -->
-        <input type="hidden" name="user_agent" id="formUserAgent">
-        <input type="hidden" name="screen_resolution" id="formScreenRes">
-        <input type="hidden" name="timezone" id="formTimezone">
-        <input type="hidden" name="platform" id="formPlatform">
-        <input type="hidden" name="submission_time" id="formSubmissionTime">
-
-        <label>Full Name *</label>
-        <input type="text" name="participant_name" id="participantName" placeholder="Enter your full name" required>
-
-        <label>Email Address *</label>
-        <input type="email" name="participant_email" id="participantEmail" placeholder="you@example.com" required>
-
-        <label>Age *</label>
-        <input type="number" name="age" min="10" max="100" placeholder="Your age" required>
-
-        <label>Phone Number *</label>
-        <input type="tel" name="phone" placeholder="+92XXXXXXXXXX" required>
-
-        <label>Payment Method *</label>
-        <select id="paymentMethod" name="payment_method" onchange="updatePaymentFields()" required>
-          <option value="">Select payment method</option>
-          <option value="EasyPaisa">EasyPaisa</option>
-          <option value="JazzCash">JazzCash</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-          <option value="PayPal">PayPal</option>
-        </select>
-        <!-- Dynamic fields render here based on the selected method:
-             EasyPaisa / JazzCash -> account number field
-             Bank Transfer        -> IBAN field
-             PayPal               -> PayPal username/email field
-             Handled by updatePaymentFields() in the quiz logic script. -->
-        <div id="paymentFields"></div>
-
-        <label>Message / Note *</label>
-        <textarea
-          name="participant_message"
-          id="participantMessage"
-          rows="5"
-          minlength="10"
-          maxlength="300"
-          placeholder="Write a message (10–300 characters)..."
-          required
-        ></textarea>
-        <span class="char-counter" id="messageCharCounter">0 / 300 (min 10)</span>
-        <span class="field-error-msg" id="messageErrorMsg">Message must be between 10 and 300 characters.</span>
-
-        <div class="submission-warning">
-          ⚠️ <strong>Important:</strong>
-          Once your answers are submitted, your attempt cannot be repeated.
-          Make sure all payment information is correct — every participant who completes the challenge receives a $5 thank-you reward, and the top scorer wins the PKR 10,000 grand prize.
-        </div>
-
-        <button type="submit" id="finalSubmitBtn" class="challenge-submit-btn">
-          🏆 SUBMIT MY ENTRY
-        </button>
-        <div id="submitStatus"></div>
-      </form>
-    </div>
-  </div>
-
-  <span class="eyebrow">Driven By Innovation</span>
   <h1>Vortex Digital</h1>
+  <span class="eyebrow">Driven By Innovation</span>
   <p>
     Professional digital solutions, creative branding, graphic design, digital marketing,
     lead generation, appointment setting and business development services worldwide.
@@ -335,20 +154,6 @@
   <p>Email: vortexdigital.intl@gmail.com</p>
 </footer>
 
-<!-- Participant data + shared count/wall renderer -->
-<script src="participants-data.js"></script>
-<script src="participants-wall.js"></script>
-
-<!-- ⚠️ QUIZ LOGIC SCRIPT GOES HERE
-     (openChallenge / closeQuiz / skipQuestion / updatePaymentFields,
-     the 20-question bank, 10s timer, scoring, one-attempt device+email
-     localStorage check, IP + fingerprint collection, and the
-     #challengeForm submit handler that posts to Web3Forms).
-     This was not included in the project brief text, so it is NOT
-     reproduced here — paste your existing script back in this spot
-     exactly as it was, so the working one-attempt system and quiz
-     mechanics are preserved untouched. See chat reply for details. -->
-<!-- <script src="quiz-logic.js"></script> -->
 
 </body>
 </html>
