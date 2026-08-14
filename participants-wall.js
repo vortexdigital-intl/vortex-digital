@@ -1,58 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Challenge Participants - Vortex Digital</title>
-<link rel="stylesheet" href="style.css">
-<meta name="robots" content="noindex, nofollow">
-</head>
-<body>
-<div class="indep-banner">🇵🇰 Happy Independence Day — Pakistan Zindabad! 🇵🇰</div>
-<header>
-  <div class="logo">
-    <img src="logo.png.jpeg" alt="Vortex Digital">
-    <h2>Vortex Digital</h2>
-  </div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="careers.html">Careers</a>
-    <a href="place-order.html">Place Order</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
+/*
+  Vortex Digital — Independence Day Challenge
+  Shared render script for the participant count + public wall.
+  Reads from PARTICIPANTS (see participants-data.js). Include that file
+  BEFORE this one on every page.
 
-<section class="hero hero-small">
-  <span class="eyebrow">🇵🇰 Independence Day Challenge</span>
-  <h1>Challenge Participants</h1>
-  <p>Everyone who completed the challenge and was approved for the public wall.</p>
-</section>
+  Never uses innerHTML with raw participant text — all text is inserted
+  via textContent so names/messages can never inject HTML or scripts.
+*/
 
-<div class="container">
-  <section class="vd-challenge" id="participantsWallSection">
-    <div class="challenge-badge">🏆 PARTICIPANT WALL 🏆</div>
-    <h2>Participants</h2>
-    <p class="challenge-subtitle">
-      <span class="pc-num" data-vx-participant-count>0</span> people have taken the challenge so far.
-    </p>
-    <div id="participantsWall" class="participants-wall"></div>
-  </section>
+(function () {
+  const DATA = (typeof PARTICIPANTS !== "undefined" && Array.isArray(PARTICIPANTS)) ? PARTICIPANTS : [];
+  const PAGE_SIZE = 12;
 
-  <div class="cta-section">
-    <h2>Haven't taken the challenge yet?</h2>
-    <p>Head back home to play and get your name on the wall.</p>
-    <a href="index.html#independence-challenge" class="btn">Play the Challenge</a>
-  </div>
-</div>
+  function getCount() {
+    return DATA.length;
+  }
 
-<footer>
-  <p>© 2026 Vortex Digital - Driven By Innovation</p>
-  <p>Email: vortexdigital.intl@gmail.com</p>
-</footer>
+  // Fill every element with [data-vx-participant-count] on the page
+  // (used by the small access card on every page, and the hero counter)
+  function renderCounts() {
+    const count = getCount();
+    document.querySelectorAll("[data-vx-participant-count]").forEach(function (el) {
+      el.textContent = String(count);
+    });
+  }
 
-<script src="participants-data.js"></script>
-<script src="participants-wall.js"></script>
-</body>
-</html>
+  function escapeText(str) {
+    // textContent-based rendering already prevents HTML injection, but we
+    // also normalize/strip here in case a value is ever used elsewhere.
+    return String(str == null ? "" : str);
+  }
+
+  function buildCard(entry) {
+    const card = document.createElement("div");
+    card.className = "wall-card";
+
+    const top = document.createElement("div");
+    top.className = "wc-top";
+
+    const name = document.createElement("span");
+    name.className = "wc-name";
+    name.textContent = escapeText(entry.name);
+
+    const age = document.createElement("span");
+    age.className = "wc-age";
+    age.textContent = "Age " + escapeText(entry.age);
+
+    top.appendChild(name);
+    top.appendChild(age);
+
+    const msg = document.createElement("p");
+    msg.className = "wc-message";
+    msg.textContent = escapeText(entry.message);
+
+    card.appendChild(top);
+    card.appendChild(msg);
+    return card;
+  }
+
+  function renderWall() {
+    const wallEl = document.getElementById("participantsWall");
+    if (!wallEl) return; // page has no wall section (e.g. small access card only)
+
+    wallEl.innerHTML = ""; // safe: we only ever clear here, all content below is created via createElement + textContent
+
+    if (DATA.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "wall-empty";
+      empty.textContent = "No entries published yet — be the first to take the challenge!";
+      wallEl.appendChild(empty);
+      return;
+    }
+
+    const grid = document.createElement("div");
+    grid.className = "wall-grid";
+    wallEl.appendChild(grid);
+
+    let shown = 0;
+    const ordered = DATA.slice().reverse(); // newest-added entries first
+
+    function renderNextPage() {
+      const next = ordered.slice(shown, shown + PAGE_SIZE);
+      next.forEach(function (entry) {
+        grid.appendChild(buildCard(entry));
+      });
+      shown += next.length;
+
+      const existingBtn = wallEl.querySelector(".wall-loadmore");
+      if (existingBtn) existingBtn.remove();
+
+      if (shown < ordered.length) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "wall-loadmore";
+        btn.textContent = "Load more";
+        btn.addEventListener("click", renderNextPage);
+        wallEl.appendChild(btn);
+      }
+    }
+
+    renderNextPage();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderCounts();
+    renderWall();
+  });
+})();
