@@ -661,6 +661,381 @@ background:rgba(13,23,41,0.9);
 }
 
 
+/* ===================== Independence Day Challenge ===================== */
+
+.iday-card{
+position:relative;
+overflow:hidden;
+text-align:center;
+padding:44px 28px;
+border-radius:24px;
+background:
+radial-gradient(circle at top left,#01411C55,transparent 55%),
+radial-gradient(circle at bottom right,#04382055,transparent 55%),
+rgba(13,23,41,0.9);
+border:1px solid rgba(6,95,70,0.4);
+box-shadow:0 0 40px rgba(6,95,70,0.2);
+margin:20px 0 40px;
+}
+
+.iday-eyebrow{
+display:inline-block;
+font-size:14px;
+font-weight:800;
+letter-spacing:1.5px;
+color:#bbf7d0;
+padding:6px 18px;
+border-radius:999px;
+border:1px solid rgba(187,247,208,0.4);
+background:rgba(6,95,70,0.25);
+margin-bottom:16px;
+}
+
+.iday-card h2{
+font-family:'Sora',Arial,sans-serif;
+font-size:34px;
+font-weight:800;
+color:#ffffff;
+margin-bottom:8px;
+}
+
+.iday-card .iday-sub{
+font-size:18px;
+color:#bbf7d0;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.iday-card .iday-desc{
+max-width:600px;
+margin:0 auto 22px;
+color:#dbeafe;
+}
+
+.iday-prize{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:10px 22px;
+border-radius:999px;
+background:linear-gradient(135deg,#065f46,#047857);
+color:#ecfdf5;
+font-weight:800;
+font-size:15px;
+margin-bottom:22px;
+box-shadow:0 0 20px rgba(4,120,87,0.4);
+}
+
+.btn-gold{
+display:inline-block;
+background:linear-gradient(135deg,#f59e0b,#d97706);
+color:#1a1200;
+padding:16px 34px;
+border-radius:12px;
+font-weight:800;
+text-decoration:none;
+border:none;
+cursor:pointer;
+font-size:16px;
+box-shadow:0 0 25px rgba(245,158,11,0.5);
+transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+.btn-gold:hover{
+transform:translateY(-3px);
+box-shadow:0 0 35px rgba(245,158,11,0.7);
+}
+.btn-gold:active{
+transform:translateY(-1px) scale(0.97);
+}
+
+/* ---- Modal shell ---- */
+.iday-overlay{
+position:fixed;
+inset:0;
+background:rgba(2,6,16,0.88);
+backdrop-filter:blur(6px);
+z-index:5000;
+display:none;
+align-items:flex-start;
+justify-content:center;
+overflow-y:auto;
+padding:30px 16px;
+}
+.iday-overlay.open{ display:flex; }
+
+.iday-modal{
+background:#0a1428;
+border:1px solid rgba(59,130,246,0.25);
+border-radius:24px;
+max-width:640px;
+width:100%;
+padding:30px;
+position:relative;
+box-shadow:0 0 60px rgba(0,0,0,0.5);
+animation:fadeInUp 0.4s ease both;
+}
+
+.iday-close{
+position:absolute;
+top:16px;
+right:16px;
+width:36px;
+height:36px;
+border-radius:50%;
+background:rgba(255,255,255,0.08);
+border:none;
+color:white;
+font-size:18px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.iday-screen{ display:none; }
+.iday-screen.active{ display:block; }
+
+.iday-rules ul{
+list-style:none;
+display:flex;
+flex-direction:column;
+gap:10px;
+margin:18px 0 24px;
+}
+.iday-rules ul li{
+display:flex;
+align-items:flex-start;
+gap:10px;
+font-size:14px;
+color:#dbeafe;
+}
+.iday-rules ul li::before{
+content:"🇵🇰";
+flex-shrink:0;
+}
+
+.iday-topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:13px;
+color:#93c5fd;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.iday-progress-track{
+width:100%;
+height:8px;
+border-radius:999px;
+background:rgba(255,255,255,0.08);
+overflow:hidden;
+margin-bottom:16px;
+}
+.iday-progress-fill{
+height:100%;
+border-radius:999px;
+background:linear-gradient(90deg,#065f46,#22c55e);
+transition:width 0.3s ease;
+}
+
+.iday-stats-row{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin-bottom:18px;
+text-align:center;
+}
+.iday-stats-row div{
+background:rgba(255,255,255,0.04);
+border-radius:10px;
+padding:8px 4px;
+font-size:12px;
+color:#9fb3d1;
+}
+.iday-stats-row strong{
+display:block;
+font-size:16px;
+color:white;
+}
+
+.iday-timer{
+width:56px;
+height:56px;
+border-radius:50%;
+border:3px solid rgba(96,165,250,0.3);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+font-weight:800;
+margin:0 auto 18px;
+position:relative;
+transition:border-color 0.3s ease, color 0.3s ease;
+}
+.iday-timer.warn{
+border-color:#ff5c5c;
+color:#ff5c5c;
+animation:shake 0.4s ease;
+}
+
+.iday-question{
+font-size:19px;
+font-weight:700;
+text-align:center;
+margin-bottom:20px;
+min-height:50px;
+}
+
+.iday-options{
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-bottom:16px;
+}
+.iday-option{
+text-align:left;
+padding:14px 18px;
+border-radius:12px;
+border:1px solid rgba(59,130,246,0.25);
+background:rgba(255,255,255,0.03);
+color:white;
+font-size:15px;
+cursor:pointer;
+transition:0.2s ease;
+}
+.iday-option:hover{
+border-color:#3b82f6;
+background:rgba(59,130,246,0.08);
+}
+.iday-option.correct{
+border-color:#22c55e;
+background:rgba(34,197,94,0.15);
+box-shadow:0 0 15px rgba(34,197,94,0.3);
+}
+.iday-option.wrong{
+border-color:#ef4444;
+background:rgba(239,68,68,0.15);
+box-shadow:0 0 15px rgba(239,68,68,0.3);
+}
+.iday-option[disabled]{
+cursor:default;
+opacity:0.75;
+}
+
+.iday-skip{
+display:block;
+margin:0 auto;
+background:transparent;
+border:1px solid rgba(255,255,255,0.2);
+color:#9fb3d1;
+padding:8px 20px;
+border-radius:999px;
+cursor:pointer;
+font-size:13px;
+}
+
+.iday-result-score{
+text-align:center;
+margin:10px 0 24px;
+}
+.iday-result-score .big-score{
+font-family:'Sora',Arial,sans-serif;
+font-size:52px;
+font-weight:800;
+background:linear-gradient(90deg,#93c5fd,#a78bfa);
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
+}
+.iday-result-level{
+font-size:18px;
+font-weight:700;
+color:#bbf7d0;
+margin-top:6px;
+}
+
+.iday-form label{
+display:block;
+font-size:13px;
+margin-top:14px;
+margin-bottom:5px;
+opacity:0.85;
+}
+.iday-form input,
+.iday-form textarea{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:1px solid rgba(59,130,246,0.2);
+background:#0f172a;
+color:white;
+}
+.iday-consent{
+display:flex;
+align-items:flex-start;
+gap:10px;
+margin:18px 0;
+font-size:13px;
+color:#dbeafe;
+}
+.iday-consent input{ margin-top:3px; width:auto; }
+
+.iday-entryid{
+text-align:center;
+font-family:monospace;
+font-size:15px;
+color:#93c5fd;
+background:rgba(59,130,246,0.1);
+border:1px dashed rgba(96,165,250,0.4);
+border-radius:10px;
+padding:10px;
+margin:14px 0;
+}
+
+.iday-wall{
+display:flex;
+flex-direction:column;
+gap:12px;
+max-height:220px;
+overflow-y:auto;
+margin-top:10px;
+}
+.iday-wall-item{
+background:rgba(255,255,255,0.03);
+border:1px solid rgba(59,130,246,0.15);
+border-radius:12px;
+padding:12px 14px;
+font-size:13px;
+}
+.iday-wall-item strong{ color:#93c5fd; }
+.iday-wall-tag{
+font-size:10px;
+color:#9fb3d1;
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+
+.iday-already{
+text-align:center;
+padding:20px 10px;
+}
+
+/* ---- Confetti ---- */
+.iday-confetti-piece{
+position:fixed;
+top:-10px;
+width:8px;
+height:14px;
+z-index:6000;
+pointer-events:none;
+animation:confettiFall linear forwards;
+}
+@keyframes confettiFall{
+to{ transform:translateY(105vh) rotate(720deg); opacity:0.9; }
+}
+
+
 @media(max-width:768px){
 header{
 padding:15px 10px;
@@ -732,712 +1107,4 @@ font-size:22px;
 .container{
 width:95%;
 }
-}
-
-/* =========================================================
-   VORTEX DIGITAL - INDEPENDENCE DAY CHALLENGE
-   ========================================================= */
-
-.vd-challenge{
-  position:relative;
-  width:92%;
-  max-width:1050px;
-  margin:35px auto 20px;
-  padding:55px 30px;
-  text-align:center;
-  overflow:hidden;
-  border-radius:30px;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(0,130,70,.22),transparent 35%),
-    radial-gradient(circle at 80% 80%,rgba(0,100,55,.18),transparent 35%),
-    rgba(8,22,38,.92);
-  border:1px solid rgba(70,190,120,.45);
-  box-shadow:
-    0 0 35px rgba(0,100,55,.18),
-    inset 0 0 50px rgba(0,60,35,.12);
-}
-
-.challenge-badge{
-  display:inline-block;
-  padding:8px 18px;
-  border-radius:999px;
-  background:rgba(0,100,55,.18);
-  border:1px solid rgba(100,220,150,.35);
-  color:#b9ffd5;
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:1.5px;
-  margin-bottom:18px;
-}
-
-.vd-challenge h2{
-  font-family:'Sora',Arial,sans-serif;
-  font-size:42px;
-  margin-bottom:15px;
-  background:linear-gradient(90deg,#ffffff,#b9ffd5,#ffffff);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-
-.challenge-subtitle{
-  color:#dbeafe;
-  font-size:18px;
-  margin-bottom:25px;
-}
-
-.prize-box{
-  width:fit-content;
-  min-width:270px;
-  margin:25px auto;
-  padding:22px 35px;
-  border-radius:20px;
-  background:linear-gradient(135deg,#064e2b,#08783f);
-  border:1px solid rgba(180,255,210,.35);
-  box-shadow:0 0 35px rgba(0,180,90,.25);
-}
-
-.prize-small{
-  display:block;
-  font-size:11px;
-  letter-spacing:2px;
-  color:#b9ffd5;
-}
-
-.prize-box strong{
-  display:block;
-  font-size:34px;
-  color:white;
-}
-
-.prize-box span:not(.prize-small){
-  display:block;
-  color:#d8ffe7;
-  font-weight:600;
-}
-
-.prize-box small{
-  display:block;
-  margin-top:5px;
-  color:#b9ffd5;
-  font-size:10px;
-}
-
-.challenge-info{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  max-width:850px;
-  margin:25px auto;
-}
-
-.challenge-info div{
-  padding:13px;
-  border-radius:14px;
-  background:rgba(13,35,55,.8);
-  border:1px solid rgba(96,165,250,.15);
-  color:#dbeafe;
-  font-size:13px;
-  font-weight:600;
-}
-
-.challenge-window{
-  margin:25px auto;
-  max-width:600px;
-  padding:18px;
-  border-radius:16px;
-  background:rgba(3,50,28,.45);
-  border:1px solid rgba(90,220,140,.25);
-  color:#eafff1;
-}
-
-.challenge-window small{
-  opacity:.75;
-}
-
-.challenge-start-btn,
-.challenge-submit-btn{
-  border:none;
-  cursor:pointer;
-  color:white;
-  font-weight:800;
-  border-radius:14px;
-  padding:16px 32px;
-  font-size:16px;
-  background:linear-gradient(135deg,#08783f,#075d32);
-  box-shadow:0 0 25px rgba(0,170,80,.35);
-  transition:.25s;
-}
-
-.challenge-start-btn:hover,
-.challenge-submit-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 0 35px rgba(0,210,100,.5);
-}
-
-.challenge-note{
-  font-size:12px;
-  color:#9fb3d1;
-  margin-top:18px;
-}
-
-
-/* ================= QUIZ MODAL ================= */
-
-.quiz-modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  overflow-y:auto;
-  padding:25px 12px;
-  background:rgba(1,5,12,.94);
-  backdrop-filter:blur(15px);
-}
-
-.quiz-box,
-.result-box{
-  width:100%;
-  max-width:760px;
-  margin:25px auto;
-  padding:28px;
-  border-radius:24px;
-  background:#091426;
-  border:1px solid rgba(59,130,246,.35);
-  box-shadow:
-    0 0 45px rgba(20,90,200,.18),
-    0 20px 80px rgba(0,0,0,.5);
-}
-
-.quiz-top{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  align-items:flex-start;
-}
-
-.quiz-brand{
-  color:#60a5fa;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:2px;
-}
-
-.quiz-top h2{
-  margin-top:5px;
-  color:white;
-}
-
-.quiz-close{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  border:1px solid #334155;
-  background:#111c2e;
-  color:white;
-  font-size:26px;
-  cursor:pointer;
-}
-
-.quiz-progress-area{
-  margin-top:25px;
-}
-
-.quiz-progress-text{
-  display:flex;
-  justify-content:space-between;
-  color:#9fb3d1;
-  font-size:13px;
-  margin-bottom:8px;
-}
-
-#timerText{
-  color:#facc15;
-  font-weight:800;
-}
-
-.progress-track{
-  width:100%;
-  height:8px;
-  background:#172238;
-  border-radius:99px;
-  overflow:hidden;
-}
-
-#progressBar{
-  width:5%;
-  height:100%;
-  background:linear-gradient(90deg,#16a34a,#60a5fa);
-  transition:width .3s ease;
-}
-
-.timer-circle{
-  width:72px;
-  height:72px;
-  margin:25px auto 15px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#101d31;
-  border:3px solid #facc15;
-  box-shadow:0 0 20px rgba(250,204,21,.18);
-}
-
-.timer-circle span{
-  font-size:27px;
-  font-weight:800;
-  color:#facc15;
-}
-
-.question-number{
-  text-align:center;
-  font-size:11px;
-  letter-spacing:2px;
-  color:#60a5fa;
-  font-weight:800;
-}
-
-#questionText{
-  font-size:25px;
-  text-align:center;
-  line-height:1.35;
-  margin:15px 0 25px;
-}
-
-.answers-container{
-  display:grid;
-  gap:12px;
-}
-
-.answer-btn{
-  width:100%;
-  padding:16px;
-  text-align:left;
-  border-radius:14px;
-  border:1px solid rgba(96,165,250,.18);
-  background:#101d31;
-  color:white;
-  font-size:15px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.answer-btn:hover{
-  border-color:#60a5fa;
-  background:#152641;
-  transform:translateX(3px);
-}
-
-.answer-btn:disabled{
-  cursor:not-allowed;
-  opacity:.7;
-}
-
-.quiz-controls{
-  display:flex;
-  justify-content:flex-end;
-  margin-top:18px;
-}
-
-.skip-btn{
-  border:1px solid #334155;
-  background:#111c2e;
-  color:#cbd5e1;
-  padding:10px 18px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.quiz-status{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:22px;
-  margin-top:25px;
-  padding-top:18px;
-  border-top:1px solid #1e293b;
-  font-size:12px;
-  color:#94a3b8;
-}
-
-.quiz-status b{
-  color:white;
-}
-
-.result-box{
-  text-align:center;
-}
-
-.success-icon{
-  font-size:55px;
-  margin-bottom:10px;
-}
-
-.result-box h2{
-  margin:15px 0 8px;
-  color:#60a5fa;
-}
-
-.result-box>p{
-  color:#a9bad0;
-  margin-bottom:22px;
-}
-
-.score-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin:20px 0;
-}
-
-.score-grid div{
-  padding:15px 8px;
-  background:#101d31;
-  border-radius:13px;
-  border:1px solid #20304a;
-}
-
-.score-grid span{
-  display:block;
-  font-size:25px;
-  font-weight:800;
-  color:white;
-}
-
-.score-grid small{
-  color:#8da0b8;
-}
-
-.iq-style-result{
-  padding:16px;
-  border-radius:15px;
-  background:rgba(59,130,246,.08);
-  border:1px solid rgba(96,165,250,.2);
-  margin-bottom:25px;
-  color:#dbeafe;
-}
-
-.iq-style-result small{
-  color:#8da0b8;
-}
-
-#challengeForm{
-  text-align:left;
-}
-
-#challengeForm label{
-  display:block;
-  margin:14px 0 7px;
-  color:#cbd5e1;
-  font-size:13px;
-  font-weight:600;
-}
-
-#challengeForm input,
-#challengeForm select,
-#challengeForm textarea{
-  margin-bottom:4px;
-}
-
-.submission-warning{
-  margin:18px 0;
-  padding:14px;
-  border-radius:12px;
-  background:rgba(234,179,8,.07);
-  border:1px solid rgba(234,179,8,.2);
-  color:#fef3c7;
-  font-size:12px;
-}
-
-.challenge-submit-btn{
-  width:100%;
-  margin-top:10px;
-}
-
-#submitStatus{
-  text-align:center;
-  margin-top:15px;
-  font-weight:700;
-}
-
-.payment-extra{
-  margin-top:8px;
-}
-
-@media(max-width:700px){
-
-  .vd-challenge{
-    padding:40px 18px;
-  }
-
-  .vd-challenge h2{
-    font-size:30px;
-  }
-
-  .challenge-info{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .quiz-box,
-  .result-box{
-    padding:20px;
-    margin:8px auto;
-  }
-
-  #questionText{
-    font-size:21px;
-  }
-
-  .score-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-/* =============================================================
-   VORTEX DIGITAL - PARTICIPANTS COUNTER, ACCESS CARD & WALL
-   (added for Independence Day Challenge — green accent theme,
-   matches existing glass/glow design language)
-   ============================================================= */
-
-/* Small site-wide access card/link -> used on every page */
-.participants-access{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  flex-wrap:wrap;
-  padding:16px 22px;
-  border-radius:16px;
-  background:rgba(3,50,28,.35);
-  border:1px solid rgba(90,220,140,.3);
-  box-shadow:0 0 20px rgba(0,140,70,.15);
-  text-decoration:none;
-  color:#eafff1;
-  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-  max-width:1000px;
-  margin:0 auto 20px;
-}
-.participants-access:hover{
-  transform:translateY(-3px);
-  border-color:rgba(140,255,190,.5);
-  box-shadow:0 0 30px rgba(0,190,95,.3);
-}
-.participants-access .pa-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:700;
-  font-size:15px;
-}
-.participants-access .pa-count{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:34px;
-  height:28px;
-  padding:0 8px;
-  border-radius:999px;
-  background:linear-gradient(135deg,#08783f,#075d32);
-  color:white;
-  font-size:13px;
-  font-weight:800;
-  box-shadow:0 0 12px rgba(0,170,80,.35);
-}
-.participants-access .pa-arrow{
-  font-size:13px;
-  color:#b9ffd5;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-/* Public participant count banner (index hero area) */
-.participants-counter{
-  width:fit-content;
-  min-width:240px;
-  margin:20px auto 0;
-  padding:14px 26px;
-  border-radius:999px;
-  text-align:center;
-  background:rgba(3,50,28,.45);
-  border:1px solid rgba(90,220,140,.3);
-  color:#eafff1;
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:.3px;
-}
-.participants-counter .pc-num{
-  color:#b9ffd5;
-  font-size:18px;
-  font-weight:800;
-  margin:0 4px;
-}
-
-/* Participant wall grid */
-.participants-wall{
-  margin-top:20px;
-}
-.wall-empty{
-  text-align:center;
-  color:#9fb3d1;
-  padding:30px 15px;
-  font-size:14px;
-}
-.wall-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
-  margin-top:10px;
-}
-.wall-card{
-  padding:22px;
-  border-radius:18px;
-  background:rgba(8,22,38,.85);
-  border:1px solid rgba(90,220,140,.25);
-  box-shadow:0 0 18px rgba(0,120,65,.12);
-  transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-  word-break:break-word;
-}
-.wall-card:hover{
-  transform:translateY(-5px);
-  border-color:rgba(140,255,190,.5);
-  box-shadow:0 0 28px rgba(0,180,90,.25);
-}
-.wall-card .wc-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px;
-}
-.wall-card .wc-name{
-  font-family:'Sora',Arial,sans-serif;
-  font-weight:700;
-  font-size:16px;
-  color:#eafff1;
-}
-.wall-card .wc-age{
-  flex-shrink:0;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.5px;
-  color:#b9ffd5;
-  background:rgba(0,100,55,.25);
-  border:1px solid rgba(100,220,150,.3);
-  border-radius:999px;
-  padding:4px 10px;
-}
-.wall-card .wc-message{
-  font-size:14px;
-  color:#c9dbea;
-  line-height:1.5;
-}
-.wall-loadmore{
-  display:block;
-  margin:26px auto 0;
-  background:transparent;
-  border:1px solid rgba(90,220,140,.35);
-  color:#b9ffd5;
-  padding:12px 28px;
-  border-radius:12px;
-  font-weight:700;
-  cursor:pointer;
-  transition:.25s;
-}
-.wall-loadmore:hover{
-  background:rgba(0,120,65,.15);
-  border-color:rgba(140,255,190,.6);
-}
-
-/* Message field char counter inside the challenge form */
-.char-counter{
-  display:block;
-  text-align:right;
-  font-size:11px;
-  color:#8da0b8;
-  margin:-2px 0 12px;
-}
-.char-counter.char-error{
-  color:#fca5a5;
-}
-#challengeForm textarea.field-error,
-#challengeForm input.field-error{
-  border-color:#f87171 !important;
-  box-shadow:0 0 12px rgba(248,113,113,.25) !important;
-}
-.field-error-msg{
-  font-size:11px;
-  color:#fca5a5;
-  margin:-10px 0 12px;
-  display:none;
-}
-.field-error-msg.show{
-  display:block;
-}
-
-@media(max-width:700px){
-  .participants-access{
-    flex-direction:column;
-    align-items:flex-start;
-    text-align:left;
-  }
-  .wall-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-/* Home page mini card -> links to the full challenge on wall.html */
-.challenge-mini-card{
-  display:block;
-  width:92%;
-  max-width:520px;
-  margin:0 auto 30px;
-  padding:24px 26px;
-  border-radius:22px;
-  text-decoration:none;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(0,130,70,.22),transparent 45%),
-    rgba(8,22,38,.92);
-  border:1px solid rgba(70,190,120,.45);
-  box-shadow:0 0 25px rgba(0,100,55,.18);
-  text-align:center;
-  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-.challenge-mini-card:hover{
-  transform:translateY(-4px);
-  border-color:rgba(140,255,190,.6);
-  box-shadow:0 0 35px rgba(0,190,95,.3);
-}
-.challenge-mini-badge{
-  display:inline-block;
-  padding:6px 14px;
-  border-radius:999px;
-  background:rgba(0,100,55,.18);
-  border:1px solid rgba(100,220,150,.35);
-  color:#b9ffd5;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1.2px;
-  margin-bottom:12px;
-}
-.challenge-mini-card h3{
-  font-family:'Sora',Arial,sans-serif;
-  font-size:22px;
-  color:white;
-  margin-bottom:8px;
-}
-.challenge-mini-card p{
-  color:#c9dbea;
-  font-size:13px;
-  margin-bottom:16px;
-}
-.challenge-mini-btn{
-  display:inline-block;
-  padding:12px 30px;
-  border-radius:12px;
-  background:linear-gradient(135deg,#08783f,#075d32);
-  color:white;
-  font-weight:800;
-  font-size:14px;
-  box-shadow:0 0 20px rgba(0,170,80,.3);
 }
