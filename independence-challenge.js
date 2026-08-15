@@ -71,7 +71,6 @@
      ===================================================================== */
   const VERIFIED_PARTICIPANTS = [
     { name: "Ahad", age: 19, message: "Proud to be Pakistani" }
-    { name: "Talha", age: 18, message: "Pakistan Zindabad♥️♥️" }
   ];
 
   let state = null;
@@ -391,7 +390,7 @@
     document.getElementById("iday-r-skipped").textContent = state.skipped;
     document.getElementById("iday-r-accuracy").textContent = accuracy + "%";
 
-let level;
+    let level;
     if (state.correct >= 18) level = "🏆 Pakistan Knowledge Master";
     else if (state.correct >= 15) level = "🥇 Excellent";
     else if (state.correct >= 12) level = "⭐ Very Good";
