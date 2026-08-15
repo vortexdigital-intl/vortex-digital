@@ -1036,6 +1036,22 @@ to{ transform:translateY(105vh) rotate(720deg); opacity:0.9; }
 }
 
 
+.iday-view-btn{
+background:transparent;
+border:1px solid rgba(187,247,208,0.35);
+color:#bbf7d0;
+padding:9px 20px;
+border-radius:999px;
+font-size:13px;
+font-weight:600;
+cursor:pointer;
+transition:0.2s ease;
+}
+.iday-view-btn:hover{
+background:rgba(6,95,70,0.2);
+border-color:#22c55e;
+}
+
 @media(max-width:768px){
 header{
 padding:15px 10px;
