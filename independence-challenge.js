@@ -71,7 +71,6 @@
      ===================================================================== */
   const VERIFIED_PARTICIPANTS = [
     { name: "Ahad", age: Age 19, message: "Proud to be Pakistani" }
-
 { name: "Samad", age: Age 18, message: "Mera Pakistan ♥️" }
   ];
 
