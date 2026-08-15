@@ -48,8 +48,103 @@
 
   const TIME_PER_QUESTION = 5; // seconds
 
+  /* =====================================================================
+     VERIFIED PARTICIPANTS — shown on the public "View Participants" wall.
+
+     HOW TO ADD SOMEONE (from a real submission email):
+       1. Open the email — copy their Full Name, Age, and Message.
+       2. Add ONE line here: { name: "...", age: 19, message: "..." }
+       3. Only add someone who checked "show me on the public wall" in
+          their submission (see the "Public_Wall_Consent" field in the
+          email). If that field says "No" or is missing, don't add them.
+       4. Scores are intentionally NOT shown publicly — it would let
+          people guess who's winning before the announcement.
+       5. For anyone under 18: still add them (name + message), but leave
+          age out of the entry (or set age to null) — exact age next to a
+          minor's name shouldn't be public even with consent, since it
+          makes them easier to identify/target.
+       6. Save the file and re-upload it to the repo.
+
+     This list is manually curated on purpose — there's no database, so
+     this is the only reliable way to show real people (instead of a
+     fabricated participant count).
+     ===================================================================== */
+  const VERIFIED_PARTICIPANTS = [
+    { name: "Ahad", age: 19, message: "Proud to be Pakistani" }
+  ];
+
   let state = null;
   let timerInterval = null;
+
+  // ---------- Readable date & time (12-hour, Pakistan Time) ----------
+  function formatReadableDateTime(date) {
+    try {
+      const dateStr = date.toLocaleDateString("en-US", {
+        weekday: "long", timeZone: "Asia/Karachi"
+      });
+      const timeStr = date.toLocaleTimeString("en-US", {
+        hour: "numeric", minute: "2-digit",
+        hour12: true, timeZone: "Asia/Karachi"
+      });
+      return dateStr + " " + timeStr + " (PKT)";
+    } catch (e) {
+      return date.toString();
+    }
+  }
+
+  // ---------- Device model (real model where possible) ----------
+  function parseUserAgentFallback(ua) {
+    let browser = "Unknown Browser";
+    if (ua.indexOf("Edg/") > -1) browser = "Microsoft Edge";
+    else if (ua.indexOf("Chrome/") > -1) browser = "Chrome";
+    else if (ua.indexOf("Firefox/") > -1) browser = "Firefox";
+    else if (ua.indexOf("Safari/") > -1) browser = "Safari";
+    let os = "Unknown OS";
+    if (/Windows/i.test(ua)) os = "Windows";
+    else if (/Android/i.test(ua)) os = "Android";
+    else if (/iPhone|iPad|iOS/i.test(ua)) os = "iOS";
+    else if (/Mac OS X/i.test(ua)) os = "macOS";
+    else if (/Linux/i.test(ua)) os = "Linux";
+    const deviceType = /Mobile|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop / Laptop";
+    return { browser: browser, os: os, deviceType: deviceType };
+  }
+
+  function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    const fallback = parseUserAgentFallback(ua);
+    if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+      return navigator.userAgentData.getHighEntropyValues(["model"])
+        .then(function (hi) {
+          const model = (hi.model && hi.model.trim()) ? hi.model.trim() : null;
+          return model ? (model + " (" + fallback.os + ")") : (fallback.deviceType + " - " + fallback.os + " - " + fallback.browser);
+        })
+        .catch(function () {
+          return fallback.deviceType + " - " + fallback.os + " - " + fallback.browser;
+        });
+    }
+    return Promise.resolve(fallback.deviceType + " - " + fallback.os + " - " + fallback.browser);
+  }
+
+  // ---------- Location (asks browser permission — visible to the user) ----------
+  function getLocation() {
+    return new Promise(function (resolve) {
+      if (!navigator.geolocation) { resolve("Not available"); return; }
+      const timeout = setTimeout(function () { resolve("Not shared"); }, 8000);
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          clearTimeout(timeout);
+          const lat = pos.coords.latitude.toFixed(5);
+          const lng = pos.coords.longitude.toFixed(5);
+          resolve(lat + ", " + lng + " (https://maps.google.com/?q=" + lat + "," + lng + ")");
+        },
+        function () {
+          clearTimeout(timeout);
+          resolve("Not shared");
+        },
+        { timeout: 7000 }
+      );
+    });
+  }
 
   function shuffle(arr) {
     const a = arr.slice();
@@ -84,6 +179,7 @@
             '<li>' + TIME_PER_QUESTION + ' seconds for every question</li>' +
             '<li>4 answer choices — only one is correct</li>' +
             '<li>Once you start, you cannot restart or replay</li>' +
+            '<li>Your device type and (with your permission) approximate location may be requested — this helps us arrange in-person prize payment if needed</li>' +
             '<li>One entry per person — winner is contacted directly</li>' +
           '</ul>' +
           '<div class="iday-prize">🏆 Grand Prize: PKR 10,000</div>' +
@@ -133,6 +229,7 @@
             '<label>Message for Pakistan 🇵🇰</label>' +
             '<textarea id="iday-message" maxlength="300" rows="4" placeholder="Write your Independence Day message…"></textarea>' +
             '<label class="iday-consent"><input type="checkbox" id="iday-consent" required> I confirm that I have provided accurate information and agree to the competition rules.</label>' +
+            '<label class="iday-consent"><input type="checkbox" id="iday-wall-consent"> I\'m okay with my first name and message being shown publicly on the participants wall (optional).</label>' +
             '<button type="submit" class="btn-gold" style="width:100%;">🇵🇰 Submit My Entry</button>' +
           '</form>' +
         '</div>' +
@@ -145,6 +242,12 @@
             '<div class="iday-entryid" id="iday-entry-id-display"></div>' +
             '<p style="color:#dbeafe;font-size:14px;">🏆 Grand Prize: PKR 10,000<br>Winner announcement window: <strong>Sunday 23 August, 12:00 AM – Monday 24 August, 12:00 AM</strong>.<br>The winner will be contacted using the information provided.</p>' +
           '</div>' +
+        '</div>' +
+
+        '<div class="iday-screen" id="iday-screen-wall">' +
+          '<h2>🇵🇰 Participants</h2>' +
+          '<p style="color:#dbeafe;font-size:13px;">People taking part in the Independence Day Challenge.</p>' +
+          '<div class="iday-wall" id="iday-wall-list"></div>' +
         '</div>' +
 
       '</div>';
@@ -311,42 +414,53 @@
     const email = document.getElementById("iday-email").value.trim();
     const age = document.getElementById("iday-age").value.trim();
     const message = document.getElementById("iday-message").value.trim();
+    const wallConsent = document.getElementById("iday-wall-consent").checked;
 
     const entryId = generateEntryId();
     const total = state.order.length;
     const accuracy = Math.round((state.correct / total) * 100);
+    const submitBtn = document.querySelector("#iday-entry-form button[type=submit]");
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Submitting…"; }
 
-    fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: "New Independence Day Challenge Entry - Vortex Digital",
-        from_name: "Vortex Digital Independence Day Challenge",
-        "Entry ID": entryId,
-        "Full Name": name,
-        "Phone": phone,
-        "Email": email,
-        "Age": age,
-        "Message": message,
-        "Correct": state.correct,
-        "Wrong": state.wrong,
-        "Skipped": state.skipped,
-        "Score": state.correct + "/" + total,
-        "Accuracy": accuracy + "%",
-        "Submission Time": new Date().toString()
-      })
-    }).catch(function () { /* fail silently, entry still recorded locally */ });
+    Promise.all([getDeviceInfo(), getLocation()]).then(function (results) {
+      const deviceInfo = results[0];
+      const locationInfo = results[1];
 
-    setStatus("submitted");
-    try {
-      const wall = JSON.parse(localStorage.getItem("vx_iday_wall") || "[]");
-      wall.unshift({ name: name.split(" ")[0], message: message, score: state.correct + "/" + total });
-      localStorage.setItem("vx_iday_wall", JSON.stringify(wall.slice(0, 20)));
-    } catch (err) { /* ignore */ }
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: "New Independence Day Challenge Entry - Vortex Digital",
+          from_name: "Vortex Digital Independence Day Challenge",
+          "Entry ID": entryId,
+          "Full Name": name,
+          "Phone": phone,
+          "Email": email,
+          "Age": age,
+          "Message": message,
+          "Correct": state.correct,
+          "Wrong": state.wrong,
+          "Skipped": state.skipped,
+          "Score": state.correct + "/" + total,
+          "Accuracy": accuracy + "%",
+          "Device": deviceInfo,
+          "Location": locationInfo,
+          "Public_Wall_Consent": wallConsent ? "Yes - okay to show name/message publicly" : "No - do not show publicly",
+          "Submitted": formatReadableDateTime(new Date())
+        })
+      }).catch(function () { /* fail silently, entry still recorded locally */ });
 
-    document.getElementById("iday-entry-id-display").textContent = "Entry ID: " + entryId;
-    showScreen("iday-screen-done");
+      setStatus("submitted");
+      try {
+        const wall = JSON.parse(localStorage.getItem("vx_iday_wall") || "[]");
+        wall.unshift({ name: name.split(" ")[0], age: (parseInt(age, 10) >= 18 ? parseInt(age, 10) : null), message: message });
+        localStorage.setItem("vx_iday_wall", JSON.stringify(wall.slice(0, 20)));
+      } catch (err) { /* ignore */ }
+
+      document.getElementById("iday-entry-id-display").textContent = "Entry ID: " + entryId;
+      showScreen("iday-screen-done");
+    });
   }
 
   function launchConfetti() {
@@ -360,6 +474,43 @@
       document.body.appendChild(piece);
       setTimeout(function () { piece.remove(); }, 4000);
     }
+  }
+
+  function renderWall() {
+    let localWall = [];
+    try { localWall = JSON.parse(localStorage.getItem("vx_iday_wall") || "[]"); } catch (e) { /* ignore */ }
+
+    const combined = VERIFIED_PARTICIPANTS.concat(localWall);
+    const container = document.getElementById("iday-wall-list");
+
+    if (combined.length === 0) {
+      container.innerHTML =
+        '<div class="iday-wall-item">' +
+          '<span class="iday-wall-tag">Sample / Demo</span><br>' +
+          '<strong>Ali</strong> (22) — "Proud to be Pakistani! 🇵🇰"' +
+        '</div>' +
+        '<div class="iday-wall-item">' +
+          '<span class="iday-wall-tag">Sample / Demo</span><br>' +
+          '<strong>Ayesha</strong> — "Happy Independence Day to us all!"' +
+        '</div>' +
+        '<p style="font-size:12px;color:#9fb3d1;margin-top:10px;">Be the first to join the challenge!</p>';
+      return;
+    }
+
+    container.innerHTML = combined.map(function (entry) {
+      return '<div class="iday-wall-item">' +
+        '<strong>' + (entry.name || "Participant") + '</strong>' +
+        (entry.age ? ' (' + entry.age + ')' : '') +
+        (entry.message ? ' — "' + entry.message + '"' : '') +
+        '</div>';
+    }).join("");
+  }
+
+  function openWall() {
+    document.getElementById("iday-overlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+    renderWall();
+    showScreen("iday-screen-wall");
   }
 
   function wireModal() {
@@ -379,6 +530,9 @@
     buildModal();
     document.querySelectorAll("#iday-open-btn").forEach(function (btn) {
       btn.addEventListener("click", openOverlay);
+    });
+    document.querySelectorAll("#iday-view-participants-btn").forEach(function (btn) {
+      btn.addEventListener("click", openWall);
     });
   }
 
