@@ -70,7 +70,7 @@
      fabricated participant count).
      ===================================================================== */
   const VERIFIED_PARTICIPANTS = [
-    { name: "Ahad", age: Age 19, message: "Proud to be Pakistani" }
+    { name: "Ahad", age: 19, message: "Proud to be Pakistani" }
   ];
 
   let state = null;
