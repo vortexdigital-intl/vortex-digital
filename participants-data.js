@@ -17,12 +17,11 @@
   NEVER add: email, phone, payment method, payment account details,
   IP address, device ID, user agent, screen resolution, timezone, or
   platform. Those are private and must never appear in this file.
-
-  The array starts empty on purpose — the public counter should genuinely
-  start at 0 and only grow as real, reviewed entries are added by hand.
 */
 
 const PARTICIPANTS = [
+  { name: "Ahad", age: 19, message: "Proud to be Pakistani" },
+{ name: "Talha", age: 18, message: "Hum sub ka Pakistan ♥️♥️" },
   // Add real, reviewed entries below this line, one per line:
   // { name: "Full Name", age: 00, message: "Their message goes here..." },
 ];
