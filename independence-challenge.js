@@ -21,6 +21,10 @@
      email, age, message, payment method + matching account details,
      plus quiz results and basic technical fields (device id, user
      agent, IP) for anti-duplicate / support purposes.
+   - Submission now sends via FormData (matching the working
+     quiz-logic.js pattern) instead of a raw JSON body — the JSON body
+     was the reason most fields (and sometimes the whole email) weren't
+     arriving reliably through Web3Forms.
    ===================================================================== */
 (function () {
 
@@ -406,29 +410,34 @@
 
     const results = loadResults() || { correct: 0, wrong: 0, skipped: 0, total: 20, accuracy: 0, level: "" };
 
-    const payload = {
-      access_key: WEB3FORMS_KEY,
-      subject: "🏆 Vortex Digital Independence Day Challenge Submission",
-      from_name: "Vortex Digital Independence Day Challenge",
-      "Full Name": name,
-      "Phone": phone,
-      "Email": email,
-      "Age": age,
-      "Payment Method": method,
-      "Payment Account": document.getElementById("iday-payment-account") ? document.getElementById("iday-payment-account").value : "",
-      "Bank Name": document.getElementById("iday-bank-name") ? document.getElementById("iday-bank-name").value : "",
-      "Account Title": document.getElementById("iday-account-title") ? document.getElementById("iday-account-title").value : "",
-      "IBAN": document.getElementById("iday-iban") ? document.getElementById("iday-iban").value : "",
-      "Message": message,
-      "Correct": results.correct,
-      "Wrong": results.wrong,
-      "Skipped": results.skipped,
-      "Score": results.correct + "/" + results.total,
-      "Accuracy": results.accuracy + "%",
-      "Device ID": getDeviceId(),
-      "User Agent": navigator.userAgent,
-      "Submitted At": new Date().toISOString()
-    };
+    /* -----------------------------------------------------------------
+       FIX: build a FormData payload (same technique as the working
+       quiz-logic.js submission) instead of a raw JSON body. The JSON
+       body was the reason most fields — and sometimes the whole email —
+       weren't arriving reliably through Web3Forms.
+       ----------------------------------------------------------------- */
+    const formData = new FormData();
+    formData.append("access_key", WEB3FORMS_KEY);
+    formData.append("subject", "🏆 Vortex Digital Independence Day Challenge Submission");
+    formData.append("from_name", "Vortex Digital Independence Day Challenge");
+    formData.append("Full Name", name);
+    formData.append("Phone", phone);
+    formData.append("Email", email);
+    formData.append("Age", age);
+    formData.append("Payment Method", method);
+    formData.append("Payment Account", document.getElementById("iday-payment-account") ? document.getElementById("iday-payment-account").value : "");
+    formData.append("Bank Name", document.getElementById("iday-bank-name") ? document.getElementById("iday-bank-name").value : "");
+    formData.append("Account Title", document.getElementById("iday-account-title") ? document.getElementById("iday-account-title").value : "");
+    formData.append("IBAN", document.getElementById("iday-iban") ? document.getElementById("iday-iban").value : "");
+    formData.append("Message", message);
+    formData.append("Correct", results.correct);
+    formData.append("Wrong", results.wrong);
+    formData.append("Skipped", results.skipped);
+    formData.append("Score", results.correct + "/" + results.total);
+    formData.append("Accuracy", results.accuracy + "%");
+    formData.append("Device ID", getDeviceId());
+    formData.append("User Agent", navigator.userAgent);
+    formData.append("Submitted At", new Date().toISOString());
 
     const statusEl = document.getElementById("iday-submit-status");
     const submitBtn = e.target.querySelector("button[type=submit]");
@@ -437,13 +446,13 @@
 
     fetch("https://api.ipify.org?format=json")
       .then(function (r) { return r.json(); })
-      .then(function (d) { payload["IP Address"] = d.ip; })
-      .catch(function () { payload["IP Address"] = "Unavailable"; })
+      .then(function (d) { formData.append("IP Address", d.ip); })
+      .catch(function () { formData.append("IP Address", "Unavailable"); })
       .finally(function () {
         fetch("https://api.web3forms.com/submit", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify(payload)
+          headers: { "Accept": "application/json" },
+          body: formData
         })
           .then(function (r) { return r.json(); })
           .then(function (data) {
