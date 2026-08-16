@@ -983,3 +983,83 @@ background:rgba(13,23,41,0.9);
   .iday-card h2{ font-size:26px; }
   .iday-stats-row{ grid-template-columns:repeat(2,1fr); }
 }
+
+/* =====================================================================
+   MOBILE RESPONSIVE FIXES — this block was missing, causing the
+   desktop layout to render on phones (nav overflowing right side,
+   content squeezed to the left half of the screen).
+   Paste this at the very end of style.css.
+   ===================================================================== */
+
+@media(max-width:768px){
+header{
+padding:15px 10px;
+flex-direction:column;
+}
+
+.logo{
+flex-direction:column;
+gap:5px;
+}
+
+.logo img{
+width:70px;
+height:70px;
+}
+
+.logo h2{
+font-size:32px;
+text-align:center;
+}
+
+nav{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+width:100%;
+margin-top:15px;
+}
+
+nav a{
+margin:0;
+font-size:15px;
+text-align:center;
+}
+
+.hero{
+padding:60px 15px;
+}
+
+.hero h1{
+font-size:44px;
+line-height:1.1;
+}
+
+.hero p{
+font-size:18px;
+max-width:95%;
+}
+
+.btn{
+width:90%;
+max-width:300px;
+}
+
+.card{
+padding:20px;
+margin:15px auto;
+max-width:95%;
+}
+
+.card h2{
+font-size:26px;
+}
+
+.card h3{
+font-size:22px;
+}
+
+.container{
+width:95%;
+}
+}
