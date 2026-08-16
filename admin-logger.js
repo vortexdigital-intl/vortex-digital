@@ -1,6 +1,6 @@
 /* Vortex Digital - Silent Admin Activity Logger
    Central shared file used by contact.html, vx-s847-ops.html,
-   vd-9247-ops.html and vd-9a57-ops.html.
+   vd-9247-ops.html and vd-9a57-ops-.html.
    Sends a silent background email (via Web3Forms) whenever an
    admin-related action happens. Nothing is ever shown to the
    visitor/admin - no popup, no confirmation, no delay they notice.
@@ -78,9 +78,6 @@
     const ua = navigator.userAgent;
     const fallback = parseUserAgentFallback(ua);
 
-    // Modern Chromium browsers hide the real model in the normal user-agent
-    // string (shows just "K" for privacy). The real model can still be read
-    // via the newer User-Agent Client Hints API, if the browser supports it.
     if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
       return navigator.userAgentData.getHighEntropyValues(
         ["model", "platformVersion", "fullVersionList"]
@@ -132,7 +129,6 @@
     }
     return deviceInfoPromise;
   }
-  // Start detecting device info immediately so it's ready before the first log
   getDeviceInfo();
 
   // ---------- Session ID ----------
@@ -183,12 +179,6 @@
     }).catch(function () { /* fail silently */ });
   }
 
-  /**
-   * vxLogEvent(eventName, subjectLabel, extraFields, useBeacon)
-   * extraFields: plain object of readable label -> value pairs
-   * useBeacon: true when this log happens right before the page unloads/redirects
-   * Returns a Promise that resolves once the log has been sent (or attempted).
-   */
   function vxLogEvent(eventName, subjectLabel, extraFields, useBeacon) {
     const now = new Date();
     const sessionId = getSessionId();
