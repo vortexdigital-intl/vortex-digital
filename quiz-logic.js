@@ -35,7 +35,6 @@
 
   const QUESTION_TIME = 10; // seconds
   const STORAGE_DEVICE_ID = "vx_challenge_device_id";
-  const STORAGE_ATTEMPTED = "vx_challenge_attempted";
 
   let shuffledQuestions = [];
   let currentIndex = 0;
@@ -74,20 +73,43 @@
     return id;
   }
 
-  function hasAlreadyAttempted() {
-    return localStorage.getItem(STORAGE_ATTEMPTED) === "yes";
-  }
+  const STORAGE_STATUS = "vx_challenge_status"; // undefined | "completed_pending" | "submitted"
+  const STORAGE_RESULTS = "vx_challenge_results"; // JSON: {correct, wrong, skipped, scorePct, level}
 
-  function markAttempted() {
-    localStorage.setItem(STORAGE_ATTEMPTED, "yes");
+  function getStatus() {
+    return localStorage.getItem(STORAGE_STATUS);
+  }
+  function setStatus(val) {
+    localStorage.setItem(STORAGE_STATUS, val);
+  }
+  function saveResults(results) {
+    localStorage.setItem(STORAGE_RESULTS, JSON.stringify(results));
+  }
+  function loadResults() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_RESULTS) || "null"); } catch (e) { return null; }
   }
 
   // ---------------- Quiz flow ----------------
   window.openChallenge = function () {
-    if (hasAlreadyAttempted()) {
-      alert("You have already completed this challenge on this device. Only one attempt is allowed per participant.");
+    const status = getStatus();
+
+    if (status === "submitted") {
+      alert("You have already submitted your entry for this challenge. Thank you for taking part! 🇵🇰");
       return;
     }
+
+    if (status === "completed_pending") {
+      // They finished the 20 questions before but never submitted — take
+      // them straight to their saved results + the entry form. Do NOT
+      // let them replay the questions.
+      const results = loadResults();
+      if (results) {
+        populateResultModal(results, { resumed: true });
+        return;
+      }
+      // if results are missing for some reason, fall through and let them play fresh
+    }
+
     shuffledQuestions = buildShuffledQuestions();
     currentIndex = 0;
     correctCount = 0;
@@ -198,18 +220,37 @@
     const total = shuffledQuestions.length;
     const scorePct = Math.round((correctCount / total) * 100);
     const level = knowledgeLevel(scorePct);
+    const results = {
+      correct: correctCount,
+      wrong: wrongCount,
+      skipped: skippedCount,
+      scorePct: scorePct,
+      level: level
+    };
 
-    document.getElementById("resultCorrect").textContent = String(correctCount);
-    document.getElementById("resultWrong").textContent = String(wrongCount);
-    document.getElementById("resultSkipped").textContent = String(skippedCount);
-    document.getElementById("resultScore").textContent = scorePct + "%";
-    document.getElementById("iqLevel").textContent = level;
+    // Save immediately, the moment the 20 questions are done — this is
+    // what lets us tell "finished but didn't submit yet" apart from
+    // "never played" if they come back later without submitting.
+    setStatus("completed_pending");
+    saveResults(results);
 
-    document.getElementById("formCorrect").value = String(correctCount);
-    document.getElementById("formWrong").value = String(wrongCount);
-    document.getElementById("formSkipped").value = String(skippedCount);
-    document.getElementById("formScore").value = scorePct + "%";
-    document.getElementById("formLevel").value = level;
+    populateResultModal(results, { resumed: false });
+  }
+
+  function populateResultModal(results, options) {
+    options = options || {};
+
+    document.getElementById("resultCorrect").textContent = String(results.correct);
+    document.getElementById("resultWrong").textContent = String(results.wrong);
+    document.getElementById("resultSkipped").textContent = String(results.skipped);
+    document.getElementById("resultScore").textContent = results.scorePct + "%";
+    document.getElementById("iqLevel").textContent = results.level;
+
+    document.getElementById("formCorrect").value = String(results.correct);
+    document.getElementById("formWrong").value = String(results.wrong);
+    document.getElementById("formSkipped").value = String(results.skipped);
+    document.getElementById("formScore").value = results.scorePct + "%";
+    document.getElementById("formLevel").value = results.level;
     document.getElementById("formDevice").value = getDeviceId();
 
     // Technical fingerprint — private, business-record only, never shown publicly
@@ -228,6 +269,16 @@
       .catch(function () {
         document.getElementById("formIP").value = "";
       });
+
+    const noteEl = document.getElementById("resumeNote");
+    if (noteEl) {
+      if (options.resumed) {
+        noteEl.style.display = "block";
+        noteEl.textContent = "You've already completed this challenge — here are your results. You haven't submitted your entry yet, so you're not officially part of the competition until you do. Submit below before Sunday, 23 August.";
+      } else {
+        noteEl.style.display = "none";
+      }
+    }
 
     document.getElementById("resultModal").style.display = "block";
     document.body.style.overflow = "hidden";
@@ -304,7 +355,8 @@
           .then(function (res) { return res.json(); })
           .then(function (data) {
             if (data.success) {
-              markAttempted();
+              setStatus("submitted");
+              localStorage.removeItem(STORAGE_RESULTS);
               statusEl.style.color = "#86efac";
               statusEl.textContent = "✅ Entry submitted successfully! We'll be in touch by email.";
               submitBtn.textContent = "✅ Submitted";
@@ -324,13 +376,19 @@
       });
     }
 
-    // If this device already completed the challenge, reflect that on the start button
+    // Reflect this device's status on the start button
     const startBtn = document.querySelector(".challenge-start-btn");
-    if (startBtn && hasAlreadyAttempted()) {
-      startBtn.textContent = "✅ Challenge Already Completed";
-      startBtn.disabled = true;
-      startBtn.style.opacity = "0.6";
-      startBtn.style.cursor = "not-allowed";
+    if (startBtn) {
+      const status = getStatus();
+      if (status === "submitted") {
+        startBtn.textContent = "✅ Challenge Already Completed";
+        startBtn.disabled = true;
+        startBtn.style.opacity = "0.6";
+        startBtn.style.cursor = "not-allowed";
+      } else if (status === "completed_pending") {
+        startBtn.textContent = "📝 Complete Your Entry";
+        // stays enabled — clicking it resumes straight to the results/entry form
+      }
     }
   });
 })();
