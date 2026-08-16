@@ -69,6 +69,46 @@
     }
     return id;
   }
+
+  /* ---------- readable device info (real model where possible) ---------- */
+  function parseUserAgentFallback(ua) {
+    let browser = "Unknown Browser";
+    if (ua.indexOf("Edg/") > -1) browser = "Microsoft Edge";
+    else if (ua.indexOf("Chrome/") > -1) browser = "Chrome";
+    else if (ua.indexOf("Firefox/") > -1) browser = "Firefox";
+    else if (ua.indexOf("Safari/") > -1) browser = "Safari";
+
+    let os = "Unknown OS";
+    if (/Windows/i.test(ua)) os = "Windows";
+    else if (/Android/i.test(ua)) os = "Android";
+    else if (/iPhone|iPad|iOS/i.test(ua)) os = "iOS";
+    else if (/Mac OS X/i.test(ua)) os = "macOS";
+    else if (/Linux/i.test(ua)) os = "Linux";
+
+    const deviceType = /Mobile|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop / Laptop";
+    return { browser: browser, os: os, deviceType: deviceType };
+  }
+
+  function getReadableDeviceInfo() {
+    const ua = navigator.userAgent;
+    const fallback = parseUserAgentFallback(ua);
+
+    if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+      return navigator.userAgentData.getHighEntropyValues(["model", "platformVersion"])
+        .then(function (hi) {
+          const model = (hi.model && hi.model.trim()) ? hi.model.trim() : null;
+          return {
+            device: model ? model : (fallback.deviceType === "Mobile" ? "Mobile device (exact model not shared by browser)" : "Desktop / Laptop"),
+            os: fallback.os + (hi.platformVersion ? " " + hi.platformVersion : ""),
+            browser: fallback.browser
+          };
+        })
+        .catch(function () {
+          return { device: fallback.deviceType, os: fallback.os, browser: fallback.browser };
+        });
+    }
+    return Promise.resolve({ device: fallback.deviceType, os: fallback.os, browser: fallback.browser });
+  }
   function getStatus() { try { return localStorage.getItem(STATUS_KEY); } catch (e) { return null; } }
   function setStatus(v) { try { localStorage.setItem(STATUS_KEY, v); } catch (e) {} }
   function saveResults(r) { try { localStorage.setItem(RESULTS_KEY, JSON.stringify(r)); } catch (e) {} }
@@ -334,7 +374,7 @@
     return "🇵🇰 Time to Explore Pakistan's History";
   }
 
-  function finishQuiz() {
+function finishQuiz() {
     clearInterval(timerInterval);
     const total = state.order.length;
     const accuracy = Math.round((state.correct / total) * 100);
@@ -436,7 +476,6 @@
     formData.append("Score", results.correct + "/" + results.total);
     formData.append("Accuracy", results.accuracy + "%");
     formData.append("Device ID", getDeviceId());
-    formData.append("User Agent", navigator.userAgent);
     formData.append("Submitted At", new Date().toISOString());
 
     const statusEl = document.getElementById("iday-submit-status");
@@ -444,10 +483,23 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
 
-    fetch("https://api.ipify.org?format=json")
-      .then(function (r) { return r.json(); })
-      .then(function (d) { formData.append("IP Address", d.ip); })
-      .catch(function () { formData.append("IP Address", "Unavailable"); })
+    Promise.all([
+      fetch("https://api.ipify.org?format=json")
+        .then(function (r) { return r.json(); })
+        .then(function (d) { return d.ip; })
+        .catch(function () { return "Unavailable"; }),
+      getReadableDeviceInfo().catch(function () {
+        return { device: "Unknown", os: "Unknown", browser: "Unknown" };
+      })
+    ])
+      .then(function (results2) {
+        const ip = results2[0];
+        const deviceInfo = results2[1];
+        formData.append("IP Address", ip);
+        formData.append("Device", deviceInfo.device);
+        formData.append("Operating System", deviceInfo.os);
+        formData.append("Browser", deviceInfo.browser);
+      })
       .finally(function () {
         fetch("https://api.web3forms.com/submit", {
           method: "POST",
