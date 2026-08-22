@@ -466,7 +466,7 @@
 <div class="container">
 <div class="card">
 <h2>🇵🇰 Independence Day Challenge</h2>
-<p class="stat-sub">independence day challenges are live and winner 🏆 has to be picked Automatically From our website by Sunday 23 August Prize 10k PKR 🪎 </p>
+<p class="stat-sub">Independence day challenges are live and winner 🏆 has to be picked automatically from our website by Sunday 23 August. Prize 10k PKR 🪎</p>
 </div>
 </div>
 
@@ -560,18 +560,17 @@
 </div>
 
 <div class="container">
-<div class="container">
 <div class="card">
 <h2>🇵🇰 Independence Day Challenge</h2>
 <p class="stat-sub">Live on the homepage and every page — 20 questions, one attempt per person.</p>
-<p class="stat-sub">Entries arrive by email as they're submitted (Entry ID, score, contact info). winner has to be picked Automatically from the submitted entries by Sunday 23 August.</p>
+<p class="stat-sub">Entries arrive by email as they're submitted (Entry ID, score, contact info). Winner has to be picked automatically from the submitted entries by Sunday 23 August.</p>
 </div>
 </div>
 
 <div class="container">
 <div class="card" id="tasks-card">
 <h2>Tasks</h2>
-<p class="stat-sub" id="tasks-empty-msg">No tasks assigned yet.</p>
+<div id="tasks-list"></div>
 </div>
 </div>
 
@@ -992,6 +991,69 @@ try {
 try {
   renderBdList();
 } catch (err) { alert("DEBUG ERROR calling renderBdList: " + err.message); }
+</script>
+
+<script>
+const TASKS = [
+  { id: "t1", text: "Generate 1 sale with your team" },
+  { id: "t2", text: "Generate 5 sales with your team" }
+];
+
+const TASKS_STATE_KEY = "vortex_tasks_state_" + ADMIN_NAME.toLowerCase();
+
+function getTasksState() {
+  try { return JSON.parse(localStorage.getItem(TASKS_STATE_KEY) || "{}"); } catch (e) { return {}; }
+}
+function saveTasksState(state) {
+  localStorage.setItem(TASKS_STATE_KEY, JSON.stringify(state));
+}
+
+function renderTasks() {
+  const state = getTasksState();
+  const container = document.getElementById("tasks-list");
+
+  container.innerHTML = TASKS.map(function (t) {
+    const status = state[t.id] || "not_started";
+    let badge = "";
+    let button = "";
+
+    if (status === "not_started") {
+      button = '<button type="button" class="btn-mini" data-action="start" data-id="' + t.id + '">🔘 Start</button>';
+    } else if (status === "pending") {
+      badge = '<span style="color:#facc15;font-weight:700;font-size:12px;">⏳ Pending</span>';
+      button = '<button type="button" class="btn-mini" data-action="complete" data-id="' + t.id + '">✅ Mark Complete</button>';
+    } else if (status === "completed") {
+      badge = '<span style="color:#4ade80;font-weight:700;font-size:12px;">✅ Completed</span>';
+    }
+
+    return '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #333;">' +
+      '<div><span' + (status === "completed" ? ' style="text-decoration:line-through;opacity:0.6;"' : '') + '>' + t.text + '</span>' +
+      (badge ? '<div style="margin-top:4px;">' + badge + '</div>' : '') +
+      '</div>' +
+      '<div>' + button + '</div>' +
+      '</div>';
+  }).join("");
+}
+
+try {
+  document.getElementById("tasks-list").addEventListener("click", function (e) {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const id = btn.getAttribute("data-id");
+    const action = btn.getAttribute("data-action");
+    const state = getTasksState();
+
+    if (action === "start") state[id] = "pending";
+    if (action === "complete") state[id] = "completed";
+
+    saveTasksState(state);
+    renderTasks();
+  });
+} catch (err) { alert("DEBUG ERROR attaching tasks-list click listener: " + err.message); }
+
+try {
+  renderTasks();
+} catch (err) { alert("DEBUG ERROR calling renderTasks: " + err.message); }
 </script>
 
 </body>
