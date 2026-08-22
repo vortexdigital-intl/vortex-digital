@@ -1153,3 +1153,30 @@ font-size:22px;
 width:95%;
 }
 }
+
+.btn-task{
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-task:hover{
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+.btn-task:active{
+  transform: scale(0.96);
+}
+
+.btn-task-start{
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: white;
+}
+
+.btn-task-complete{
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
