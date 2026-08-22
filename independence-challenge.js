@@ -128,22 +128,28 @@
     const mount = document.getElementById("iday-mount");
     if (!mount) return;
 
-    const status = getStatus();
-    let btnLabel = "🇵🇰 ENTER THE CHALLENGE";
-    if (status === "submitted") btnLabel = "✅ Entry Submitted";
-    else if (status === "completed_pending") btnLabel = "📝 Complete Your Entry";
+    const WINNERS = [
+      "Zara Yasmeen",
+      "Muhammad Fazal",
+      "M. Faizan Ali",
+      "Mr. Muhammad Yaqoob",
+      "Muhammad Shaheer",
+      "Hussain Ali Madni",
+      "Raza",
+      "Alisha Fatima"
+    ];
+
+    const winnersHtml = WINNERS.map(function (name) {
+      return '<div class="iday-winner-item">🏆 ' + name + '</div>';
+    }).join("");
 
     mount.innerHTML =
       '<div class="iday-card">' +
-        '<span class="iday-eyebrow">🇵🇰 14 AUGUST SPECIAL 🇵🇰</span>' +
-        '<h2>Pakistan Independence Day Challenge</h2>' +
-        '<p class="iday-sub">Test Your Pakistan Knowledge. Beat the Clock. Win the Prize. 🏆</p>' +
-        '<p class="iday-desc">20 questions. ' + TIME_PER_QUESTION + ' seconds per question. One attempt only.</p>' +
-        '<div class="iday-prize"><span class="iday-prize-label">GRAND PRIZE</span><strong>PKR 10,000</strong></div>' +
-        '<button class="btn-gold" id="iday-open-btn">' + btnLabel + '</button>' +
+        '<span class="iday-eyebrow">🇵🇰 INDEPENDENCE CHALLENGE WINNERS 🏆</span>' +
+        '<h2>Congratulations to Our Winners!</h2>' +
+        '<p class="iday-sub">Thank you to everyone who took part in the Vortex Digital Independence Day Challenge. 🇵🇰</p>' +
+        '<div class="iday-winners-grid">' + winnersHtml + '</div>' +
       '</div>';
-
-    document.getElementById("iday-open-btn").addEventListener("click", openOverlay);
   }
 
   /* ---------- modal ---------- */
@@ -374,7 +380,7 @@
     return "🇵🇰 Time to Explore Pakistan's History";
   }
 
-function finishQuiz() {
+  function finishQuiz() {
     clearInterval(timerInterval);
     const total = state.order.length;
     const accuracy = Math.round((state.correct / total) * 100);
@@ -405,156 +411,3 @@ function finishQuiz() {
     if (resumed) {
       note.style.display = "block";
       note.textContent = "You already completed this challenge — here are your results. You haven't submitted your entry yet, so please submit below to be included in the competition.";
-    } else {
-      note.style.display = "none";
-    }
-  }
-
-  function updatePaymentFields() {
-    const method = document.getElementById("iday-payment-method").value;
-    const container = document.getElementById("iday-payment-fields");
-    container.innerHTML = "";
-
-    if (method === "EasyPaisa" || method === "JazzCash") {
-      container.innerHTML =
-        '<label>' + method + ' Account Number *</label>' +
-        '<input type="tel" id="iday-payment-account" placeholder="03XXXXXXXXX" required>';
-    } else if (method === "PayPal") {
-      container.innerHTML =
-        '<label>PayPal Email / Username *</label>' +
-        '<input type="text" id="iday-payment-account" placeholder="PayPal email or username" required>';
-    } else if (method === "Bank Transfer") {
-      container.innerHTML =
-        '<label>Bank Name *</label><input type="text" id="iday-bank-name" required>' +
-        '<label>Account Title *</label><input type="text" id="iday-account-title" required>' +
-        '<label>IBAN *</label><input type="text" id="iday-iban" placeholder="PKXX XXXX XXXX XXXX XXXX XXXX" required>';
-    }
-  }
-
-  function submitEntry(e) {
-    e.preventDefault();
-
-    if (getStatus() === "submitted") return;
-
-    const name = document.getElementById("iday-name").value.trim();
-    const phone = document.getElementById("iday-phone").value.trim();
-    const email = document.getElementById("iday-email").value.trim();
-    const age = document.getElementById("iday-age").value.trim();
-    const method = document.getElementById("iday-payment-method").value;
-    const message = document.getElementById("iday-message").value.trim();
-
-    if (message.length < 10) {
-      document.getElementById("iday-message").focus();
-      return;
-    }
-
-    const results = loadResults() || { correct: 0, wrong: 0, skipped: 0, total: 20, accuracy: 0, level: "" };
-
-    /* -----------------------------------------------------------------
-       FIX: build a FormData payload (same technique as the working
-       quiz-logic.js submission) instead of a raw JSON body. The JSON
-       body was the reason most fields — and sometimes the whole email —
-       weren't arriving reliably through Web3Forms.
-       ----------------------------------------------------------------- */
-    const formData = new FormData();
-    formData.append("access_key", WEB3FORMS_KEY);
-    formData.append("subject", "🏆 Vortex Digital Independence Day Challenge Submission");
-    formData.append("from_name", "Vortex Digital Independence Day Challenge");
-    formData.append("Full Name", name);
-    formData.append("Phone", phone);
-    formData.append("Email", email);
-    formData.append("Age", age);
-    formData.append("Payment Method", method);
-    formData.append("Payment Account", document.getElementById("iday-payment-account") ? document.getElementById("iday-payment-account").value : "");
-    formData.append("Bank Name", document.getElementById("iday-bank-name") ? document.getElementById("iday-bank-name").value : "");
-    formData.append("Account Title", document.getElementById("iday-account-title") ? document.getElementById("iday-account-title").value : "");
-    formData.append("IBAN", document.getElementById("iday-iban") ? document.getElementById("iday-iban").value : "");
-    formData.append("Message", message);
-    formData.append("Correct", results.correct);
-    formData.append("Wrong", results.wrong);
-    formData.append("Skipped", results.skipped);
-    formData.append("Score", results.correct + "/" + results.total);
-    formData.append("Accuracy", results.accuracy + "%");
-    formData.append("Device ID", getDeviceId());
-    formData.append("Submitted At", new Date().toISOString());
-
-    const statusEl = document.getElementById("iday-submit-status");
-    const submitBtn = e.target.querySelector("button[type=submit]");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
-
-    Promise.all([
-      fetch("https://api.ipify.org?format=json")
-        .then(function (r) { return r.json(); })
-        .then(function (d) { return d.ip; })
-        .catch(function () { return "Unavailable"; }),
-      getReadableDeviceInfo().catch(function () {
-        return { device: "Unknown", os: "Unknown", browser: "Unknown" };
-      })
-    ])
-      .then(function (results2) {
-        const ip = results2[0];
-        const deviceInfo = results2[1];
-        formData.append("IP Address", ip);
-        formData.append("Device", deviceInfo.device);
-        formData.append("Operating System", deviceInfo.os);
-        formData.append("Browser", deviceInfo.browser);
-      })
-      .finally(function () {
-        fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Accept": "application/json" },
-          body: formData
-        })
-          .then(function (r) { return r.json(); })
-          .then(function (data) {
-            if (data.success) {
-              setStatus("submitted");
-              localStorage.removeItem(RESULTS_KEY);
-              showScreen("iday-screen-done");
-              renderCard();
-            } else {
-              throw new Error(data.message || "Submission failed");
-            }
-          })
-          .catch(function () {
-            statusEl.style.color = "#fca5a5";
-            statusEl.textContent = "⚠️ Something went wrong. Please try again.";
-            submitBtn.disabled = false;
-            submitBtn.textContent = "🏆 Submit My Entry";
-          });
-      });
-  }
-
-  function wireModal() {
-    document.getElementById("iday-close-btn").addEventListener("click", closeOverlay);
-    document.getElementById("iday-overlay").addEventListener("click", function (e) {
-      if (e.target.id === "iday-overlay") closeOverlay();
-    });
-    document.getElementById("iday-start-btn").addEventListener("click", startQuiz);
-    document.getElementById("iday-skip-btn").addEventListener("click", skipQuestion);
-    document.getElementById("iday-continue-btn").addEventListener("click", function () {
-      showScreen("iday-screen-form");
-    });
-    document.getElementById("iday-payment-method").addEventListener("change", updatePaymentFields);
-    document.getElementById("iday-entry-form").addEventListener("submit", submitEntry);
-
-    const msgField = document.getElementById("iday-message");
-    const counter = document.getElementById("iday-char-counter");
-    msgField.addEventListener("input", function () {
-      counter.textContent = msgField.value.length + " / 300 (min 10)";
-    });
-  }
-
-  function init() {
-    buildModal();
-    renderCard();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-
-})();
