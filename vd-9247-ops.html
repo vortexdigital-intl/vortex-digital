@@ -236,16 +236,56 @@
   gap: 6px;
   flex-shrink: 0;
 }
-.btn-mini {
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: transparent;
+.btn-mini{
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
 }
-.btn-suspend { color: #ffb020; border-color: #ffb020; }
-.btn-delete { color: #ff5c5c; border-color: #ff5c5c; }
+.btn-mini:hover{
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+.btn-mini:active{
+  transform: scale(0.96);
+}
+.btn-suspend{
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #1a1200;
+}
+.btn-delete{
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: white;
+}
+.btn-task{
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-task:hover{
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+.btn-task:active{
+  transform: scale(0.96);
+}
+.btn-task-start{
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: white;
+}
+.btn-task-complete{
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
 #add-bd-btn { margin-top: 14px; }
 #add-bd-form {
   margin-top: 16px;
@@ -292,6 +332,149 @@
   color: #4ade80;
   font-weight: 600;
 }
+
+/* ===================== Animations ===================== */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.6); }
+  60%  { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(74,125,255,0); }
+  50%      { box-shadow: 0 0 18px rgba(74,125,255,0.35); }
+}
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.85); }
+  40%           { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes checkDraw {
+  from { stroke-dashoffset: 24; }
+  to   { stroke-dashoffset: 0; }
+}
+
+#lock-screen {
+  animation: fadeIn 0.5s ease both;
+}
+#lock-screen h2 {
+  animation: fadeInUp 0.5s ease both;
+}
+#lock-screen input {
+  animation: fadeInUp 0.5s ease 0.1s both;
+}
+#lock-screen button, #lock-screen .back-link {
+  animation: fadeInUp 0.5s ease 0.2s both;
+}
+.shake {
+  animation: shake 0.45s ease;
+}
+
+.container {
+  opacity: 0;
+  animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.container:nth-of-type(1) { animation-delay: 0.05s; }
+.container:nth-of-type(2) { animation-delay: 0.15s; }
+.container:nth-of-type(3) { animation-delay: 0.25s; }
+.container:nth-of-type(4) { animation-delay: 0.35s; }
+.container:nth-of-type(5) { animation-delay: 0.45s; }
+.container:nth-of-type(6) { animation-delay: 0.55s; }
+
+.card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.stat-value, .balance-value {
+  transition: opacity 0.2s ease;
+}
+
+#balance-loading {
+  display: none;
+}
+#balance-loading.show {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  animation: dotPulse 1.2s ease infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.15s; }
+.dot:nth-child(3) { animation-delay: 0.3s; }
+
+.btn {
+  transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.95);
+}
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.switch .slider {
+  transition: background-color 0.25s ease;
+}
+.switch .slider:before {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#tl-section.opening {
+  animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.bd-item {
+  animation: slideInLeft 0.35s ease both;
+}
+
+.success-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.success-check svg {
+  overflow: visible;
+}
+.success-check svg path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: checkDraw 0.35s ease 0.15s forwards;
+}
+
+.paypal-card.revealed {
+  animation: glowPulse 1.6s ease 1;
+}
+</style>
+</head>
+<body>
 
 /* ===================== Animations ===================== */
 
@@ -526,6 +709,7 @@
 <div class="container" id="tl-section" style="display:none;">
   <div class="card">
     <h2>Your BDs</h2>
+    <p class="stat-sub" id="bd-sync-status">Syncing…</p>
     <div id="bd-list"><p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p></div>
 
     <button class="btn" id="add-bd-btn" onclick="openAddBdForm()">+ Add New BD</button>
@@ -545,10 +729,6 @@
         <option value="BD">BD</option>
         <option value="Senior BD">Senior BD</option>
       </select>
-
-      <label for="bd-photo">Photo (optional)</label>
-      <input type="file" id="bd-photo" accept="image/*">
-      <img id="bd-photo-preview" alt="Preview">
 
       <div class="tl-form-actions">
         <button class="btn" onclick="submitNewBd()">Add BD</button>
@@ -570,6 +750,7 @@
 <div class="container">
 <div class="card" id="tasks-card">
 <h2>Tasks</h2>
+<p class="stat-sub" id="tasks-sync-status">Syncing…</p>
 <div id="tasks-list"></div>
 </div>
 </div>
@@ -578,6 +759,30 @@
 <a class="back-link" href="vx-s847-ops.html">&larr; Back to admin selection</a>
 </div>
 </div>
+
+<!-- ===================== Firebase (shared sync for BD list + Tasks) ===================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getFirestore, doc, setDoc, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCMJqnyLWSpcg_QAllFsCmhHRf_1BycXbs",
+    authDomain: "vortex-digital-ae88b.firebaseapp.com",
+    projectId: "vortex-digital-ae88b",
+    storageBucket: "vortex-digital-ae88b.firebasestorage.app",
+    messagingSenderId: "1052336449279",
+    appId: "1:1052336449279:web:3db8b20d03438603c10eca",
+    measurementId: "G-YZDKKVJX9X"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.vdDb = { db, doc, setDoc, onSnapshot };
+  window.dispatchEvent(new Event("vdFirebaseReady"));
+</script>
 
 <script src="admin-logger.js"></script>
 <script>
@@ -671,7 +876,7 @@ try {
 
 /* ---- PayPal balance card logic ---- */
 /* NOTE: static reference numbers, not a live PayPal feed. Edit by hand. */
-const REAL_BALANCE = { current: 41500.17, backup: 0.00, backend: 100.00 };
+const REAL_BALANCE = { current: 42000.63, backup: 0.00, backend: 200.00 };
 
 function animateCountUp(el, target, duration) {
   const start = 0;
@@ -759,7 +964,6 @@ function hideBalance() {
 
 /* ---- Team Leader Mode (no access code needed) ---- */
 const TL_KEY = "vortex_tl_mode_" + ADMIN_NAME.toLowerCase();
-const BD_LIST_KEY = "vortex_bd_list_" + ADMIN_NAME.toLowerCase();
 
 function toggleTeamLeaderMode() {
   try {
@@ -808,95 +1012,13 @@ function cancelAddBd() {
   } catch (err) { alert("DEBUG ERROR in cancelAddBd: " + err.message); }
 }
 
-try {
-  document.getElementById("bd-photo").addEventListener("change", function (e) {
-    try {
-      const file = e.target.files[0];
-      const preview = document.getElementById("bd-photo-preview");
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (ev) {
-          preview.src = ev.target.result;
-          preview.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      } else {
-        preview.style.display = "none";
-        preview.src = "";
-      }
-    } catch (err) { alert("DEBUG ERROR reading photo: " + err.message); }
-  });
-} catch (err) { alert("DEBUG ERROR attaching photo listener: " + err.message); }
-
 function clearBdFormFields() {
   try {
     document.getElementById("bd-name").value = "";
     document.getElementById("bd-phone").value = "";
     document.getElementById("bd-email").value = "";
     document.getElementById("bd-position").value = "BD";
-    document.getElementById("bd-photo").value = "";
-    document.getElementById("bd-photo-preview").style.display = "none";
-    document.getElementById("bd-photo-preview").src = "";
   } catch (err) { alert("DEBUG ERROR in clearBdFormFields: " + err.message); }
-}
-
-function submitNewBd() {
-  try {
-    const name = document.getElementById("bd-name").value.trim();
-    const phone = document.getElementById("bd-phone").value.trim();
-    const email = document.getElementById("bd-email").value.trim();
-    const position = document.getElementById("bd-position").value;
-    const photoDataUrl = document.getElementById("bd-photo-preview").src &&
-      document.getElementById("bd-photo-preview").style.display !== "none"
-      ? document.getElementById("bd-photo-preview").src : "";
-
-    if (!name || !phone || !email) {
-      alert("Please fill in name, phone, and email.");
-      return;
-    }
-
-    fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        access_key: "4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d",
-        subject: "New BD Added by " + ADMIN_NAME,
-        from_name: "Vortex Digital Team Leader Panel",
-        "Full Name": name,
-        "Phone Number": phone,
-        "Email Address": email,
-        "Position": position,
-        "Added By": ADMIN_NAME,
-        "Has Photo": photoDataUrl ? "Yes (saved on " + ADMIN_NAME + "'s device only, not emailed)" : "No"
-      })
-    }).catch(function () { /* fail silently */ });
-
-    safeLog(
-      "bd_added",
-      "New BD Added - " + ADMIN_NAME,
-      { Admin: ADMIN_NAME, BD_Name: name, BD_Position: position },
-      false
-    );
-
-    const newId = (window.crypto && crypto.randomUUID)
-      ? crypto.randomUUID()
-      : (Date.now().toString(36) + Math.random().toString(36).slice(2));
-
-    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-    list.push({ id: newId, name: name, phone: phone, email: email, position: position, photo: photoDataUrl, suspended: false });
-    localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
-    renderBdList();
-
-    document.getElementById("add-bd-form").style.display = "none";
-    document.getElementById("bd-success-msg").style.display = "block";
-    setTimeout(function () {
-      document.getElementById("bd-success-msg").style.display = "none";
-      document.getElementById("add-bd-btn").style.display = "inline-block";
-      clearBdFormFields();
-    }, 1800);
-  } catch (err) {
-    alert("DEBUG ERROR in submitNewBd: " + err.message);
-  }
 }
 
 function escapeHtml(str) {
@@ -906,34 +1028,19 @@ function escapeHtml(str) {
   });
 }
 
+/* ===================== BD LIST — synced via Firebase ===================== */
+let bdList = [];   // current in-memory list, kept in sync with Firestore
+let bdDocRef = null;
+
 function renderBdList() {
   try {
-    let list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-    let needsResave = false;
-    list = list.map(function (bd) {
-      if (!bd.id) {
-        bd.id = (window.crypto && crypto.randomUUID)
-          ? crypto.randomUUID()
-          : (Date.now().toString(36) + Math.random().toString(36).slice(2));
-        needsResave = true;
-      }
-      if (!bd.name) { bd.name = "Unnamed"; needsResave = true; }
-      if (!bd.position) { bd.position = "BD"; needsResave = true; }
-      if (!bd.email) { bd.email = ""; needsResave = true; }
-      if (!bd.phone) { bd.phone = ""; needsResave = true; }
-      return bd;
-    });
-    if (needsResave) localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
-
     const container = document.getElementById("bd-list");
-    if (list.length === 0) {
+    if (bdList.length === 0) {
       container.innerHTML = '<p class="stat-sub" id="bd-empty-msg">No BDs added yet.</p>';
       return;
     }
-    container.innerHTML = list.map(function (bd) {
-      const photoHtml = bd.photo
-        ? '<img src="' + bd.photo + '" class="bd-photo">'
-        : '<div class="bd-photo bd-photo-placeholder">' + escapeHtml(bd.name.charAt(0).toUpperCase()) + '</div>';
+    container.innerHTML = bdList.map(function (bd) {
+      const photoHtml = '<div class="bd-photo bd-photo-placeholder">' + escapeHtml(bd.name.charAt(0).toUpperCase()) + '</div>';
       const statusHtml = bd.suspended ? '<span class="bd-status-suspended">Suspended</span>' : '';
       const suspendBtnHtml = bd.suspended ? '' :
         '<button type="button" class="btn-mini btn-suspend" data-action="suspend" data-id="' + escapeHtml(bd.id) + '">Suspend</button>';
@@ -952,13 +1059,74 @@ function renderBdList() {
   }
 }
 
+function saveBdListToFirebase() {
+  if (!window.vdDb || !bdDocRef) return;
+  const { setDoc } = window.vdDb;
+  setDoc(bdDocRef, { list: bdList }).catch(function (err) {
+    alert("DEBUG ERROR saving BD list to Firebase: " + err.message);
+  });
+}
+
+function submitNewBd() {
+  try {
+    const name = document.getElementById("bd-name").value.trim();
+    const phone = document.getElementById("bd-phone").value.trim();
+    const email = document.getElementById("bd-email").value.trim();
+    const position = document.getElementById("bd-position").value;
+
+    if (!name || !phone || !email) {
+      alert("Please fill in name, phone, and email.");
+      return;
+    }
+
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        access_key: "4c123d40-5a37-40a6-bb1e-c8c5b53f1a1d",
+        subject: "New BD Added by " + ADMIN_NAME,
+        from_name: "Vortex Digital Team Leader Panel",
+        "Full Name": name,
+        "Phone Number": phone,
+        "Email Address": email,
+        "Position": position,
+        "Added By": ADMIN_NAME
+      })
+    }).catch(function () { /* fail silently */ });
+
+    safeLog(
+      "bd_added",
+      "New BD Added - " + ADMIN_NAME,
+      { Admin: ADMIN_NAME, BD_Name: name, BD_Position: position },
+      false
+    );
+
+    const newId = (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+    bdList.push({ id: newId, name: name, phone: phone, email: email, position: position, suspended: false });
+    saveBdListToFirebase();
+    renderBdList();
+
+    document.getElementById("add-bd-form").style.display = "none";
+    document.getElementById("bd-success-msg").style.display = "block";
+    setTimeout(function () {
+      document.getElementById("bd-success-msg").style.display = "none";
+      document.getElementById("add-bd-btn").style.display = "inline-block";
+      clearBdFormFields();
+    }, 1800);
+  } catch (err) {
+    alert("DEBUG ERROR in submitNewBd: " + err.message);
+  }
+}
+
 function suspendBd(id) {
   try {
-    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-    const bd = list.find(function (b) { return b.id === id; });
+    const bd = bdList.find(function (b) { return b.id === id; });
     if (!bd) return;
     bd.suspended = true;
-    localStorage.setItem(BD_LIST_KEY, JSON.stringify(list));
+    saveBdListToFirebase();
     safeLog("bd_suspended", "BD Suspended - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
     renderBdList();
   } catch (err) { alert("DEBUG ERROR in suspendBd: " + err.message); }
@@ -966,12 +1134,11 @@ function suspendBd(id) {
 
 function deleteBd(id) {
   try {
-    const list = JSON.parse(localStorage.getItem(BD_LIST_KEY) || "[]");
-    const bd = list.find(function (b) { return b.id === id; });
+    const bd = bdList.find(function (b) { return b.id === id; });
     if (!bd) return;
     if (!confirm('Delete "' + bd.name + '"? This cannot be undone.')) return;
-    const newList = list.filter(function (b) { return b.id !== id; });
-    localStorage.setItem(BD_LIST_KEY, JSON.stringify(newList));
+    bdList = bdList.filter(function (b) { return b.id !== id; });
+    saveBdListToFirebase();
     safeLog("bd_deleted", "BD Deleted - " + ADMIN_NAME, { Admin: ADMIN_NAME, BD_Name: bd.name }, false);
     renderBdList();
   } catch (err) { alert("DEBUG ERROR in deleteBd: " + err.message); }
@@ -988,32 +1155,19 @@ try {
   });
 } catch (err) { alert("DEBUG ERROR attaching bd-list click listener: " + err.message); }
 
-try {
-  renderBdList();
-} catch (err) { alert("DEBUG ERROR calling renderBdList: " + err.message); }
-</script>
-
-<script>
+/* ===================== TASKS — synced via Firebase ===================== */
 const TASKS = [
   { id: "t1", text: "Generate 1 sale with your team" },
   { id: "t2", text: "Generate 5 sales with your team" }
 ];
 
-const TASKS_STATE_KEY = "vortex_tasks_state_" + ADMIN_NAME.toLowerCase();
-
-function getTasksState() {
-  try { return JSON.parse(localStorage.getItem(TASKS_STATE_KEY) || "{}"); } catch (e) { return {}; }
-}
-function saveTasksState(state) {
-  localStorage.setItem(TASKS_STATE_KEY, JSON.stringify(state));
-}
+let tasksState = {};
+let tasksDocRef = null;
 
 function renderTasks() {
-  const state = getTasksState();
   const container = document.getElementById("tasks-list");
-
   container.innerHTML = TASKS.map(function (t) {
-    const status = state[t.id] || "not_started";
+    const status = tasksState[t.id] || "not_started";
     let badge = "";
     let button = "";
 
@@ -1035,25 +1189,64 @@ function renderTasks() {
   }).join("");
 }
 
+function saveTasksStateToFirebase() {
+  if (!window.vdDb || !tasksDocRef) return;
+  const { setDoc } = window.vdDb;
+  setDoc(tasksDocRef, tasksState).catch(function (err) {
+    alert("DEBUG ERROR saving Tasks state to Firebase: " + err.message);
+  });
+}
+
 try {
   document.getElementById("tasks-list").addEventListener("click", function (e) {
     const btn = e.target.closest("button[data-action]");
     if (!btn) return;
     const id = btn.getAttribute("data-id");
     const action = btn.getAttribute("data-action");
-    const state = getTasksState();
 
-    if (action === "start") state[id] = "pending";
-    if (action === "complete") state[id] = "completed";
+    if (action === "start") tasksState[id] = "pending";
+    if (action === "complete") tasksState[id] = "completed";
 
-    saveTasksState(state);
+    saveTasksStateToFirebase();
     renderTasks();
   });
 } catch (err) { alert("DEBUG ERROR attaching tasks-list click listener: " + err.message); }
 
-try {
-  renderTasks();
-} catch (err) { alert("DEBUG ERROR calling renderTasks: " + err.message); }
+/* ===================== Wire up Firebase real-time sync ===================== */
+function startFirebaseSync() {
+  if (!window.vdDb) return;
+  const { db, doc, onSnapshot } = window.vdDb;
+
+  bdDocRef = doc(db, "bd_lists", ADMIN_NAME.toLowerCase());
+  onSnapshot(bdDocRef, function (snap) {
+    const data = snap.data();
+    bdList = (data && Array.isArray(data.list)) ? data.list : [];
+    renderBdList();
+    const syncEl = document.getElementById("bd-sync-status");
+    if (syncEl) syncEl.style.display = "none";
+  }, function (err) {
+    const syncEl = document.getElementById("bd-sync-status");
+    if (syncEl) syncEl.textContent = "Sync error: " + err.message;
+  });
+
+  tasksDocRef = doc(db, "tasks_state", ADMIN_NAME.toLowerCase());
+  onSnapshot(tasksDocRef, function (snap) {
+    const data = snap.data();
+    tasksState = data || {};
+    renderTasks();
+    const syncEl = document.getElementById("tasks-sync-status");
+    if (syncEl) syncEl.style.display = "none";
+  }, function (err) {
+    const syncEl = document.getElementById("tasks-sync-status");
+    if (syncEl) syncEl.textContent = "Sync error: " + err.message;
+  });
+}
+
+if (window.vdDb) {
+  startFirebaseSync();
+} else {
+  window.addEventListener("vdFirebaseReady", startFirebaseSync);
+}
 </script>
 
 </body>
