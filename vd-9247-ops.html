@@ -1018,10 +1018,10 @@ function renderTasks() {
     let button = "";
 
     if (status === "not_started") {
-      button = '<button type="button" class="btn-mini" data-action="start" data-id="' + t.id + '">🔘 Start</button>';
+      button = '<button type="button" class="btn-task btn-task-start" data-action="start" data-id="' + t.id + '">🔘 Start</button>';
     } else if (status === "pending") {
       badge = '<span style="color:#facc15;font-weight:700;font-size:12px;">⏳ Pending</span>';
-      button = '<button type="button" class="btn-mini" data-action="complete" data-id="' + t.id + '">✅ Mark Complete</button>';
+      button = '<button type="button" class="btn-task btn-task-complete" data-action="complete" data-id="' + t.id + '">✅ Mark Complete</button>';
     } else if (status === "completed") {
       badge = '<span style="color:#4ade80;font-weight:700;font-size:12px;">✅ Completed</span>';
     }
