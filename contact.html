@@ -5,10 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact - Vortex Digital</title>
 <link rel="stylesheet" href="style.css">
+<meta property="og:title" content="Vortex Digital - Contact">
+<meta property="og:description" content="Have a question or business inquiry? Get in touch with Vortex Digital.">
+<meta property="og:image" content="https://vortexdigital-intl.github.io/vortex-digital/vortex.digital.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:url" content="https://vortexdigital-intl.github.io/vortex-digital/contact.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vortex Digital - Contact">
+<meta name="twitter:description" content="Have a question or business inquiry? Get in touch with Vortex Digital.">
+<meta name="twitter:image" content="https://vortexdigital-intl.github.io/vortex-digital/vortex.digital.png">
 </head>
 <body>
-<div class="indep-banner">🇵🇰 Happy Independence Day — Pakistan Zindabad! 🇵🇰</div>
-
 <header>
 <div class="logo">
 <img src="logo.png.jpeg" alt="Vortex Digital">
@@ -23,10 +33,6 @@
 <a href="contact.html">Contact</a>
 </nav>
 </header>
-
-<div class="container">
-<div id="iday-mount"></div>
-</div>
 
 <section class="hero hero-small">
 <span class="eyebrow">Get In Touch</span>
@@ -114,6 +120,10 @@ Send us a message below.
   let tapCount = 0;
   let tapTimer = null;
 
+  // NOTE: the founder-card tap gesture itself is intentionally NOT logged
+  // or emailed anymore — only real events (an actual access code being
+  // entered on the admin pages, or a PayPal balance check) send mail.
+
   function isFormEmpty() {
     const fields = form.querySelectorAll("input[type='text'], input[type='email'], input[type='tel'], textarea, select");
     for (const field of fields) {
@@ -139,13 +149,16 @@ Send us a message below.
 
   trigger.addEventListener("click", function (e) {
     e.stopPropagation();
+
     if (!isFormEmpty()) {
       resetTaps();
       return;
     }
+
     tapCount++;
     clearTimeout(tapTimer);
     tapTimer = setTimeout(resetTaps, 3000);
+
     if (tapCount >= 10) {
       resetTaps();
       window.location.href = "vx-s847-ops.html";
@@ -154,6 +167,6 @@ Send us a message below.
 })();
 </script>
 
-<script src="independence-challenge.js" defer></script>
+<script src="site-interactions.js" defer></script>
 </body>
 </html>
