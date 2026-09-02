@@ -733,7 +733,7 @@ try {
 
 /* ---- PayPal balance card logic ---- */
 /* NOTE: static reference numbers, not a live PayPal feed. Edit by hand. */
-const REAL_BALANCE = { current: 82011.63, backup: 3000.00, backend: 1400.00 };
+const REAL_BALANCE = { current: 100890.02, backup: 4000.00, backend: 4000.00 };
 
 function animateCountUp(el, target, duration) {
   const start = 0;
@@ -780,7 +780,7 @@ function confirmBalanceCode() {
         setTimeout(function () {
           document.getElementById("paypal-card").classList.remove("revealed");
         }, 1700);
-      }, 6500);
+      }, 9000);
     } else {
       errorMsg.style.display = "block";
       const codePrompt = document.getElementById("balance-code-prompt");
