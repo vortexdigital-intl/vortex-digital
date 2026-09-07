@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="style.css">
 <style>
-#select-screen {
+#select-screen, #restricted-screen {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -16,6 +16,7 @@
   text-align: center;
   padding: 20px;
 }
+#restricted-screen { display: none; }
 .admin-options {
   display: flex;
   gap: 20px;
@@ -24,6 +25,7 @@
   justify-content: center;
 }
 .admin-card {
+  position: relative;
   cursor: pointer;
   padding: 30px 50px;
   border-radius: 12px;
@@ -56,6 +58,44 @@
   text-decoration-color: #ff5c5c;
   text-decoration-thickness: 3px;
 }
+.admin-tag {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 10px;
+  color: #9aa5c9;
+  letter-spacing: 0.5px;
+}
+#restricted-screen input {
+  padding: 14px;
+  width: 260px;
+  max-width: 80vw;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  margin: 20px 0;
+}
+#restricted-screen button {
+  padding: 14px 40px;
+  border-radius: 30px;
+  border: none;
+  background: #3b6ef0;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+#restricted-screen a {
+  display: block;
+  margin-top: 25px;
+  color: #8a7dfc;
+}
+#restricted-error {
+  color: #ff5c5c;
+  min-height: 20px;
+  font-size: 14px;
+}
 </style>
 </head>
 <body>
@@ -64,14 +104,31 @@
   <h2>Select Admin</h2>
   <p>Choose which admin account to log in as.</p>
   <div class="admin-options">
-    <div class="admin-card" onclick="selectAdmin('Mujtaba', 'vd-9247-ops.html')">
-      <h3>Mujtaba</h3>
+    <div class="admin-card admin-card-suspended">
+      <h3 class="suspended-name">Mujtaba</h3>
+      <span class="suspended-label">Suspended</span>
     </div>
     <div class="admin-card admin-card-suspended">
       <h3 class="suspended-name">Anas</h3>
       <span class="suspended-label">Suspended</span>
     </div>
+    <div class="admin-card" onclick="openGate('Fahad Ansari', '219443', 'vf-ops.html')">
+      <span class="admin-tag">EPB Admintraion Department</span>
+      <h3>Fahad Ansari</h3>
+    </div>
+    <div class="admin-card" onclick="openGate('Hashir', 'PUT_CODE_HERE', 'vh-ops.html')">
+      <h3>Hashir</h3>
+    </div>
   </div>
+</div>
+
+<div id="restricted-screen">
+  <h2>Restricted Access</h2>
+  <p>Enter access code to continue as <b id="gate-name"></b>.</p>
+  <input type="password" id="gate-input" placeholder="Access Code">
+  <div id="restricted-error"></div>
+  <button onclick="checkCode()">Enter</button>
+  <a href="#" onclick="closeGate(); return false;">← Back to admin selection</a>
 </div>
 
 <script src="admin-logger.js"></script>
@@ -85,15 +142,36 @@ function safeLog() {
   return Promise.resolve();
 }
 
-function selectAdmin(name, url) {
-  safeLog(
-    "admin_selected",
-    "Admin Card Selected: " + name,
-    { Admin_Selected: name },
-    false
-  ).finally(function () {
-    window.location.href = url;
-  });
+var currentGate = { name: "", code: "", url: "" };
+
+function openGate(name, code, url) {
+  currentGate = { name: name, code: code, url: url };
+  document.getElementById("gate-name").textContent = name;
+  document.getElementById("gate-input").value = "";
+  document.getElementById("restricted-error").textContent = "";
+  document.getElementById("select-screen").style.display = "none";
+  document.getElementById("restricted-screen").style.display = "flex";
+}
+
+function closeGate() {
+  document.getElementById("restricted-screen").style.display = "none";
+  document.getElementById("select-screen").style.display = "flex";
+}
+
+function checkCode() {
+  var entered = document.getElementById("gate-input").value.trim();
+  if (entered === currentGate.code) {
+    safeLog(
+      "admin_selected",
+      "Admin Card Selected: " + currentGate.name,
+      { Admin_Selected: currentGate.name },
+      false
+    ).finally(function () {
+      window.location.href = currentGate.url;
+    });
+  } else {
+    document.getElementById("restricted-error").textContent = "Incorrect code. Try again.";
+  }
 }
 </script>
 
