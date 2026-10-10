@@ -306,6 +306,65 @@ body > header, body > section, body > footer {
 </style>
 
  
+
+<style id="vortex-mobile-showcase-fix">
+/* Mobile-only layout repair: keep each service chip in its own column. */
+@media (max-width: 600px) {
+  .vortex-cinematic-showcase {
+    width: calc(100% - 28px) !important;
+    height: 450px !important;
+    margin: 28px auto 12px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+  .vortex-cinematic-showcase .vortex-float-chip {
+    width: calc(50% - 26px) !important;
+    min-width: 0 !important;
+    max-width: calc(50% - 26px) !important;
+    box-sizing: border-box !important;
+    padding: 8px 7px !important;
+    gap: 6px !important;
+    border-radius: 12px !important;
+    transform: none !important;
+  }
+  .vortex-cinematic-showcase .chip-design { left: 12px !important; right: auto !important; top: 18px !important; bottom: auto !important; }
+  .vortex-cinematic-showcase .chip-brand { right: 12px !important; left: auto !important; top: 18px !important; bottom: auto !important; }
+  .vortex-cinematic-showcase .chip-growth { left: 12px !important; right: auto !important; bottom: 18px !important; top: auto !important; }
+  .vortex-cinematic-showcase .chip-stream { right: 12px !important; left: auto !important; bottom: 18px !important; top: auto !important; }
+  .vortex-cinematic-showcase .vortex-chip-icon {
+    flex: 0 0 25px !important; width: 25px !important; height: 25px !important;
+    font-size: 14px !important; border-radius: 7px !important;
+  }
+  .vortex-cinematic-showcase .vortex-float-chip b {
+    font-size: clamp(6.5px, 1.9vw, 8px) !important;
+    line-height: 1.25 !important; letter-spacing: .25px !important;
+    white-space: normal !important; overflow-wrap: anywhere !important;
+  }
+  .vortex-cinematic-showcase .vortex-float-chip small {
+    font-size: clamp(7px, 2vw, 8.5px) !important;
+    line-height: 1.25 !important; white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+  .vortex-cinematic-showcase .vortex-core { width: 190px !important; height: 190px !important; top: 49% !important; }
+  .vortex-cinematic-showcase .vortex-core-mark { width: 116px !important; height: 116px !important; }
+  .vortex-cinematic-showcase .vortex-core-caption {
+    top: calc(100% + 18px) !important; font-size: 8px !important;
+    letter-spacing: 1.8px !important; white-space: nowrap !important;
+  }
+  .vortex-cinematic-showcase .vortex-ring-two { inset: 12px !important; }
+  .vortex-cinematic-showcase .vortex-ring-three { inset: 30px !important; }
+  .vortex-cinematic-showcase::before { width: 245px !important; height: 245px !important; }
+  .vortex-cinematic-showcase .vortex-orbit-dot.dot-a { animation-name: vortexDotOrbitMobile !important; }
+  .vortex-cinematic-showcase .vortex-orbit-dot.dot-b { display: none !important; }
+  .vortex-capability-marquee { max-width: 100% !important; margin-top: 14px !important; }
+}
+@media (max-width: 360px) {
+  .vortex-cinematic-showcase { height: 430px !important; }
+  .vortex-cinematic-showcase .vortex-float-chip { width: calc(50% - 24px) !important; max-width: calc(50% - 24px) !important; padding: 7px 5px !important; }
+  .vortex-cinematic-showcase .vortex-chip-icon { flex-basis: 22px !important; width: 22px !important; height: 22px !important; }
+}
+</style>
+
 </head>
 
 <body>
