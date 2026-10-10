@@ -1225,3 +1225,31 @@ font-size:22px;
 width:95%;
 }
 }
+
+/* Professional reveal control: crisp inline SVG instead of an emoji glyph */
+.header-reveal-btn{
+  color:#dcecff;
+  border-color:rgba(0,200,255,.38);
+  box-shadow:0 8px 24px rgba(0,0,0,.28),0 0 0 1px rgba(0,200,255,.05);
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.header-reveal-btn:hover{
+  background:rgba(0,200,255,.12);
+  border-color:rgba(0,200,255,.72);
+  box-shadow:0 8px 28px rgba(0,0,0,.3),0 0 18px rgba(0,200,255,.16);
+  transform:translateY(2px);
+}
+.header-reveal-icon{
+  width:19px;
+  height:19px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.header-reveal-btn:focus-visible,.header-minimize-btn:focus-visible{
+  outline:2px solid #00c8ff;
+  outline-offset:3px;
+}
