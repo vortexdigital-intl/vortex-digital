@@ -17,9 +17,61 @@
 <meta name="twitter:title" content="Vortex Digital">
 <meta name="twitter:description" content="Professional Twitch Graphics, VTuber Services, Branding Solutions and Digital Growth Services.">
 <meta name="twitter:image" content="https://vortexdigital-intl.github.io/vortex-digital/vortex.digital.png">
+
+<style id="vortex-home-motion">
+/* Vortex Digital: premium motion layer — Home page only */
+body > #vortex-particle-field {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none; opacity: .72;
+}
+body > header, body > section, body > footer {
+  position: relative; z-index: 1;
+}
+.hero { isolation: isolate; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  width: min(78vw, 860px); aspect-ratio: 1; left: 50%; top: 3%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 39%, rgba(0,200,255,.11) 39.2%, transparent 39.7%),
+    radial-gradient(circle, transparent 53%, rgba(96,165,250,.13) 53.2%, transparent 53.7%),
+    radial-gradient(circle, transparent 67%, rgba(167,139,250,.10) 67.2%, transparent 67.7%);
+  animation: vortexOrbit 34s linear infinite;
+}
+.hero::after {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  width: min(70vw, 720px); height: 240px; left: 50%; top: 0;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(0,200,255,.12), rgba(59,130,246,.06) 38%, transparent 72%);
+  filter: blur(20px); animation: vortexPulse 7s ease-in-out infinite;
+}
+.hero > * { position: relative; z-index: 1; }
+.hero .eyebrow { animation: vortexBadge 5s ease-in-out infinite; }
+.hero .btn { box-shadow: 0 0 0 1px rgba(96,165,250,.16), 0 8px 30px rgba(37,99,235,.20); }
+.hero .btn:hover { box-shadow: 0 0 28px rgba(0,200,255,.34), 0 0 65px rgba(59,130,246,.18); }
+.hero .trust-pill { transition: transform .28s ease, border-color .28s ease, background .28s ease, box-shadow .28s ease; }
+.hero .trust-pill:hover { transform: translateY(-4px); border-color: rgba(0,200,255,.65); background: rgba(0,200,255,.08); box-shadow: 0 8px 24px rgba(0,200,255,.10); }
+.hero .stat-block { transition: transform .35s ease; }
+.hero .stat-block:hover { transform: translateY(-5px); }
+@keyframes vortexOrbit { to { transform: translateX(-50%) rotate(360deg); } }
+@keyframes vortexPulse { 0%,100% { opacity:.55; transform:translateX(-50%) scale(.92); } 50% { opacity:1; transform:translateX(-50%) scale(1.08); } }
+@keyframes vortexBadge { 0%,100% { box-shadow:0 0 12px rgba(59,130,246,.12); } 50% { box-shadow:0 0 24px rgba(0,200,255,.24); } }
+@media (max-width: 768px) {
+  body > #vortex-particle-field { opacity: .42; }
+  .hero::before { width: 125vw; top: 0; }
+  .hero::after { width: 100vw; height: 180px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::before, .hero::after, .hero .eyebrow { animation: none !important; }
+  .hero .trust-pill, .hero .stat-block { transition: none !important; }
+}
+</style>
 </head>
 
 <body>
+<canvas id="vortex-particle-field" aria-hidden="true"></canvas>
+
 <header>
 <div class="logo">
 <img src="logo.png.jpeg" alt="Vortex Digital">
@@ -153,5 +205,69 @@ managed directly by the CEO of Vortex Digital.
 </footer>
 
 <script src="site-interactions.js" defer></script>
+
+<script id="vortex-home-motion-engine">
+(function () {
+  const canvas = document.getElementById('vortex-particle-field');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  let width = 0, height = 0, dpr = 1, particles = [], raf = 0;
+  const pointer = { x: -1000, y: -1000 };
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+    width = window.innerWidth; height = window.innerHeight;
+    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.min(coarse ? 34 : 68, Math.max(22, Math.round(width / (coarse ? 14 : 22))));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * width, y: Math.random() * height,
+      vx: (Math.random() - .5) * .24, vy: (Math.random() - .5) * .24,
+      r: .7 + Math.random() * 1.7, phase: Math.random() * Math.PI * 2
+    }));
+    draw(0);
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      if (!reduceMotion) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+        if (p.y < -10) p.y = height + 10;
+        if (p.y > height + 10) p.y = -10;
+        if (!coarse) {
+          const dx = p.x - pointer.x, dy = p.y - pointer.y, dist = Math.hypot(dx, dy);
+          if (dist < 105 && dist > 0) { p.x += dx / dist * .18; p.y += dy / dist * .18; }
+        }
+      }
+      const alpha = .22 + (Math.sin((t || 0) * .001 + p.phase) + 1) * .16;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(96,165,250,' + alpha + ')'; ctx.fill();
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j], dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy);
+        if (d < 105) {
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = 'rgba(0,200,255,' + ((1 - d / 105) * .12) + ')';
+          ctx.lineWidth = .7; ctx.stroke();
+        }
+      }
+    }
+    if (!reduceMotion) raf = requestAnimationFrame(draw);
+  }
+  if (!coarse) window.addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
+  window.addEventListener('resize', resize, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else if (!reduceMotion) raf = requestAnimationFrame(draw);
+  });
+  resize();
+})();
+</script>
+
 </body>
 </html>
