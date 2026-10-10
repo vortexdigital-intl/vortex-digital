@@ -31,7 +31,7 @@
     revealBtn.type = "button";
     revealBtn.className = "header-reveal-btn";
     revealBtn.setAttribute("aria-label", "Show menu");
-    revealBtn.textContent = "⬇️";
+    revealBtn.innerHTML = '<svg class="header-reveal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v15M5.5 12.5 12 19l6.5-6.5"/></svg>';
     document.body.appendChild(revealBtn);
 
     function hideHeader() {
