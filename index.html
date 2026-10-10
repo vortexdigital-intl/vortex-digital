@@ -67,6 +67,122 @@ body > header, body > section, body > footer {
   .hero .trust-pill, .hero .stat-block { transition: none !important; }
 }
 </style>
+
+<style id="vortex-cinematic-showcase-style">
+/* VORTEX DIGITAL — cinematic hero showcase */
+.vortex-cinematic-showcase{
+  width:min(100%,1000px); height:430px; margin:42px auto 12px;
+  position:relative; isolation:isolate; overflow:hidden; border-radius:28px;
+  border:1px solid rgba(96,165,250,.22);
+  background:radial-gradient(ellipse at 50% 50%,rgba(30,64,175,.22),rgba(5,11,24,.32) 48%,rgba(5,11,24,.08) 75%);
+  box-shadow:inset 0 0 70px rgba(37,99,235,.08),0 20px 80px rgba(0,0,0,.14);
+}
+.vortex-showcase-grid{
+  position:absolute; inset:-35%; z-index:-2; opacity:.25;
+  background-image:linear-gradient(rgba(96,165,250,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.16) 1px,transparent 1px);
+  background-size:36px 36px;
+  mask-image:radial-gradient(ellipse at center,#000 12%,transparent 70%);
+  animation:vortexGridDrift 24s linear infinite;
+}
+.vortex-core{
+  position:absolute; width:300px; height:300px; left:50%; top:50%;
+  transform:translate(-50%,-50%); display:grid; place-items:center;
+}
+.vortex-core-glow{
+  position:absolute; inset:27px; border-radius:50%;
+  background:radial-gradient(circle,rgba(0,200,255,.25),rgba(37,99,235,.13) 42%,transparent 72%);
+  filter:blur(12px); animation:vortexCorePulse 4s ease-in-out infinite;
+}
+.vortex-ring{
+  position:absolute; inset:0; border-radius:50%; border:1px solid rgba(96,165,250,.38);
+  box-shadow:0 0 22px rgba(59,130,246,.08),inset 0 0 22px rgba(59,130,246,.06);
+}
+.vortex-ring-one{ animation:vortexRingSpin 12s linear infinite; border-top-color:#00c8ff; border-bottom-color:rgba(167,139,250,.75); }
+.vortex-ring-two{ inset:22px; border-style:dashed; border-color:rgba(167,139,250,.55); animation:vortexRingSpinReverse 18s linear infinite; }
+.vortex-ring-three{ inset:46px; border-width:2px; border-left-color:#00c8ff; border-right-color:transparent; animation:vortexRingSpin 7s linear infinite; }
+.vortex-core-mark{
+  position:relative; width:112px; height:112px; border-radius:30px; transform:rotate(-8deg);
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(145deg,rgba(12,31,63,.94),rgba(7,16,37,.82));
+  border:1px solid rgba(147,197,253,.5);
+  box-shadow:0 0 0 8px rgba(59,130,246,.04),0 0 36px rgba(0,200,255,.28),inset 0 0 25px rgba(96,165,250,.15);
+  animation:vortexMarkFloat 5s ease-in-out infinite;
+}
+.vortex-core-mark span{
+  font-family:'Sora',Arial,sans-serif; font-size:70px; font-weight:800; line-height:1;
+  color:#fff; text-shadow:0 0 24px rgba(0,200,255,.8);
+}
+.vortex-core-mark i{ position:absolute; top:9px; right:12px; font-style:normal; font-size:17px; color:#00c8ff; animation:vortexSparkle 2s ease-in-out infinite; }
+.vortex-core-caption{
+  position:absolute; top:calc(100% + 20px); font-size:10px; font-weight:800; letter-spacing:4px;
+  color:#bfdbfe; white-space:nowrap; text-shadow:0 0 14px rgba(0,200,255,.55);
+}
+.vortex-float-chip{
+  position:absolute; display:flex; align-items:center; gap:12px; text-align:left;
+  padding:13px 17px; min-width:220px; border-radius:14px;
+  background:linear-gradient(130deg,rgba(12,28,54,.92),rgba(7,16,34,.82));
+  border:1px solid rgba(96,165,250,.32); backdrop-filter:blur(12px);
+  box-shadow:0 12px 32px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.04);
+  animation:vortexChipFloat 5.5s ease-in-out infinite;
+  transition:border-color .25s ease,box-shadow .25s ease;
+}
+.vortex-float-chip:hover{ border-color:rgba(0,200,255,.8); box-shadow:0 0 28px rgba(0,200,255,.16); }
+.vortex-chip-icon{
+  flex:0 0 39px; width:39px; height:39px; display:grid; place-items:center; border-radius:11px;
+  color:#dbeafe; font-size:22px; background:linear-gradient(140deg,rgba(37,99,235,.48),rgba(124,58,237,.3));
+  border:1px solid rgba(147,197,253,.22); text-shadow:0 0 12px rgba(0,200,255,.45);
+}
+.vortex-float-chip b{display:block;font-size:11px;letter-spacing:1px;color:#eff6ff;white-space:nowrap;}
+.vortex-float-chip small{display:block;margin-top:3px;font-size:11px;color:#91a9ca;white-space:nowrap;}
+.chip-design{left:7%;top:17%;animation-delay:-1s;}
+.chip-brand{right:6%;top:18%;animation-delay:-2.2s;}
+.chip-growth{left:8%;bottom:15%;animation-delay:-3.1s;}
+.chip-stream{right:6%;bottom:14%;animation-delay:-.6s;}
+.vortex-scan-line{
+  position:absolute; left:0; right:0; height:1px; top:-10%;
+  background:linear-gradient(90deg,transparent,rgba(0,200,255,.0),rgba(0,200,255,.55),rgba(167,139,250,.3),transparent);
+  box-shadow:0 0 18px rgba(0,200,255,.25); opacity:.65;
+  animation:vortexScan 8s ease-in-out infinite;
+}
+.vortex-capability-marquee{
+  max-width:1000px; overflow:hidden; margin:22px auto 34px; padding:15px 0;
+  border-top:1px solid rgba(96,165,250,.18); border-bottom:1px solid rgba(96,165,250,.18);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+}
+.vortex-marquee-track{display:flex;width:max-content;align-items:center;gap:28px;animation:vortexMarquee 32s linear infinite;}
+.vortex-marquee-track span{font-size:11px;letter-spacing:2px;font-weight:800;color:#b9ccee;white-space:nowrap;}
+.vortex-marquee-track i{font-style:normal;color:#00c8ff;margin-left:24px;text-shadow:0 0 12px rgba(0,200,255,.7);}
+.vortex-capability-marquee:hover .vortex-marquee-track{animation-play-state:paused;}
+@keyframes vortexRingSpin{to{transform:rotate(360deg)}}
+@keyframes vortexRingSpinReverse{to{transform:rotate(-360deg)}}
+@keyframes vortexCorePulse{0%,100%{opacity:.65;transform:scale(.88)}50%{opacity:1;transform:scale(1.12)}}
+@keyframes vortexMarkFloat{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-4deg) translateY(-8px)}}
+@keyframes vortexSparkle{0%,100%{opacity:.5;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.25) rotate(45deg)}}
+@keyframes vortexChipFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes vortexGridDrift{to{transform:rotate(360deg)}}
+@keyframes vortexScan{0%{top:-10%;opacity:0}12%{opacity:.65}85%{opacity:.5}100%{top:110%;opacity:0}}
+@keyframes vortexMarquee{to{transform:translateX(-50%)}}
+@media(max-width:760px){
+ .vortex-cinematic-showcase{height:480px;margin-top:30px;border-radius:20px;}
+ .vortex-core{width:220px;height:220px;top:48%;}
+ .vortex-core-mark{width:82px;height:82px;border-radius:23px;}
+ .vortex-core-mark span{font-size:52px;}
+ .vortex-float-chip{min-width:0;width:calc(50% - 16px);padding:9px 8px;gap:7px;border-radius:11px;}
+ .vortex-chip-icon{width:29px;height:29px;flex-basis:29px;font-size:17px;border-radius:8px;}
+ .vortex-float-chip b{font-size:8px;letter-spacing:.45px;white-space:normal;}
+ .vortex-float-chip small{font-size:9px;white-space:normal;line-height:1.25;}
+ .chip-design{left:10px;top:22px;}
+ .chip-brand{right:10px;top:22px;}
+ .chip-growth{left:10px;bottom:20px;}
+ .chip-stream{right:10px;bottom:20px;}
+ .vortex-core-caption{letter-spacing:2px;font-size:8px;}
+}
+@media(prefers-reduced-motion:reduce){
+ .vortex-showcase-grid,.vortex-ring,.vortex-core-glow,.vortex-core-mark,.vortex-core-mark i,.vortex-float-chip,.vortex-scan-line,.vortex-marquee-track{animation:none!important}
+ .vortex-capability-marquee{mask-image:none}
+}
+</style>
+
 </head>
 
 <body>
@@ -105,6 +221,30 @@ development services worldwide.
 <span class="trust-pill">🌍 Global Clients</span>
 <span class="trust-pill">⚡ Fast Turnaround</span>
 <span class="trust-pill">🤝 Dedicated Support</span>
+</div>
+
+
+<div class="vortex-cinematic-showcase" aria-label="Vortex Digital creative services">
+  <div class="vortex-showcase-grid" aria-hidden="true"></div>
+  <div class="vortex-core">
+    <div class="vortex-ring vortex-ring-one"></div>
+    <div class="vortex-ring vortex-ring-two"></div>
+    <div class="vortex-ring vortex-ring-three"></div>
+    <div class="vortex-core-glow"></div>
+    <div class="vortex-core-mark"><span>V</span><i>✦</i></div>
+    <div class="vortex-core-caption">IDEAS INTO IMPACT</div>
+  </div>
+  <div class="vortex-float-chip chip-design"><span class="vortex-chip-icon">✳</span><span><b>CREATIVE DESIGN</b><small>Visuals that stand out</small></span></div>
+  <div class="vortex-float-chip chip-brand"><span class="vortex-chip-icon">◈</span><span><b>BRAND SYSTEMS</b><small>Built to be remembered</small></span></div>
+  <div class="vortex-float-chip chip-growth"><span class="vortex-chip-icon">↗</span><span><b>DIGITAL GROWTH</b><small>Momentum for your brand</small></span></div>
+  <div class="vortex-float-chip chip-stream"><span class="vortex-chip-icon">▣</span><span><b>STREAMER GRAPHICS</b><small>Made for the spotlight</small></span></div>
+  <div class="vortex-scan-line" aria-hidden="true"></div>
+</div>
+<div class="vortex-capability-marquee" aria-label="Vortex Digital capabilities">
+  <div class="vortex-marquee-track">
+    <span>GRAPHIC DESIGN <i>✦</i></span><span>BRAND IDENTITY <i>✦</i></span><span>DIGITAL MARKETING <i>✦</i></span><span>LEAD GENERATION <i>✦</i></span><span>TWITCH GRAPHICS <i>✦</i></span><span>VTUBER SERVICES <i>✦</i></span>
+    <span aria-hidden="true">GRAPHIC DESIGN <i>✦</i></span><span aria-hidden="true">BRAND IDENTITY <i>✦</i></span><span aria-hidden="true">DIGITAL MARKETING <i>✦</i></span><span aria-hidden="true">LEAD GENERATION <i>✦</i></span><span aria-hidden="true">TWITCH GRAPHICS <i>✦</i></span><span aria-hidden="true">VTUBER SERVICES <i>✦</i></span>
+  </div>
 </div>
 
 <div class="container">
