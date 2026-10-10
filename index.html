@@ -101,18 +101,31 @@ body > header, body > section, body > footer {
 .vortex-ring-two{ inset:22px; border-style:dashed; border-color:rgba(167,139,250,.55); animation:vortexRingSpinReverse 18s linear infinite; }
 .vortex-ring-three{ inset:46px; border-width:2px; border-left-color:#00c8ff; border-right-color:transparent; animation:vortexRingSpin 7s linear infinite; }
 .vortex-core-mark{
-  position:relative; width:112px; height:112px; border-radius:30px; transform:rotate(-8deg);
-  display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(145deg,rgba(12,31,63,.94),rgba(7,16,37,.82));
-  border:1px solid rgba(147,197,253,.5);
-  box-shadow:0 0 0 8px rgba(59,130,246,.04),0 0 36px rgba(0,200,255,.28),inset 0 0 25px rgba(96,165,250,.15);
-  animation:vortexMarkFloat 5s ease-in-out infinite;
+  position:relative; width:184px; height:184px; border-radius:0; transform:none;
+  display:flex; align-items:center; justify-content:center; background:transparent; border:0;
+  box-shadow:none; animation:vortexMarkFloat 5s ease-in-out infinite;
 }
-.vortex-core-mark span{
-  font-family:'Sora',Arial,sans-serif; font-size:70px; font-weight:800; line-height:1;
-  color:#fff; text-shadow:0 0 24px rgba(0,200,255,.8);
+.vortex-core-mark img{
+  display:block; width:100%; height:100%; max-width:184px; max-height:184px;
+  object-fit:contain; object-position:center; border:0; border-radius:0; background:transparent;
+  filter:drop-shadow(0 0 10px rgba(0,200,255,.52)) drop-shadow(0 0 32px rgba(37,99,235,.5));
+  animation:vortexLogoPower 3.8s ease-in-out infinite;
 }
-.vortex-core-mark i{ position:absolute; top:9px; right:12px; font-style:normal; font-size:17px; color:#00c8ff; animation:vortexSparkle 2s ease-in-out infinite; }
+.vortex-core-mark i{ position:absolute; top:-4px; right:3px; font-style:normal; font-size:24px; color:#00c8ff; text-shadow:0 0 18px #00c8ff; animation:vortexSparkle 1.3s ease-in-out infinite; }
+.vortex-core::before,.vortex-core::after{
+  content:"";position:absolute;inset:-36px;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(0,200,255,.22);box-shadow:0 0 28px rgba(0,200,255,.1),inset 0 0 28px rgba(0,200,255,.08);
+  animation:vortexEnergyShell 5s ease-in-out infinite;
+}
+.vortex-core::after{inset:-58px;border-color:rgba(167,139,250,.28);border-style:dashed;animation:vortexEnergyShellReverse 18s linear infinite;}
+.vortex-ring-one{border-width:2px;box-shadow:0 0 25px rgba(0,200,255,.24),inset 0 0 22px rgba(0,200,255,.12);}
+.vortex-ring-two{inset:12px;border-width:2px;}
+.vortex-ring-three{inset:36px;border-width:3px;box-shadow:0 0 30px rgba(0,200,255,.3);}
+.vortex-core-glow{inset:5px;filter:blur(18px);}
+.vortex-scan-line{height:3px;box-shadow:0 0 24px rgba(0,200,255,.8),0 0 60px rgba(0,200,255,.3);}
+@keyframes vortexLogoPower{0%,100%{filter:drop-shadow(0 0 8px rgba(0,200,255,.38)) drop-shadow(0 0 22px rgba(37,99,235,.36));}50%{filter:drop-shadow(0 0 18px rgba(0,200,255,.85)) drop-shadow(0 0 48px rgba(37,99,235,.72));}}
+@keyframes vortexEnergyShell{0%,100%{transform:scale(.9) rotate(0);opacity:.45;}50%{transform:scale(1.08) rotate(18deg);opacity:1;}}
+@keyframes vortexEnergyShellReverse{to{transform:rotate(-360deg);}}
 .vortex-core-caption{
   position:absolute; top:calc(100% + 20px); font-size:10px; font-weight:800; letter-spacing:4px;
   color:#bfdbfe; white-space:nowrap; text-shadow:0 0 14px rgba(0,200,255,.55);
@@ -165,8 +178,8 @@ body > header, body > section, body > footer {
 @media(max-width:760px){
  .vortex-cinematic-showcase{height:480px;margin-top:30px;border-radius:20px;}
  .vortex-core{width:220px;height:220px;top:48%;}
- .vortex-core-mark{width:82px;height:82px;border-radius:23px;}
- .vortex-core-mark span{font-size:52px;}
+ .vortex-core-mark{width:124px;height:124px;border-radius:0;}
+ .vortex-core-mark img{max-width:124px;max-height:124px;}
  .vortex-float-chip{min-width:0;width:calc(50% - 16px);padding:9px 8px;gap:7px;border-radius:11px;}
  .vortex-chip-icon{width:29px;height:29px;flex-basis:29px;font-size:17px;border-radius:8px;}
  .vortex-float-chip b{font-size:8px;letter-spacing:.45px;white-space:normal;}
@@ -181,6 +194,29 @@ body > header, body > section, body > footer {
  .vortex-showcase-grid,.vortex-ring,.vortex-core-glow,.vortex-core-mark,.vortex-core-mark i,.vortex-float-chip,.vortex-scan-line,.vortex-marquee-track{animation:none!important}
  .vortex-capability-marquee{mask-image:none}
 }
+
+/* High-energy motion accents around the original logo — do not recreate the logo */
+.vortex-cinematic-showcase::before,.vortex-cinematic-showcase::after{
+ content:"";position:absolute;pointer-events:none;border-radius:50%;z-index:-1;
+}
+.vortex-cinematic-showcase::before{
+ width:420px;height:420px;left:50%;top:50%;transform:translate(-50%,-50%);
+ background:conic-gradient(from 0deg,transparent 0 12%,rgba(0,200,255,.2) 15%,transparent 21% 48%,rgba(139,92,246,.18) 54%,transparent 62% 100%);
+ filter:blur(18px);animation:vortexEnergyWheel 13s linear infinite;
+}
+.vortex-cinematic-showcase::after{
+ inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 0 35%,rgba(0,200,255,.05) 47%,transparent 55% 100%);
+ transform:translateX(-100%);animation:vortexWideSweep 6s ease-in-out infinite;
+}
+.vortex-orbit-dot{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;background:#b8f5ff;box-shadow:0 0 12px #00c8ff,0 0 30px #00c8ff;z-index:2;pointer-events:none;}
+.vortex-orbit-dot.dot-a{animation:vortexDotOrbit 6s linear infinite;}
+.vortex-orbit-dot.dot-b{width:6px;height:6px;background:#d8c7ff;box-shadow:0 0 14px #a78bfa;animation:vortexDotOrbit 9s linear infinite reverse;}
+@keyframes vortexEnergyWheel{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes vortexWideSweep{0%,100%{transform:translateX(-100%)}55%,70%{transform:translateX(100%)}}
+@keyframes vortexDotOrbit{from{transform:rotate(0deg) translateX(168px) rotate(0deg)}to{transform:rotate(360deg) translateX(168px) rotate(-360deg)}}
+@media(max-width:760px){.vortex-cinematic-showcase::before{width:280px;height:280px}.vortex-orbit-dot.dot-a{animation-name:vortexDotOrbitMobile}.vortex-orbit-dot.dot-b{display:none}@keyframes vortexDotOrbitMobile{from{transform:rotate(0deg) translateX(112px)}to{transform:rotate(360deg) translateX(112px)}}}
+@media(prefers-reduced-motion:reduce){.vortex-cinematic-showcase::before,.vortex-cinematic-showcase::after,.vortex-core::before,.vortex-core::after,.vortex-core-mark img,.vortex-orbit-dot{animation:none!important}}
+
 </style>
 
 </head>
@@ -226,12 +262,13 @@ development services worldwide.
 
 <div class="vortex-cinematic-showcase" aria-label="Vortex Digital creative services">
   <div class="vortex-showcase-grid" aria-hidden="true"></div>
+  <div class="vortex-orbit-dot dot-a" aria-hidden="true"></div><div class="vortex-orbit-dot dot-b" aria-hidden="true"></div>
   <div class="vortex-core">
     <div class="vortex-ring vortex-ring-one"></div>
     <div class="vortex-ring vortex-ring-two"></div>
     <div class="vortex-ring vortex-ring-three"></div>
     <div class="vortex-core-glow"></div>
-    <div class="vortex-core-mark"><span>V</span><i>✦</i></div>
+    <div class="vortex-core-mark"><img src="logo.png.jpeg" alt="Official Vortex Digital logo"><i>✦</i></div>
     <div class="vortex-core-caption">IDEAS INTO IMPACT</div>
   </div>
   <div class="vortex-float-chip chip-design"><span class="vortex-chip-icon">✳</span><span><b>CREATIVE DESIGN</b><small>Visuals that stand out</small></span></div>
