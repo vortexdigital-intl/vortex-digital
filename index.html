@@ -219,6 +219,51 @@ body > header, body > section, body > footer {
 
 </style>
 
+
+<style id="vortex-home-expansion">
+.vx-home-expansion{position:relative;max-width:1180px;margin:70px auto 90px;padding:20px;isolation:isolate}
+.vx-home-heading{text-align:center;max-width:820px;margin:0 auto 36px}
+.vx-home-kicker{display:inline-flex;gap:10px;align-items:center;color:#67e8f9;font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+.vx-home-kicker:before,.vx-home-kicker:after{content:"";width:36px;height:1px;background:linear-gradient(90deg,transparent,#00c8ff)}
+.vx-home-kicker:after{transform:rotate(180deg)}
+.vx-home-heading h2{font-size:clamp(30px,4vw,52px);line-height:1.05;margin:16px 0;background:linear-gradient(100deg,#fff 15%,#a5f3fc 48%,#a78bfa 75%,#fff);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:vxTitleFlow 7s linear infinite}
+.vx-home-heading p{max-width:680px;margin:auto;color:#a9bbd4;line-height:1.8}
+.vx-home-services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.vx-home-service{position:relative;min-height:220px;padding:25px;border-radius:20px;overflow:hidden;background:linear-gradient(145deg,rgba(13,31,59,.92),rgba(7,13,28,.92));border:1px solid rgba(96,165,250,.24);box-shadow:0 15px 40px rgba(0,0,0,.16);transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .4s}
+.vx-home-service:before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--vx-angle,0deg),transparent 0 55%,rgba(0,200,255,.8) 68%,rgba(167,139,250,.8) 77%,transparent 90%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;animation:vxBorderOrbit 7s linear infinite;pointer-events:none}
+.vx-home-service:after{content:"";position:absolute;width:170px;height:170px;right:-85px;top:-90px;border-radius:50%;background:rgba(0,200,255,.12);filter:blur(28px);transition:transform .5s}
+.vx-home-service:hover{transform:translateY(-12px) scale(1.015);border-color:rgba(0,200,255,.72);box-shadow:0 22px 55px rgba(0,0,0,.3),0 0 34px rgba(0,200,255,.12)}
+.vx-home-service:hover:after{transform:scale(1.8)}
+.vx-home-service .vx-service-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:16px;font-size:25px;color:#dffbff;background:linear-gradient(145deg,rgba(0,200,255,.22),rgba(99,102,241,.2));border:1px solid rgba(103,232,249,.35);box-shadow:0 0 25px rgba(0,200,255,.12);animation:vxIconBob 4s ease-in-out infinite}
+.vx-home-service h3{font-size:19px;margin:20px 0 10px;color:#f1f7ff}
+.vx-home-service p{font-size:13px;line-height:1.8;color:#a8bad3;margin:0;max-width:330px}
+.vx-service-index{position:absolute;right:20px;top:19px;font-size:12px;font-weight:900;letter-spacing:2px;color:rgba(147,197,253,.48)}
+.vx-home-process{margin-top:70px;padding:36px 28px;border:1px solid rgba(96,165,250,.2);border-radius:24px;background:radial-gradient(ellipse at 50% 0,rgba(37,99,235,.17),transparent 65%),rgba(5,12,27,.52);overflow:hidden;position:relative}
+.vx-home-process:before{content:"";position:absolute;top:0;bottom:0;left:-30%;width:25%;background:linear-gradient(90deg,transparent,rgba(0,200,255,.08),transparent);transform:skewX(-20deg);animation:vxProcessSweep 7s ease-in-out infinite}
+.vx-process-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative}
+.vx-process-step{padding:18px 14px;position:relative}
+.vx-process-number{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;font-weight:900;color:#dffaff;border:1px solid rgba(0,200,255,.65);background:rgba(0,200,255,.09);box-shadow:0 0 25px rgba(0,200,255,.13);margin-bottom:17px;animation:vxNumberPulse 3s ease-in-out infinite}
+.vx-process-step:nth-child(2) .vx-process-number{animation-delay:.4s}.vx-process-step:nth-child(3) .vx-process-number{animation-delay:.8s}.vx-process-step:nth-child(4) .vx-process-number{animation-delay:1.2s}
+.vx-process-step h3{font-size:15px;color:#eff6ff;margin:0 0 8px}.vx-process-step p{font-size:12px;line-height:1.7;color:#9db1cc;margin:0}
+.vx-home-bottom-cta{margin:66px auto 0;max-width:1000px;position:relative;overflow:hidden;padding:54px 28px;text-align:center;border-radius:28px;border:1px solid rgba(0,200,255,.3);background:radial-gradient(ellipse at 50% 120%,rgba(0,200,255,.19),transparent 60%),linear-gradient(125deg,rgba(11,28,55,.96),rgba(20,18,53,.94));box-shadow:0 20px 70px rgba(0,0,0,.2)}
+.vx-home-bottom-cta:before{content:"";position:absolute;inset:-100%;background:conic-gradient(from 0deg,transparent,rgba(0,200,255,.09),transparent,rgba(167,139,250,.09),transparent);animation:vxCtaSpin 24s linear infinite;pointer-events:none}
+.vx-home-bottom-cta>*{position:relative}
+.vx-home-bottom-cta h2{font-size:clamp(26px,4vw,42px);margin:0 0 12px;color:#f8fbff}
+.vx-home-bottom-cta p{color:#a9bdd8;line-height:1.8;margin:0 auto 25px}
+.vx-home-bottom-cta .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;animation:vxButtonGlow 2.8s ease-in-out infinite;transition:transform .25s}
+.vx-home-bottom-cta .btn:hover{transform:translateY(-4px) scale(1.04)}
+@keyframes vxTitleFlow{to{background-position:220% center}}
+@keyframes vxBorderOrbit{to{--vx-angle:360deg}}
+@keyframes vxIconBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(-3deg)}}
+@keyframes vxProcessSweep{0%,100%{left:-30%}55%{left:120%}}
+@keyframes vxNumberPulse{0%,100%{box-shadow:0 0 12px rgba(0,200,255,.08);transform:scale(1)}50%{box-shadow:0 0 28px rgba(0,200,255,.32);transform:scale(1.06)}}
+@keyframes vxCtaSpin{to{transform:rotate(360deg)}}
+@keyframes vxButtonGlow{0%,100%{box-shadow:0 0 15px rgba(0,200,255,.14)}50%{box-shadow:0 0 34px rgba(0,200,255,.32),0 0 60px rgba(99,102,241,.12)}}
+@media(max-width:850px){.vx-home-services{grid-template-columns:repeat(2,minmax(0,1fr))}.vx-process-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.vx-home-expansion{padding:12px;margin:42px auto}.vx-home-services{grid-template-columns:1fr}.vx-home-service{min-height:190px}.vx-home-process{padding:24px 14px}.vx-process-grid{grid-template-columns:1fr 1fr;gap:4px}.vx-process-step{padding:14px 8px}.vx-home-bottom-cta{padding:38px 18px;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.vx-home-heading h2,.vx-home-service:before,.vx-home-service .vx-service-icon,.vx-home-process:before,.vx-process-number,.vx-home-bottom-cta:before,.vx-home-bottom-cta .btn{animation:none!important}.vx-home-service,.vx-home-bottom-cta .btn{transition:none!important}}
+</style>
+
 </head>
 
 <body>
@@ -283,6 +328,37 @@ development services worldwide.
     <span aria-hidden="true">GRAPHIC DESIGN <i>✦</i></span><span aria-hidden="true">BRAND IDENTITY <i>✦</i></span><span aria-hidden="true">DIGITAL MARKETING <i>✦</i></span><span aria-hidden="true">LEAD GENERATION <i>✦</i></span><span aria-hidden="true">TWITCH GRAPHICS <i>✦</i></span><span aria-hidden="true">VTUBER SERVICES <i>✦</i></span>
   </div>
 </div>
+
+
+<section class="vx-home-expansion" aria-label="Vortex Digital services and process">
+  <div class="vx-home-heading">
+    <span class="vx-home-kicker">Creative power. Real execution.</span>
+    <h2>More Than Design. We Build Momentum.</h2>
+    <p>From bold visuals to business outreach, Vortex Digital brings creative production and digital support together — helping creators and businesses present themselves with confidence.</p>
+  </div>
+  <div class="vx-home-services">
+    <article class="vx-home-service"><span class="vx-service-index">01 / VISUALS</span><div class="vx-service-icon">✦</div><h3>Graphic Design & Creator Kits</h3><p>Custom logos, banners, overlays, panels, emotes and cohesive visual assets built around your identity.</p></article>
+    <article class="vx-home-service"><span class="vx-service-index">02 / IDENTITY</span><div class="vx-service-icon">◈</div><h3>Brand Identity Systems</h3><p>Distinctive brand visuals and consistent design direction that help your business stay recognizable across channels.</p></article>
+    <article class="vx-home-service"><span class="vx-service-index">03 / STREAM</span><div class="vx-service-icon">▣</div><h3>Twitch & VTuber Graphics</h3><p>Stream-ready creative assets for creators who want a more polished, memorable on-screen experience.</p></article>
+    <article class="vx-home-service"><span class="vx-service-index">04 / REACH</span><div class="vx-service-icon">↗</div><h3>Digital Marketing Support</h3><p>Campaign and channel support designed to strengthen visibility, sharpen messaging and support growth goals.</p></article>
+    <article class="vx-home-service"><span class="vx-service-index">05 / CONNECT</span><div class="vx-service-icon">◎</div><h3>Lead Generation & Outreach</h3><p>Prospect research, business development and appointment-setting support to help teams connect with potential clients.</p></article>
+    <article class="vx-home-service"><span class="vx-service-index">06 / PARTNER</span><div class="vx-service-icon">⌁</div><h3>Dedicated Project Support</h3><p>Clear communication, organized handoffs and a collaborative process from the first brief to final delivery.</p></article>
+  </div>
+  <div class="vx-home-process">
+    <div class="vx-home-heading" style="margin-bottom:20px"><span class="vx-home-kicker">A clear path from brief to delivery</span><h2 style="font-size:clamp(25px,3vw,38px)">How We Bring It Together</h2></div>
+    <div class="vx-process-grid">
+      <div class="vx-process-step"><div class="vx-process-number">01</div><h3>Tell Us the Goal</h3><p>Share your project, audience, style and what success looks like.</p></div>
+      <div class="vx-process-step"><div class="vx-process-number">02</div><h3>Shape the Direction</h3><p>We align on requirements, creative direction and the right service.</p></div>
+      <div class="vx-process-step"><div class="vx-process-number">03</div><h3>Create & Refine</h3><p>Work moves through production and feedback with clear communication.</p></div>
+      <div class="vx-process-step"><div class="vx-process-number">04</div><h3>Deliver with Purpose</h3><p>Receive the final work or support, ready for your next step.</p></div>
+    </div>
+  </div>
+  <div class="vx-home-bottom-cta">
+    <h2>Your Next Big Idea Starts Here.</h2>
+    <p>Have a brand, creator project or business goal in mind? Let’s turn the brief into a clear plan.</p>
+    <a href="place-order.html" class="btn">Start Your Project <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
 
 <div class="container">
 <div class="stats-bar card">
